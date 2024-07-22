@@ -1,0 +1,152 @@
+<script lang="ts">
+	import {
+		tiles,
+		tilesHistory,
+		tilesHistoryIndexer,
+		borderOn,
+		colors,
+		colorsIndexer,
+		isGame,
+		isColorblindMode,
+		footerImport
+	} from "$lib/refs.svelte";
+	import { getRandomHexColor, numberToLetter } from "$lib/utils";
+	import { isMulticolor } from "$lib/main";
+
+	function undo(): void {
+		if (tilesHistoryIndexer.value !== 0) {
+			tilesHistoryIndexer.value--;
+			tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
+		}
+	}
+
+	function redo(): void {
+		if (tilesHistoryIndexer.value !== tilesHistory.value.length - 1) {
+			tilesHistoryIndexer.value++;
+			tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
+		}
+	}
+
+	function handleKeydown(e: KeyboardEvent): void {
+		if (e.ctrlKey && e.key === "z") undo();
+		else if (e.ctrlKey && e.key === "y") redo();
+	}
+
+	let bgColor: string = $state("#476FB8");
+	$effect(() => {
+		document.body.style.backgroundColor = bgColor;
+		document.body.style.color = colors.value[0];
+	});
+</script>
+
+<header>
+	<div>
+		<div class="left">
+			<button id="undo" onclick={undo}>Undo</button>
+			<span>Ctrl + z</span>
+		</div>
+		<div class="left">
+			<button id="undo" onclick={redo}>Redo</button>
+			<span>Ctrl + y</span>
+		</div>
+	</div>
+	{#if isMulticolor()}
+		<div class="middle">
+			<!-- eslint-disable-next-line -->
+			{#each colors.value as unused, i}
+				<button
+					style="background-color: {colors.value[i]}; color: {colors.value[0]};"
+					onclick={(): void => {
+						colorsIndexer.value = i;
+					}}
+					>{#if i !== 0 && isColorblindMode.value}
+						<label for={colors.value[i]}>{numberToLetter(i)}</label>
+					{/if}</button
+				>
+			{/each}
+		</div>
+	{/if}
+	<div>
+		<!-- eslint-disable-next-line -->
+		<div style="width: 40rem; display: flex; flex-wrap: wrap; justify-content: right">
+			<input type="color" bind:value={bgColor} />
+			{#each colors.value as unused, i}
+				<input type="color" bind:value={colors.value[i]} />
+			{/each}
+		</div>
+		{#if !isGame.value}
+			{#if isMulticolor()}
+				<button
+					onclick={(): void => {
+						colors.value.pop();
+						colorsIndexer.value = 1;
+						for (let i: number = 0; i < tiles.numRows; i++) {
+							for (let j: number = 0; j < tiles.numRows; j++) {
+								if (tiles.value[i][j].colorIndex > colors.value.length - 1)
+									tiles.value[i][j].colorIndex = 0;
+							}
+						}
+					}}>-</button
+				>
+			{/if}
+			{#if colors.value.length < 16}
+				<button
+					onclick={(): void => {
+						colors.value.push(getRandomHexColor());
+					}}>+</button
+				>
+			{/if}
+		{/if}
+		{#if isMulticolor()}
+			<input type="checkbox" bind:checked={isColorblindMode.value} />
+		{/if}
+		{#if tiles.numRows > 5 || tiles.numColumns > 5}
+			<input type="checkbox" bind:checked={borderOn.value} />
+		{/if}
+	</div>
+</header>
+
+<svelte:window onkeydown={handleKeydown} />
+
+<style lang="scss">
+	@import "$lib/../mixins.scss";
+
+	header {
+		display: flex;
+		justify-content: space-between;
+		padding: 0.5rem;
+
+		div {
+			display: flex;
+
+			* {
+				margin: 0.1rem;
+			}
+		}
+
+		.left {
+			align-items: center;
+			flex-direction: column;
+		}
+
+		.middle {
+			left: 50%;
+			position: absolute;
+			transform: translateX(-50%);
+
+			button {
+				font-size: var(--tile-font-size);
+				height: var(--tile-width);
+				width: var(--tile-width);
+
+				&:active {
+					border: 2px solid white;
+				}
+			}
+		}
+
+		input[type="color"] {
+			padding: 1px;
+		}
+	}
+</style>
