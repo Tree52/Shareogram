@@ -35,7 +35,7 @@
 </script>
 
 <svelte:head>
-	<title>Pixel Pix</title>
+	<title>Pixel Pictures</title>
 </svelte:head>
 
 <svelte:window
