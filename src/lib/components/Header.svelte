@@ -11,13 +11,15 @@
 		footerImport
 	} from "$lib/refs.svelte";
 	import { getRandomHexColor, numberToLetter } from "$lib/utils";
-	import { isMulticolor } from "$lib/main";
+	import { checkTileColors, isMulticolor } from "$lib/main";
 
 	function undo(): void {
 		if (tilesHistoryIndexer.value !== 0) {
 			tilesHistoryIndexer.value--;
 			tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
 		}
+
+		checkTileColors();
 	}
 
 	function redo(): void {
@@ -25,6 +27,8 @@
 			tilesHistoryIndexer.value++;
 			tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
 		}
+		
+		checkTileColors();
 	}
 
 	function handleKeydown(e: KeyboardEvent): void {
@@ -80,12 +84,7 @@
 					onclick={(): void => {
 						colors.value.pop();
 						colorsIndexer.value = 1;
-						for (let i: number = 0; i < tiles.numRows; i++) {
-							for (let j: number = 0; j < tiles.numRows; j++) {
-								if (tiles.value[i][j].colorIndex > colors.value.length - 1)
-									tiles.value[i][j].colorIndex = 0;
-							}
-						}
+						checkTileColors();
 					}}>-</button
 				>
 			{/if}
