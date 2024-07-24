@@ -3,7 +3,6 @@
 		isLeftHeld,
 		isRightHeld,
 		clickedTile,
-		enteredTile,
 		tiles,
 		tilesHistory,
 		tilesHistoryIndexer
@@ -30,7 +29,6 @@
 			tilesHistory.value.push($state.snapshot(tiles.value));
 		}
 		clickedTile.reset();
-		enteredTile.reset();
 	}
 </script>
 

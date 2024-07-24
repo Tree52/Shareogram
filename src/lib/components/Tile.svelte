@@ -4,7 +4,6 @@
 		isRightHeld,
 		tiles,
 		clickedTile,
-		enteredTile,
 		direction,
 		numTilesEntered,
 		isGame,
@@ -54,15 +53,14 @@
 			return;
 
 		numTilesEntered.value++;
-		enteredTile.value = { row: i, column: j };
 
 		if (numTilesEntered.value === 1)
 			direction.value = getAdjacentDirection(clickedTile.value.row, clickedTile.value.column, i, j);
 
 		if (isGame.value) {
 			if (direction.value === "above" || direction.value === "below") {
-				const startIndex: number = Math.min(clickedTile.value.row, enteredTile.value.row);
-				const endIndex: number = Math.max(clickedTile.value.row, enteredTile.value.row);
+				const startIndex: number = Math.min(clickedTile.value.row, i);
+				const endIndex: number = Math.max(clickedTile.value.row, i);
 				for (let l: number = startIndex; l < endIndex + 1; l++) {
 					if (isLeftHeld.value && !isXed(l, clickedTile.value.column)) {
 						changeColor(
@@ -76,8 +74,8 @@
 					}
 				}
 			} else {
-				const startIndex: number = Math.min(clickedTile.value.column, enteredTile.value.column);
-				const endIndex: number = Math.max(clickedTile.value.column, enteredTile.value.column);
+				const startIndex: number = Math.min(clickedTile.value.column, j);
+				const endIndex: number = Math.max(clickedTile.value.column, j);
 				for (let m: number = startIndex; m < endIndex + 1; m++) {
 					if (isLeftHeld.value && !isXed(clickedTile.value.row, m)) {
 						changeColor(
