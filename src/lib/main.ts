@@ -1,5 +1,5 @@
 import { type Tile, tiles, colors } from "$lib/refs.svelte";
-import { hexToDecimal, getRandomHexColor } from "$lib/utils";
+import { getRandomHexColor } from "$lib/utils";
 
 export const isActive = (row: number, column: number): boolean =>
 	tiles.value[row][column].colorIndex !== 0;
@@ -15,7 +15,7 @@ export function initializeTiles(width: number, height: number, importString?: st
 			tiles[i] = [];
 			for (let j: number = 0; j < width; j++) {
 				if (importString) {
-					const decimal: number = hexToDecimal(importString[indexer]);
+					const decimal: number = parseInt(importString[indexer], 16);
 					if (colors.value.length - 1 < decimal) {
 						for (let i: number = colors.value.length - 1; i < decimal; i++)
 							colors.value.push(getRandomHexColor());

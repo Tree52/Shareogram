@@ -1,22 +1,19 @@
 type Position = "above" | "below" | "left" | "right" | "not adjacent";
-export const getAdjacentDirection = (x1: number, y1: number, x2: number, y2: number): Position => {
-	const dx = Math.abs(x1 - x2);
-	const dy = Math.abs(y1 - y2);
+export function getAdjacentDirection(r1: number, c1: number, r2: number, c2: number): Position {
+	const dr: number = Math.abs(r1 - r2);
+	const dc: number = Math.abs(c1 - c2);
 
-	if (dx === 1 && dy === 0) {
-		return x2 > x1 ? "below" : "above";
-	} else if (dx === 0 && dy === 1) {
-		return y2 > y1 ? "right" : "left";
-	}
+	// Note: (0, 0) is top left, not bottom left.
+	if (dr === 0 && dc === 1) return c2 > c1 ? "right" : "left";
+	else if (dr === 1 && dc === 0) return r2 > r1 ? "below" : "above";
+	else return "not adjacent";
+}
 
-	return "not adjacent";
-};
-
-export function getRandomHexColor(length: number = 6): string {
-	const characters = "0123456789ABCDEF";
-	let result = "#";
-	for (let i = 0; i < length; i++) {
-		const randomIndex = Math.floor(Math.random() * characters.length);
+export function getRandomHexColor(): string {
+	const characters: string = "0123456789ABCDEF";
+	let result: string = "#";
+	for (let i: number = 0; i < 6; i++) {
+		const randomIndex: number = Math.floor(Math.random() * characters.length);
 		result += characters[randomIndex];
 	}
 	return result;
@@ -25,16 +22,13 @@ export function getRandomHexColor(length: number = 6): string {
 export function numberToLetter(n: number): string {
 	// 1 === a
 	if (n === 0) return "";
-	return String.fromCharCode(96 + n);
+	else return String.fromCharCode(96 + n);
 }
 
 export function letterToNumber(l: string): number {
+	// a === 1
 	if (l === "") return 0;
-	return l.charCodeAt(0) - 96;
-}
-
-export function hexToDecimal(hex: string): number {
-	return parseInt(hex, 16);
+	else return l.charCodeAt(0) - 96;
 }
 
 export function extractPropertyFrom2DArray<T, K extends keyof T>(
@@ -45,34 +39,16 @@ export function extractPropertyFrom2DArray<T, K extends keyof T>(
 }
 
 export function compare2DArrays(arr1: number[][], arr2: number[][]): boolean {
-	// Check if the outer arrays have the same length
-	if (arr1.length !== arr2.length) {
-		return false;
+	if (arr1.length !== arr2.length) return false;
+
+	for (let i: number = 0; i < arr1.length; i++) {
+		if (arr1[i].length !== arr2[i].length) return false;
+		for (let j: number = 0; j < arr1[i].length; j++) if (arr1[i][j] !== arr2[i][j]) return false;
 	}
 
-	// Check if each corresponding inner array has the same length and elements
-	for (let i = 0; i < arr1.length; i++) {
-		if (arr1[i].length !== arr2[i].length) {
-			return false;
-		}
-		for (let j = 0; j < arr1[i].length; j++) {
-			if (arr1[i][j] !== arr2[i][j]) {
-				return false;
-			}
-		}
-	}
-
-	// If all checks pass, the arrays are equal
 	return true;
 }
 
-function numberToHex(num: number): string {
-	if (num < 0 || num > 15) {
-		throw new Error("Number out of range (0-15)");
-	}
-	return num.toString(16).toUpperCase();
-}
-
 export function array2DToHexString(arr: number[][]): string {
-	return arr.flat().map(numberToHex).join("");
+	return arr.flat().map(num => num.toString(16).toUpperCase()).join("");
 }
