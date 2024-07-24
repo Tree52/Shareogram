@@ -27,7 +27,7 @@
 			tilesHistoryIndexer.value++;
 			tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
 		}
-		
+
 		checkTileColors();
 	}
 
@@ -59,7 +59,8 @@
 			<!-- eslint-disable-next-line -->
 			{#each colors.value as unused, i}
 				<button
-					style="background-color: {colors.value[i]}; color: {colors.value[0]};"
+					style:background-color={colors.value[i]}
+					style:color={colors.value[0]}
 					onclick={(): void => {
 						colorsIndexer.value = i;
 					}}
@@ -72,7 +73,12 @@
 	{/if}
 	<div>
 		<!-- eslint-disable-next-line -->
-		<div style="width: 40rem; display: flex; flex-wrap: wrap; justify-content: right">
+		<div
+			style:width="40rem"
+			style:display="flex"
+			style:flex-wrap="wrap"
+			style:justify-content="right"
+		>
 			<input type="color" bind:value={bgColor} />
 			{#each colors.value as unused, i}
 				<input type="color" bind:value={colors.value[i]} />

@@ -47,7 +47,7 @@
 			autocomplete="off"
 		/>
 		<button
-			style="margin-right: 1rem;"
+			style:margin-right="1rem"
 			onclick={(): void => {
 				isGame.value = true;
 				solution = tileColorIndices;

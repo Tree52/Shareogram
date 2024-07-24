@@ -102,10 +102,8 @@
 <button
 	onmousedown={handleMouseDown}
 	onmouseenter={handleMouseEnter}
-	style="
-		background-color: {colors.value[tiles.value[i][j].colorIndex]};
-		color: {isActive(i, j) ? colors.value[0] : colors.value[1]};
-	"
+	style:background-color={colors.value[tiles.value[i][j].colorIndex]}
+	style:color={isActive(i, j) ? colors.value[0] : colors.value[1]}
 >
 	{isXed(i, j) ? "X" : isColorblindMode.value ? numberToLetter(tiles.value[i][j].colorIndex) : ""}
 </button>

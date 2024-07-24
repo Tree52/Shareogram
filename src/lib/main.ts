@@ -40,8 +40,7 @@ export function initializeTiles(width: number, height: number, importString?: st
 export function checkTileColors() {
 	for (let i: number = 0; i < tiles.numRows; i++) {
 		for (let j: number = 0; j < tiles.numRows; j++) {
-			if (tiles.value[i][j].colorIndex > colors.value.length - 1)
-				tiles.value[i][j].colorIndex = 0;
+			if (tiles.value[i][j].colorIndex > colors.value.length - 1) tiles.value[i][j].colorIndex = 0;
 		}
 	}
 }
