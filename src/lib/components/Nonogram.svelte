@@ -80,7 +80,7 @@
 				<!-- eslint-disable-next-line -->
 				{#each { length: tiles.numColumns } as unused, i}
 					<th>
-						{#each columnHints[i] as columnHint, j}
+						{#each columnHints[i] as columnHint}
 							<div style:color={colors.value[letterToNumber(columnHint.color)]}>
 								{isColorblindMode.value ? columnHint.count + columnHint.color : columnHint.count}
 							</div>
@@ -102,7 +102,7 @@
 						style:justify-content="right"
 						style:height="var(--tile-width)"
 					>
-						{#each rowHints[i] as rowHint, j}
+						{#each rowHints[i] as rowHint}
 							<div style:padding="2px" style:color={colors.value[letterToNumber(rowHint.color)]}>
 								{isColorblindMode.value ? rowHint.count + rowHint.color : rowHint.count}
 							</div>

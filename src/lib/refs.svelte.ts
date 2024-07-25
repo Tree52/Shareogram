@@ -35,7 +35,7 @@ function ref<T>(initial: T): Ref<T> {
   };
 }
 
-function refTiles(initial: Tile[][]): RefTiles {
+function refTiles(): RefTiles {
 	const baseRef: Ref<Tile[][]> = ref<Tile[][]>(initialTiles);
 	const numRows: number = $derived(baseRef.value.length);
 	const numColumns: number = $derived(baseRef.value[0].length);
@@ -56,7 +56,7 @@ export const colorsIndexer: Ref<number> = ref<number>(1);
 export const editorWidth: Ref<number> = ref<number>(5);
 export const editorHeight: Ref<number> = ref<number>(5);
 const initialTiles: Tile[][] = initializeTiles(editorWidth.value, editorHeight.value);
-export const tiles: RefTiles = refTiles(initialTiles);
+export const tiles: RefTiles = refTiles();
 export const tilesHistory: Ref<Tile[][][]> = ref<Tile[][][]>([initialTiles]);
 export const tilesHistoryIndexer: Ref<number> = ref<number>(0);
 

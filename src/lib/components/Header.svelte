@@ -7,8 +7,7 @@
 		colors,
 		colorsIndexer,
 		isGame,
-		isColorblindMode,
-		footerImport
+		isColorblindMode
 	} from "$lib/refs.svelte";
 	import { getRandomHexColor, numberToLetter } from "$lib/utils";
 	import { checkTileColors, isMulticolor } from "$lib/main";
@@ -80,6 +79,7 @@
 			style:justify-content="right"
 		>
 			<input type="color" bind:value={bgColor} />
+			<!-- eslint-disable-next-line -->
 			{#each colors.value as unused, i}
 				<input type="color" bind:value={colors.value[i]} />
 			{/each}

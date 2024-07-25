@@ -27,9 +27,7 @@ export function initializeTiles(width: number, height: number, importString?: st
 					};
 
 					indexer++;
-				} else {
-					tiles[i][j] = { colorIndex: 0, Xed: false };
-				}
+				} else tiles[i][j] = { colorIndex: 0, Xed: false };
 			}
 		}
 	}

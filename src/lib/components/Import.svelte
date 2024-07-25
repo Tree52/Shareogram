@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { footerImport, editorWidth, editorHeight, tiles, colors } from "$lib/refs.svelte";
+	import { footerImport, editorWidth, editorHeight, tiles } from "$lib/refs.svelte";
 	import { initializeTiles } from "$lib/main";
 
 	const sanitizeStringInput = (s: string): string => s.replace(/[^0-9A-F]/g, "");

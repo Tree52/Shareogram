@@ -49,6 +49,6 @@ export function compare2DArrays(arr1: number[][], arr2: number[][]): boolean {
 	return true;
 }
 
-export function array2DToHexString(arr: number[][]): string {
-	return arr.flat().map(num => num.toString(16).toUpperCase()).join("");
-}
+// prettier-ignore
+export const array2DToHexString = (arr: number[][]): string =>
+	arr.flat().map((num) => num.toString(16).toUpperCase()).join("");
