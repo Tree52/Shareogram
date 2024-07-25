@@ -22,14 +22,12 @@
 			rowHints[row] = [{ count: 0, color: "" }];
 			for (let column: number = 0; column < tiles.numColumns; column++) {
 				if (isActive(row, column)) {
-					if (column !== 0 && value[row][column].colorIndex !== value[row][column - 1].colorIndex)
-						rowHints[row].push({ count: 1, color: numberToLetter(value[row][column].colorIndex) });
-					else {
-						rowHints[row][rowHints[row].length - 1].count++;
-						rowHints[row][rowHints[row].length - 1].color = numberToLetter(
-							value[row][column].colorIndex
-						);
-					}
+					const previousColorIndex: number | null =
+						column === 0 ? null : value[row][column - 1].colorIndex;
+					const currentColorIndex: number = value[row][column].colorIndex;
+					if (previousColorIndex !== currentColorIndex)
+						rowHints[row].push({ count: 1, color: numberToLetter(currentColorIndex) });
+					else rowHints[row][rowHints[row].length - 1].count++;
 				}
 			}
 			if (rowHints[row].length > 1 && rowHints[row][0].count === 0) rowHints[row].shift();
@@ -43,17 +41,12 @@
 			columnHints[column] = [{ count: 0, color: "" }];
 			for (let row: number = 0; row < tiles.numRows; row++) {
 				if (isActive(row, column)) {
-					if (row !== 0 && value[row][column].colorIndex !== value[row - 1][column].colorIndex)
-						columnHints[column].push({
-							count: 1,
-							color: numberToLetter(value[row][column].colorIndex)
-						});
-					else {
-						columnHints[column][columnHints[column].length - 1].count++;
-						columnHints[column][columnHints[column].length - 1].color = numberToLetter(
-							value[row][column].colorIndex
-						);
-					}
+					const previousColorIndex: number | null =
+						row === 0 ? null : value[row - 1][column].colorIndex;
+					const currentColorIndex: number = value[row][column].colorIndex;
+					if (previousColorIndex !== currentColorIndex)
+						columnHints[column].push({ count: 1, color: numberToLetter(currentColorIndex) });
+					else columnHints[column][columnHints[column].length - 1].count++;
 				}
 			}
 			if (columnHints[column].length > 1 && columnHints[column][0].count === 0)
