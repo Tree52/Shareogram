@@ -15,10 +15,10 @@
 	const sanitizeNumberInput = (n: number): number => Number(String(n).replace(/[^0-9]/g, ""));
 
 	let solution: number[][] = $state([[]]);
-	let tileColorIndices: number[][] = $derived(
+	const tileColorIndices: number[][] = $derived(
 		extractPropertyFrom2DArray(tiles.value, "colorIndex")
 	);
-	let win: boolean = $derived(compare2DArrays(solution, tileColorIndices));
+	const win: boolean = $derived(compare2DArrays(solution, tileColorIndices));
 
 	function newEditor(width: number, height: number): void {
 		tiles.value = initializeTiles(width, height);

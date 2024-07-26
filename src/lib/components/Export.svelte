@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { array2DToHexString } from "$lib/utils";
 
-	let { tileColorIndices }: { tileColorIndices: number[][] } = $props();
+	const { tileColorIndices }: { tileColorIndices: number[][] } = $props();
 </script>
 
 <button

@@ -14,7 +14,7 @@
 	import { getAdjacentDirection, numberToLetter } from "$lib/utils";
 	import { isActive } from "$lib/main";
 
-	let { i, j }: { i: number; j: number } = $props();
+	const { i, j }: { i: number; j: number } = $props();
 
 	const isXed = (row: number, column: number): boolean => tiles.value[row][column].Xed;
 	const isSelectedColor = (row: number, column: number): boolean =>
