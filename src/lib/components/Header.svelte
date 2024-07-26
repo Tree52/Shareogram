@@ -12,22 +12,23 @@
 	import { getRandomHexColor, numberToLetter } from "$lib/utils";
 	import { checkTileColors, isMulticolor } from "$lib/main";
 
+	function browseHistory(): void {
+		tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
+		checkTileColors();
+	}
+
 	function undo(): void {
 		if (tilesHistoryIndexer.value !== 0) {
 			tilesHistoryIndexer.value--;
-			tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
+			browseHistory();
 		}
-
-		checkTileColors();
 	}
 
 	function redo(): void {
 		if (tilesHistoryIndexer.value !== tilesHistory.value.length - 1) {
 			tilesHistoryIndexer.value++;
-			tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
+			browseHistory();
 		}
-
-		checkTileColors();
 	}
 
 	function handleKeydown(e: KeyboardEvent): void {
