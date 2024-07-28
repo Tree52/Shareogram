@@ -10,7 +10,7 @@ export function getAdjacentDirection(r1: number, c1: number, r2: number, c2: num
 }
 
 export function getRandomHexColor(): string {
-	const characters: string = "0123456789ABCDEF";
+	const characters: string = "0123456789abcdef";
 	let result: string = "#";
 	for (let i: number = 0; i < 6; i++) {
 		const randomIndex: number = Math.floor(Math.random() * characters.length);
@@ -51,4 +51,6 @@ export function compare2DArrays(arr1: number[][], arr2: number[][]): boolean {
 
 // prettier-ignore
 export const array2DToHexString = (arr: number[][]): string =>
-	arr.flat().map((num) => num.toString(16).toUpperCase()).join("");
+	arr.flat().map((num) => num.toString(16)).join("");
+
+export const hexToNum = (hex: string): number => parseInt(hex, 16);
