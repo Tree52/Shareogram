@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-	<title>Pixel Pictures</title>
+	<title>Shareograms</title>
 </svelte:head>
 
 <svelte:window

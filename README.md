@@ -1,5 +1,5 @@
-# Pixel-Pictures
+# Shareograms
 
-A Nonogram/Picross/Paint-by-Numbers-like editor/player website.
+A Nonogram/Picross/Paint-by-Numbers-like editor/player website with shareable URLs.
 
-https://tree52.github.io/Pixel-Pictures/
+https://tree52.github.io/Shareograms/
