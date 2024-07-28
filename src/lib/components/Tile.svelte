@@ -9,7 +9,8 @@
 		isGame,
 		colors,
 		colorsIndexer,
-		isColorblindMode
+		isColorblindMode,
+		isChangeHashAllowed
 	} from "$lib/refs.svelte";
 	import { getAdjacentDirection, numberToLetter } from "$lib/utils";
 	import { isActive } from "$lib/main";
@@ -39,7 +40,8 @@
 			if (e.button === 0 && !isSelectedColor(i, j)) changeColor(i, j, colorsIndexer.value);
 			else deactivate(i, j);
 		}
-
+		
+		isChangeHashAllowed.value = false;
 		clickedTile.value = { row: i, column: j };
 		numTilesEntered.reset();
 	}

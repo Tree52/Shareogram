@@ -50,6 +50,7 @@ function refTiles(): RefTiles {
   };
 }
 
+export const bgColor: Ref<string> = ref<string>("#476fb8");
 export const colors: Ref<string[]> = ref<string[]>(["#f8fafc", "#020617"]);
 export const colorsIndexer: Ref<number> = ref<number>(1);
 
@@ -69,3 +70,4 @@ export const numTilesEntered: Ref<number> = ref<number>(0);
 export const footerImport: Ref<string> = ref<string>("");
 export const borderOn: Ref<boolean> = ref<boolean>(true);
 export const isColorblindMode: Ref<boolean> = ref<boolean>(false);
+export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);

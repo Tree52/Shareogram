@@ -7,7 +7,9 @@
 		colors,
 		colorsIndexer,
 		isGame,
-		isColorblindMode
+		isColorblindMode,
+		bgColor,
+		isChangeHashAllowed
 	} from "$lib/refs.svelte";
 	import { getRandomHexColor, numberToLetter } from "$lib/utils";
 	import { checkTileColors, isMulticolor } from "$lib/main";
@@ -36,9 +38,16 @@
 		else if (e.ctrlKey && e.key === "y") redo();
 	}
 
-	let bgColor: string = $state("#476FB8");
+	function handleOnClick(): void {
+		isChangeHashAllowed.value = false;
+	}
+
+	function handleOnChange(): void {
+		isChangeHashAllowed.reset();
+	}
+
 	$effect(() => {
-		document.body.style.backgroundColor = bgColor;
+		document.body.style.backgroundColor = bgColor.value;
 		document.body.style.color = colors.value[0];
 	});
 </script>
@@ -79,10 +88,20 @@
 			style:flex-wrap="wrap"
 			style:justify-content="right"
 		>
-			<input type="color" bind:value={bgColor} />
+			<input
+				type="color"
+				onclick={handleOnClick}
+				onchange={handleOnChange}
+				bind:value={bgColor.value}
+			/>
 			<!-- eslint-disable-next-line -->
 			{#each colors.value as unused, i}
-				<input type="color" bind:value={colors.value[i]} />
+				<input
+					type="color"
+					onclick={handleOnClick}
+					onchange={handleOnChange}
+					bind:value={colors.value[i]}
+				/>
 			{/each}
 		</div>
 		{#if !isGame.value}
