@@ -13,7 +13,7 @@
 		colors,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { extractPropertyFrom2DArray, array2DToHexString, hexToNum, numberToLetter, letterToNumber, numToHex } from "$lib/utils";
+	import { extractPropertyFrom2DArray, array2DToHexString, hexToDec, numberToLetter, letterToNumber, decToHex } from "$lib/utils";
 	import { initializeTiles } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Content from "$lib/components/Content.svelte";
@@ -26,12 +26,12 @@
 		for (let i: number = 1; i < solution.length; i++) {
 			if (solution[i - 1] === solution[i]) count++;
 			else {
-				hash += count + (solution[i - 1] === "0" ? "x" : numberToLetter(hexToNum(solution[i - 1])));
+				hash += count + (solution[i - 1] === "0" ? "x" : numberToLetter(hexToDec(solution[i - 1])));
 				count = 1;
 			}
 		}
 
-		return hash += count + (solution[solution.length - 1] === "0" ? "x" : numberToLetter(hexToNum(solution[solution.length - 1])));;
+		return hash += count + (solution[solution.length - 1] === "0" ? "x" : numberToLetter(hexToDec(solution[solution.length - 1])));;
 	}
 
 	const hash: string = $derived.by(() => {
@@ -71,7 +71,7 @@
 			const color: string = splitString[i][splitString[i].length - 1];
 			for (let j: number = 0; j < count; j++) {
 				if (color === "x") solution += "0";
-				else solution += numToHex(letterToNumber(color));
+				else solution += decToHex(letterToNumber(color));
 			}
 		}
 		return solution;
