@@ -9,8 +9,6 @@
 		editorWidth,
 		editorHeight
 	} from "$lib/refs.svelte";
-	import Import from "./Import.svelte";
-	import Export from "./Export.svelte";
 
 	const sanitizeNumberInput = (n: number): number => Number(String(n).replace(/[^0-9]/g, ""));
 
@@ -47,15 +45,12 @@
 			autocomplete="off"
 		/>
 		<button
-			style:margin-right="1rem"
 			onclick={(): void => {
 				isGame.value = true;
 				solution = tileColorIndices;
 				newEditor(editorWidth.value, editorHeight.value);
 			}}>Start Game</button
 		>
-		<Import />
-		<Export {tileColorIndices} />
 	{:else}
 		<span>{win ? "You win" : "Keep trying"}</span>
 		<button
