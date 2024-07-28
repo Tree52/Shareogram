@@ -66,7 +66,7 @@
 </script>
 
 <svelte:head>
-	<title>Shareograms</title>
+	<title>Shareogram</title>
 </svelte:head>
 
 <svelte:window
