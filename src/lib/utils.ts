@@ -54,3 +54,10 @@ export const array2DToHexString = (arr: number[][]): string =>
 	arr.flat().map((num) => num.toString(16)).join("");
 
 export const hexToNum = (hex: string): number => parseInt(hex, 16);
+
+export function numToHex(num: number): string {
+	if (num < 0) {
+			num = 0xFFFFFFFF + num + 1;
+	}
+	return num.toString(16).toUpperCase();
+}

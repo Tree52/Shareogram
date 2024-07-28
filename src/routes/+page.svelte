@@ -13,7 +13,8 @@
 		colors,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { extractPropertyFrom2DArray, array2DToHexString, hexToNum, numberToLetter } from "$lib/utils";
+	import { extractPropertyFrom2DArray, array2DToHexString, hexToNum, numberToLetter, letterToNumber, numToHex } from "$lib/utils";
+	import { initializeTiles } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Content from "$lib/components/Content.svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -59,6 +60,38 @@
 		clickedTile.reset();
 		isChangeHashAllowed.reset();
 	}
+
+	const scrapeHash = (hash: string): string[] => hash.split('_');
+	
+	function convertString(input: string) {
+		const splitString: string[] = input.match(/\d+\w/g) as string[];
+		let solution: string = "";
+		for (let i: number = 0; i < splitString.length; i++) {
+			const count: number = Number(splitString[i].slice(0, -1));
+			const color: string = splitString[i][splitString[i].length - 1];
+			for (let j: number = 0; j < count; j++) {
+				if (color === "x") solution += "0";
+				else solution += numToHex(letterToNumber(color));
+			}
+		}
+		return solution;
+	}
+
+	$effect.pre(() => {
+		if (window.location.hash) {
+			const scrapedHash: string[] = scrapeHash(window.location.hash.slice(1));
+			isGame.value = Boolean(Number(scrapedHash[0]));
+			editorWidth.value = Number(scrapedHash[1]);
+			editorHeight.value = Number(scrapedHash[2]);
+			bgColor.value = "#" + scrapedHash[3];
+			for (let i: number = 4; i < scrapedHash.length - 1; i++) colors.value[i - 4] = "#" + scrapedHash[i];
+			if (scrapedHash[scrapedHash.length - 1].includes("x") || scrapedHash[scrapedHash.length - 1].includes("a")) {
+				tiles.value = initializeTiles(editorWidth.value, editorHeight.value, convertString(scrapedHash[scrapedHash.length - 1]));
+			} else {
+				tiles.value = initializeTiles(editorWidth.value, editorHeight.value, scrapedHash[scrapedHash.length - 1]);
+			}
+		}
+	});
 
 	$effect(() => {
 		if (isChangeHashAllowed.value) window.location.hash = hash;
