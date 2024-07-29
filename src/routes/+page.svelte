@@ -20,7 +20,7 @@
 	import { extractPropertyFrom2DArray, dec2DArrayToHex, hexToLetter, letterToHex } from "$lib/utils";
 	import { initializeTiles, calculateRowHints, calculateColumnHints } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
-	import Content from "$lib/components/Content.svelte";
+	import Nonogram from "$lib/components/Nonogram.svelte";
 	import Footer from "$lib/components/Footer.svelte";
 	import "$lib/../global.scss";
 
@@ -122,5 +122,18 @@
 <svelte:window onmousedown={handleMouseDown} onmouseup={handleMouseUp} oncontextmenu={(e: MouseEvent): void => e.preventDefault()} />
 
 <Header />
-<Content />
+
+<main>
+	<Nonogram />
+</main>
+
 <Footer />
+
+<style lang="scss">
+	@import "$lib/../mixins.scss";
+	
+	main {
+		flex: 1;
+		@include center-div;
+	}
+</style>
