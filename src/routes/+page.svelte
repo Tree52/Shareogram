@@ -95,8 +95,9 @@
 		return solution;
 	}
 
+	let importFlag: boolean = true;
 	$effect.pre(() => {
-		if (window.location.hash) {
+		if (window.location.hash && importFlag) {
 			const scrapedHash: string[] = scrapeHash(window.location.hash.slice(1));
 			isGame.value = Boolean(Number(scrapedHash[0]));
 			editorWidth.value = Number(scrapedHash[1]);
@@ -121,6 +122,7 @@
 				);
 			}
 		}
+		importFlag = false;
 	});
 
 	$effect(() => {
