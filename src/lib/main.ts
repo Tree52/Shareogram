@@ -2,9 +2,9 @@ import { type Tile, tiles, colors, type Hint } from "$lib/refs.svelte";
 import { getRandomHexColor, hexToDec, decToLetter } from "$lib/utils";
 
 export const isActive = (row: number, column: number): boolean =>
-	tiles.value[row][column].colorIndex !== 0;
+	tiles.v[row][column].colorIndex !== 0;
 
-export const isMulticolor = (): boolean => colors.value.length > 2;
+export const isMulticolor = (): boolean => colors.v.length > 2;
 
 export function initializeTiles(width: number, height: number, importString?: string): Tile[][] {
 	const tiles: Tile[][] = [[]];
@@ -16,9 +16,9 @@ export function initializeTiles(width: number, height: number, importString?: st
 			for (let j: number = 0; j < width; j++) {
 				if (importString) {
 					const decimal: number = hexToDec(importString[indexer]);
-					if (colors.value.length - 1 < decimal) {
-						for (let i: number = colors.value.length - 1; i < decimal; i++)
-							colors.value.push(getRandomHexColor());
+					if (colors.v.length - 1 < decimal) {
+						for (let i: number = colors.v.length - 1; i < decimal; i++)
+							colors.v.push(getRandomHexColor());
 					}
 
 					tiles[i][j] = {
@@ -38,7 +38,7 @@ export function initializeTiles(width: number, height: number, importString?: st
 export function checkTileColors() {
 	for (let i: number = 0; i < tiles.numRows; i++) {
 		for (let j: number = 0; j < tiles.numColumns; j++) {
-			if (tiles.value[i][j].colorIndex > colors.value.length - 1) tiles.value[i][j].colorIndex = 0;
+			if (tiles.v[i][j].colorIndex > colors.v.length - 1) tiles.v[i][j].colorIndex = 0;
 		}
 	}
 }

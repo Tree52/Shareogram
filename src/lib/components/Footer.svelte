@@ -13,42 +13,40 @@
 
 	const sanitizeNumberInput = (n: number): number => Number(String(n).replace(/[^0-9]/g, ""));
 
-	const tileColorIndices: number[][] = $derived(
-		extractPropertyFrom2DArray(tiles.value, "colorIndex")
-	);
-	const win: boolean = $derived(compare2DArrays(solution.value, tileColorIndices));
+	const tileColorIndices: number[][] = $derived(extractPropertyFrom2DArray(tiles.v, "colorIndex"));
+	const win: boolean = $derived(compare2DArrays(solution.v, tileColorIndices));
 
 	function newEditor(width: number, height: number): void {
-		tiles.value = initializeTiles(width, height);
+		tiles.v = initializeTiles(width, height);
 		tilesHistory.reset();
-		tilesHistory.value[0] = $state.snapshot(tiles.value);
+		tilesHistory.v[0] = $state.snapshot(tiles.v);
 		tilesHistoryIndexer.reset();
 	}
 </script>
 
 <footer>
-	{#if !isGame.value}
+	{#if !isGame.v}
 		<input
-			bind:value={editorWidth.value}
+			bind:value={editorWidth.v}
 			oninput={() => {
-				editorWidth.value = sanitizeNumberInput(editorWidth.value);
-				newEditor(editorWidth.value, editorHeight.value);
+				editorWidth.v = sanitizeNumberInput(editorWidth.v);
+				newEditor(editorWidth.v, editorHeight.v);
 			}}
 			autocomplete="off"
 		/>
 		<input
-			bind:value={editorHeight.value}
+			bind:value={editorHeight.v}
 			oninput={() => {
-				editorHeight.value = sanitizeNumberInput(editorHeight.value);
-				newEditor(editorWidth.value, editorHeight.value);
+				editorHeight.v = sanitizeNumberInput(editorHeight.v);
+				newEditor(editorWidth.v, editorHeight.v);
 			}}
 			autocomplete="off"
 		/>
 		<button
 			onclick={(): void => {
-				isGame.value = true;
-				solution.value = tileColorIndices;
-				newEditor(editorWidth.value, editorHeight.value);
+				isGame.v = true;
+				solution.v = tileColorIndices;
+				newEditor(editorWidth.v, editorHeight.v);
 			}}>Start Game</button
 		>
 	{:else}
@@ -56,7 +54,7 @@
 		<button
 			onclick={(): void => {
 				isGame.reset();
-				newEditor(editorWidth.value, editorHeight.value);
+				newEditor(editorWidth.v, editorHeight.v);
 			}}>New Editor</button
 		>
 	{/if}

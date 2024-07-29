@@ -11,7 +11,7 @@ type TilePosition = {
 };
 
 type Ref<T> = {
-	value: T;
+	v: T;
 	reset: () => void;
 };
 
@@ -29,26 +29,26 @@ const deepCopy = (obj: object): object => JSON.parse(JSON.stringify(obj));
 
 function ref<T>(initial: T): Ref<T> {
 	const isObj: boolean = typeof initial === "object" ? true : false;
-	let value: T = $state(isObj ? (deepCopy(initial!) as T) : initial);
-	const reset = (): T => (value = isObj ? (deepCopy(initial!) as T) : initial);
+	let v: T = $state(isObj ? (deepCopy(initial!) as T) : initial);
+	const reset = (): T => (v = isObj ? (deepCopy(initial!) as T) : initial);
 
 	// prettier-ignore
 	return {
-    get value(): T { return value; },
-    set value(v: T) { value = v; },
+    get v(): T { return v; },
+    set v(value: T) { v = value; },
     reset
   };
 }
 
 function refTiles(): RefTiles {
 	const baseRef: Ref<Tile[][]> = ref<Tile[][]>(initialTiles);
-	const numRows: number = $derived(baseRef.value.length);
-	const numColumns: number = $derived(baseRef.value[0].length);
+	const numRows: number = $derived(baseRef.v.length);
+	const numColumns: number = $derived(baseRef.v[0].length);
 
 	// prettier-ignore
 	return {
-    get value(): Tile[][] { return baseRef.value; },
-    set value(v: Tile[][]) { baseRef.value = v; },
+    get v(): Tile[][] { return baseRef.v; },
+    set v(value: Tile[][]) { baseRef.v = value; },
     reset: baseRef.reset,
     get numRows(): number { return numRows; },
     get numColumns(): number { return numColumns; },
@@ -61,7 +61,7 @@ export const colorsIndexer: Ref<number> = ref<number>(1);
 
 export const editorWidth: Ref<number> = ref<number>(5);
 export const editorHeight: Ref<number> = ref<number>(5);
-const initialTiles: Tile[][] = initializeTiles(editorWidth.value, editorHeight.value);
+const initialTiles: Tile[][] = initializeTiles(editorWidth.v, editorHeight.v);
 export const tiles: RefTiles = refTiles();
 export const tilesHistory: Ref<Tile[][][]> = ref<Tile[][][]>([initialTiles]);
 export const tilesHistoryIndexer: Ref<number> = ref<number>(0);

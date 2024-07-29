@@ -15,20 +15,20 @@
 	import { checkTileColors, isMulticolor } from "$lib/main";
 
 	function browseHistory(): void {
-		tiles.value = $state.snapshot(tilesHistory.value[tilesHistoryIndexer.value]);
+		tiles.v = $state.snapshot(tilesHistory.v[tilesHistoryIndexer.v]);
 		checkTileColors();
 	}
 
 	function undo(): void {
-		if (tilesHistoryIndexer.value !== 0) {
-			tilesHistoryIndexer.value--;
+		if (tilesHistoryIndexer.v !== 0) {
+			tilesHistoryIndexer.v--;
 			browseHistory();
 		}
 	}
 
 	function redo(): void {
-		if (tilesHistoryIndexer.value !== tilesHistory.value.length - 1) {
-			tilesHistoryIndexer.value++;
+		if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1) {
+			tilesHistoryIndexer.v++;
 			browseHistory();
 		}
 	}
@@ -39,7 +39,7 @@
 	}
 
 	function handleOnClick(): void {
-		isChangeHashAllowed.value = false;
+		isChangeHashAllowed.v = false;
 	}
 
 	function handleOnChange(): void {
@@ -47,8 +47,8 @@
 	}
 
 	$effect(() => {
-		document.body.style.backgroundColor = bgColor.value;
-		document.body.style.color = colors.value[0];
+		document.body.style.backgroundColor = bgColor.v;
+		document.body.style.color = colors.v[0];
 	});
 </script>
 
@@ -66,15 +66,15 @@
 	{#if isMulticolor()}
 		<div class="middle">
 			<!-- eslint-disable-next-line -->
-			{#each colors.value as unused, i}
+			{#each colors.v as unused, i}
 				<button
-					style:background-color={colors.value[i]}
-					style:color={i === 0 ? colors.value[1] : colors.value[0]}
+					style:background-color={colors.v[i]}
+					style:color={i === 0 ? colors.v[1] : colors.v[0]}
 					onclick={(): void => {
-						colorsIndexer.value = i;
+						colorsIndexer.v = i;
 					}}
-					>{#if isColorblindMode.value}
-						<label for={colors.value[i]}>{decToLetter(i)}</label>
+					>{#if isColorblindMode.v}
+						<label for={colors.v[i]}>{decToLetter(i)}</label>
 					{/if}</button
 				>
 			{/each}
@@ -92,41 +92,41 @@
 				type="color"
 				onclick={handleOnClick}
 				onchange={handleOnChange}
-				bind:value={bgColor.value}
+				bind:value={bgColor.v}
 			/>
 			<!-- eslint-disable-next-line -->
-			{#each colors.value as unused, i}
+			{#each colors.v as unused, i}
 				<input
 					type="color"
 					onclick={handleOnClick}
 					onchange={handleOnChange}
-					bind:value={colors.value[i]}
+					bind:value={colors.v[i]}
 				/>
 			{/each}
 		</div>
-		{#if !isGame.value}
+		{#if !isGame.v}
 			{#if isMulticolor()}
 				<button
 					onclick={(): void => {
-						colors.value.pop();
-						colorsIndexer.value = 1;
+						colors.v.pop();
+						colorsIndexer.v = 1;
 						checkTileColors();
 					}}>-</button
 				>
 			{/if}
-			{#if colors.value.length < 16}
+			{#if colors.v.length < 16}
 				<button
 					onclick={(): void => {
-						colors.value.push(getRandomHexColor());
+						colors.v.push(getRandomHexColor());
 					}}>+</button
 				>
 			{/if}
 		{/if}
 		{#if isMulticolor()}
-			<input type="checkbox" bind:checked={isColorblindMode.value} />
+			<input type="checkbox" bind:checked={isColorblindMode.v} />
 		{/if}
 		{#if tiles.numRows > 5 || tiles.numColumns > 5}
-			<input type="checkbox" bind:checked={borderOn.value} />
+			<input type="checkbox" bind:checked={borderOn.v} />
 		{/if}
 	</div>
 </header>

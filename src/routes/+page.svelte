@@ -15,9 +15,7 @@
 		rowHints,
 		columnHints,
 		type Tile,
-
 		solution
-
 	} from "$lib/refs.svelte";
 	import {
 		extractPropertyFrom2DArray,
@@ -32,18 +30,18 @@
 	import "$lib/../global.scss";
 
 	function handleMouseDown(e: MouseEvent) {
-		if (e.button === 0) isLeftHeld.value = true;
-		else if (e.button === 2) isRightHeld.value = true;
+		if (e.button === 0) isLeftHeld.v = true;
+		else if (e.button === 2) isRightHeld.v = true;
 	}
 
 	function handleMouseUp(e: MouseEvent) {
 		if (e.button === 0) isLeftHeld.reset();
 		else if (e.button === 2) isRightHeld.reset();
-		if (clickedTile.value.row !== -1) {
-			if (tilesHistoryIndexer.value !== tilesHistory.value.length - 1)
-				tilesHistory.value.splice(tilesHistoryIndexer.value + 1);
-			tilesHistoryIndexer.value++;
-			tilesHistory.value.push($state.snapshot(tiles.value));
+		if (clickedTile.v.row !== -1) {
+			if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1)
+				tilesHistory.v.splice(tilesHistoryIndexer.v + 1);
+			tilesHistoryIndexer.v++;
+			tilesHistory.v.push($state.snapshot(tiles.v));
 		}
 		clickedTile.reset();
 		isChangeHashAllowed.reset();
@@ -68,38 +66,31 @@
 		if (window.location.hash && importFlag) {
 			const scrapedHash: string[] = scrapeHash(window.location.hash.slice(1));
 
-			isGame.value = Boolean(Number(scrapedHash[0]));
-			editorWidth.value = Number(scrapedHash[1]);
-			editorHeight.value = Number(scrapedHash[2]);
-			bgColor.value = "#" + scrapedHash[3];
+			isGame.v = Boolean(Number(scrapedHash[0]));
+			editorWidth.v = Number(scrapedHash[1]);
+			editorHeight.v = Number(scrapedHash[2]);
+			bgColor.v = "#" + scrapedHash[3];
 
-			const scrapedColors: string[] = isGame.value
+			const scrapedColors: string[] = isGame.v
 				? scrapedHash.slice(4, -2)
 				: scrapedHash.slice(4, -1);
-			for (let i: number = 0; i < scrapedColors.length; i++)
-				colors.value[i] = "#" + scrapedColors[i];
+			for (let i: number = 0; i < scrapedColors.length; i++) colors.v[i] = "#" + scrapedColors[i];
 
-			const tileActivityIndex: number = isGame.value
-				? scrapedHash.length - 2
-				: scrapedHash.length - 1;
-				
-				if (isGame.value) {
-					goal = scrapedHash[scrapedHash.length - 1];
-					tiles.value = initializeTiles(
-						editorWidth.value,
-						editorHeight.value,
-						elongateActivity(goal)
-					);
-					solution.value = extractPropertyFrom2DArray(tiles.value, "colorIndex");
-					rowHints.value = calculateRowHints(tiles.value);
-					columnHints.value = calculateColumnHints(tiles.value);
-				}
+			const tileActivityIndex: number = isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1;
 
-				tiles.value = initializeTiles(
-					editorWidth.value,
-					editorHeight.value,
-					elongateActivity(scrapedHash[tileActivityIndex])
-				);
+			if (isGame.v) {
+				goal = scrapedHash[scrapedHash.length - 1];
+				tiles.v = initializeTiles(editorWidth.v, editorHeight.v, elongateActivity(goal));
+				solution.v = extractPropertyFrom2DArray(tiles.v, "colorIndex");
+				rowHints.v = calculateRowHints(tiles.v);
+				columnHints.v = calculateColumnHints(tiles.v);
+			}
+
+			tiles.v = initializeTiles(
+				editorWidth.v,
+				editorHeight.v,
+				elongateActivity(scrapedHash[tileActivityIndex])
+			);
 		}
 
 		importFlag = false;
@@ -123,24 +114,23 @@
 
 	const hash: string = $derived.by(() => {
 		const hashElements: (number | string)[] = [
-			Number(isGame.value),
-			editorWidth.value,
-			editorHeight.value,
-			bgColor.value.slice(1)
+			Number(isGame.v),
+			editorWidth.v,
+			editorHeight.v,
+			bgColor.v.slice(1)
 		];
-		for (let i: number = 0; i < colors.value.length; i++)
-			hashElements.push(colors.value[i].slice(1));
+		for (let i: number = 0; i < colors.v.length; i++) hashElements.push(colors.v[i].slice(1));
 		const tileActivity: string = shortenActivity(
-			dec2DArrayToHex(extractPropertyFrom2DArray(tiles.value, "colorIndex"))
+			dec2DArrayToHex(extractPropertyFrom2DArray(tiles.v, "colorIndex"))
 		);
 		hashElements.push(tileActivity);
-		if (isGame.value) hashElements.push(goal);
+		if (isGame.v) hashElements.push(goal);
 		else goal = tileActivity;
 		return hashElements.join("-");
 	});
 
 	$effect(() => {
-		if (isChangeHashAllowed.value) window.location.hash = hash;
+		if (isChangeHashAllowed.v) window.location.hash = hash;
 	});
 </script>
 

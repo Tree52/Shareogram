@@ -17,83 +17,82 @@
 
 	const { i, j }: { i: number; j: number } = $props();
 
-	const isXed = (row: number, column: number): boolean => tiles.value[row][column].Xed;
+	const isXed = (row: number, column: number): boolean => tiles.v[row][column].Xed;
 	const isSelectedColor = (row: number, column: number): boolean =>
-		tiles.value[row][column].colorIndex === colorsIndexer.value;
+		tiles.v[row][column].colorIndex === colorsIndexer.v;
 	function changeColor(row: number, column: number, colorIndex: number): void {
-		tiles.value[row][column].colorIndex = colorIndex;
+		tiles.v[row][column].colorIndex = colorIndex;
 	}
 	function deactivate(row: number, column: number): void {
-		tiles.value[row][column].colorIndex = 0;
+		tiles.v[row][column].colorIndex = 0;
 	}
 	function negateXed(row: number, column: number): void {
-		tiles.value[row][column].Xed = !tiles.value[row][column].Xed;
+		tiles.v[row][column].Xed = !tiles.v[row][column].Xed;
 	}
 
 	function handleMouseDown(e: MouseEvent): void {
-		if (isGame.value) {
+		if (isGame.v) {
 			if (e.button === 0 && !isXed(i, j)) {
 				if (isSelectedColor(i, j)) changeColor(i, j, 0);
-				else changeColor(i, j, colorsIndexer.value);
+				else changeColor(i, j, colorsIndexer.v);
 			} else if (e.button === 2 && !isActive(i, j)) negateXed(i, j);
 		} else {
-			if (e.button === 0 && !isSelectedColor(i, j)) changeColor(i, j, colorsIndexer.value);
+			if (e.button === 0 && !isSelectedColor(i, j)) changeColor(i, j, colorsIndexer.v);
 			else deactivate(i, j);
 		}
 
-		isChangeHashAllowed.value = false;
-		clickedTile.value = { row: i, column: j };
+		isChangeHashAllowed.v = false;
+		clickedTile.v = { row: i, column: j };
 		numTilesEntered.reset();
 	}
 
 	function handleMouseEnter(): void {
 		if (
-			(!isLeftHeld.value && !isRightHeld.value) ||
-			(isLeftHeld.value && isRightHeld.value) ||
-			clickedTile.value.row === -1
+			(!isLeftHeld.v && !isRightHeld.v) ||
+			(isLeftHeld.v && isRightHeld.v) ||
+			clickedTile.v.row === -1
 		)
 			return;
 
-		numTilesEntered.value++;
+		numTilesEntered.v++;
 
-		if (numTilesEntered.value === 1)
-			direction.value = getAdjacentDirection(clickedTile.value.row, clickedTile.value.column, i, j);
+		if (numTilesEntered.v === 1)
+			direction.v = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
 
-		if (isGame.value) {
-			if (direction.value === "above" || direction.value === "below") {
-				const startIndex: number = Math.min(clickedTile.value.row, i);
-				const endIndex: number = Math.max(clickedTile.value.row, i);
+		if (isGame.v) {
+			if (direction.v === "above" || direction.v === "below") {
+				const startIndex: number = Math.min(clickedTile.v.row, i);
+				const endIndex: number = Math.max(clickedTile.v.row, i);
 				for (let l: number = startIndex; l < endIndex + 1; l++) {
-					if (isLeftHeld.value && !isXed(l, clickedTile.value.column)) {
+					if (isLeftHeld.v && !isXed(l, clickedTile.v.column)) {
 						changeColor(
 							l,
-							clickedTile.value.column,
-							tiles.value[clickedTile.value.row][clickedTile.value.column].colorIndex
+							clickedTile.v.column,
+							tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex
 						);
-					} else if (isRightHeld.value && !isActive(l, clickedTile.value.column)) {
-						tiles.value[l][clickedTile.value.column].Xed =
-							tiles.value[clickedTile.value.row][clickedTile.value.column].Xed;
+					} else if (isRightHeld.v && !isActive(l, clickedTile.v.column)) {
+						tiles.v[l][clickedTile.v.column].Xed =
+							tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
 					}
 				}
 			} else {
-				const startIndex: number = Math.min(clickedTile.value.column, j);
-				const endIndex: number = Math.max(clickedTile.value.column, j);
+				const startIndex: number = Math.min(clickedTile.v.column, j);
+				const endIndex: number = Math.max(clickedTile.v.column, j);
 				for (let m: number = startIndex; m < endIndex + 1; m++) {
-					if (isLeftHeld.value && !isXed(clickedTile.value.row, m)) {
+					if (isLeftHeld.v && !isXed(clickedTile.v.row, m)) {
 						changeColor(
-							clickedTile.value.row,
+							clickedTile.v.row,
 							m,
-							tiles.value[clickedTile.value.row][clickedTile.value.column].colorIndex
+							tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex
 						);
-					} else if (isRightHeld.value && !isActive(clickedTile.value.row, m)) {
-						tiles.value[clickedTile.value.row][m].Xed =
-							tiles.value[clickedTile.value.row][clickedTile.value.column].Xed;
+					} else if (isRightHeld.v && !isActive(clickedTile.v.row, m)) {
+						tiles.v[clickedTile.v.row][m].Xed =
+							tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
 					}
 				}
 			}
 		} else {
-			if (isActive(clickedTile.value.row, clickedTile.value.column))
-				changeColor(i, j, colorsIndexer.value);
+			if (isActive(clickedTile.v.row, clickedTile.v.column)) changeColor(i, j, colorsIndexer.v);
 			else deactivate(i, j);
 		}
 	}
@@ -102,10 +101,10 @@
 <button
 	onmousedown={handleMouseDown}
 	onmouseenter={handleMouseEnter}
-	style:background-color={colors.value[tiles.value[i][j].colorIndex]}
-	style:color={isActive(i, j) ? colors.value[0] : colors.value[1]}
+	style:background-color={colors.v[tiles.v[i][j].colorIndex]}
+	style:color={isActive(i, j) ? colors.v[0] : colors.v[1]}
 >
-	{isXed(i, j) ? "X" : isColorblindMode.value ? decToLetter(tiles.value[i][j].colorIndex) : ""}
+	{isXed(i, j) ? "X" : isColorblindMode.v ? decToLetter(tiles.v[i][j].colorIndex) : ""}
 </button>
 
 <style lang="scss">
