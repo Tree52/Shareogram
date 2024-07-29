@@ -16,6 +16,7 @@
 		color: string;
 	};
 
+	// Todo: have these run on import.
 	function calculateRowHints(value: TileT[][]): Hint[][] {
 		const rowHints: Hint[][] = [[]];
 		for (let row: number = 0; row < tiles.numRows; row++) {
