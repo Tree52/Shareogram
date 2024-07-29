@@ -7,16 +7,16 @@
 		tilesHistory,
 		tilesHistoryIndexer,
 		editorWidth,
-		editorHeight
+		editorHeight,
+		solution
 	} from "$lib/refs.svelte";
 
 	const sanitizeNumberInput = (n: number): number => Number(String(n).replace(/[^0-9]/g, ""));
 
-	let solution: number[][] = $state([[]]);
 	const tileColorIndices: number[][] = $derived(
 		extractPropertyFrom2DArray(tiles.value, "colorIndex")
 	);
-	const win: boolean = $derived(compare2DArrays(solution, tileColorIndices));
+	const win: boolean = $derived(compare2DArrays(solution.value, tileColorIndices));
 
 	function newEditor(width: number, height: number): void {
 		tiles.value = initializeTiles(width, height);
@@ -47,7 +47,7 @@
 		<button
 			onclick={(): void => {
 				isGame.value = true;
-				solution = tileColorIndices;
+				solution.value = tileColorIndices;
 				newEditor(editorWidth.value, editorHeight.value);
 			}}>Start Game</button
 		>

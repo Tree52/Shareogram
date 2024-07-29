@@ -14,7 +14,10 @@
 		isChangeHashAllowed,
 		rowHints,
 		columnHints,
-		type Tile
+		type Tile,
+
+		solution
+
 	} from "$lib/refs.svelte";
 	import {
 		extractPropertyFrom2DArray,
@@ -87,6 +90,7 @@
 						editorHeight.value,
 						elongateActivity(goal)
 					);
+					solution.value = extractPropertyFrom2DArray(tiles.value, "colorIndex");
 					rowHints.value = calculateRowHints(tiles.value);
 					columnHints.value = calculateColumnHints(tiles.value);
 				}
