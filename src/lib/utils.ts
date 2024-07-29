@@ -50,3 +50,5 @@ export const hexToLetter = (hex: string): string => decToLetter(hexToDec(hex));
 export const decToLetter = (dec: number): string => String.fromCharCode(97 + dec);
 
 export const letterToDec = (l: string): number => l.charCodeAt(0) - 97;
+
+export const letterToHex = (l: string): string => decToHex(letterToDec(l));

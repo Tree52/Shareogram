@@ -15,54 +15,15 @@
 	} from "$lib/refs.svelte";
 	import {
 		extractPropertyFrom2DArray,
-		hexToDec,
 		dec2DArrayToHex,
-		decToLetter,
-		letterToDec,
-		decToHex
+		hexToLetter,
+		letterToHex
 	} from "$lib/utils";
 	import { initializeTiles } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Content from "$lib/components/Content.svelte";
 	import Footer from "$lib/components/Footer.svelte";
 	import "$lib/../global.scss";
-
-	function shortenSolution(tileActivity: string): string {
-		let hash: string = "";
-		let count: number = 1;
-
-		for (let i: number = 1; i < tileActivity.length; i++) {
-			if (tileActivity[i - 1] === tileActivity[i]) count++;
-			else {
-				hash += count + decToLetter(hexToDec(tileActivity[i - 1]));
-				count = 1;
-			}
-		}
-
-		hash += count + decToLetter(hexToDec(tileActivity[tileActivity.length - 1]));
-		return hash;
-	}
-
-	let goal: string = "";
-	const hash: string = $derived.by(() => {
-		let hash: string =
-			Number(isGame.value) +
-			"_" +
-			editorWidth.value +
-			"_" +
-			editorHeight.value +
-			"_" +
-			bgColor.value.slice(1) +
-			"_";
-		for (let i: number = 0; i < colors.value.length; i++) hash += colors.value[i].slice(1) + "_";
-		const tileActivity: string = dec2DArrayToHex(extractPropertyFrom2DArray(tiles.value, "colorIndex"));
-		const tileActivityShort: string = shortenSolution(tileActivity);
-		const tileActivityPush: string = tileActivityShort.length < tileActivity.length ? tileActivityShort : tileActivity
-		hash += tileActivityPush;
-		if (!isGame.value) goal = tileActivityPush;
-		else hash += "_" + goal;
-		return hash;
-	});
 
 	function handleMouseDown(e: MouseEvent) {
 		if (e.button === 0) isLeftHeld.value = true;
@@ -82,50 +43,82 @@
 		isChangeHashAllowed.reset();
 	}
 
-	const scrapeHash = (hash: string): string[] => hash.split("_");
+	const scrapeHash = (hash: string): string[] => hash.split("-");
 
-	function convertString(input: string) {
+	function elongateActivity(input: string) {
 		const splitString: string[] = input.match(/\d+\w/g) as string[];
-		let solution: string = "";
+		let activity: string = "";
 		for (let i: number = 0; i < splitString.length; i++) {
 			const count: number = Number(splitString[i].slice(0, -1));
 			const color: string = splitString[i][splitString[i].length - 1];
-			for (let j: number = 0; j < count; j++) {
-				if (color === "x") solution += "0";
-				else solution += decToHex(letterToDec(color));
-			}
+			for (let j: number = 0; j < count; j++) activity += letterToHex(color);
 		}
-		return solution;
+		return activity;
 	}
 
+	let goal: string = "";
 	let importFlag: boolean = true;
 	$effect.pre(() => {
 		if (window.location.hash && importFlag) {
 			const scrapedHash: string[] = scrapeHash(window.location.hash.slice(1));
+
 			isGame.value = Boolean(Number(scrapedHash[0]));
 			editorWidth.value = Number(scrapedHash[1]);
 			editorHeight.value = Number(scrapedHash[2]);
 			bgColor.value = "#" + scrapedHash[3];
-			for (let i: number = 4; i < scrapedHash.length - 1; i++)
-				colors.value[i - 4] = "#" + scrapedHash[i];
-			if (
-				scrapedHash[scrapedHash.length - 1].includes("x") ||
-				scrapedHash[scrapedHash.length - 1].includes("a")
-			) {
-				tiles.value = initializeTiles(
-					editorWidth.value,
-					editorHeight.value,
-					convertString(scrapedHash[scrapedHash.length - 1])
-				);
-			} else {
-				tiles.value = initializeTiles(
-					editorWidth.value,
-					editorHeight.value,
-					scrapedHash[scrapedHash.length - 1]
-				);
+
+			const scrapedColors: string[] = isGame.value
+				? scrapedHash.slice(4, -2)
+				: scrapedHash.slice(4, -1);
+			for (let i: number = 0; i < scrapedColors.length; i++)
+				colors.value[i] = "#" + scrapedColors[i];
+
+			const tileActivityIndex: number = isGame.value
+				? scrapedHash.length - 2
+				: scrapedHash.length - 1;
+			tiles.value = initializeTiles(
+				editorWidth.value,
+				editorHeight.value,
+				elongateActivity(scrapedHash[tileActivityIndex])
+			);
+			if (isGame.value) goal = scrapedHash[scrapedHash.length - 1];
+		}
+
+		importFlag = false;
+	});
+
+	function shortenActivity(tileActivity: string): string {
+		let shortActivity: string = "";
+		let count: number = 1;
+
+		for (let i: number = 1; i < tileActivity.length; i++) {
+			if (tileActivity[i - 1] === tileActivity[i]) count++;
+			else {
+				shortActivity += count + hexToLetter(tileActivity[i - 1]);
+				count = 1;
 			}
 		}
-		importFlag = false;
+
+		shortActivity += count + hexToLetter(tileActivity[tileActivity.length - 1]);
+		return shortActivity;
+	}
+
+	const hash: string = $derived.by(() => {
+		const hashElements: (number | string)[] = [
+			Number(isGame.value),
+			editorWidth.value,
+			editorHeight.value,
+			bgColor.value.slice(1)
+		];
+		for (let i: number = 0; i < colors.value.length; i++)
+			hashElements.push(colors.value[i].slice(1));
+		const tileActivity: string = shortenActivity(
+			dec2DArrayToHex(extractPropertyFrom2DArray(tiles.value, "colorIndex"))
+		);
+		hashElements.push(tileActivity);
+		if (isGame.value) hashElements.push(goal);
+		else goal = tileActivity;
+		return hashElements.join("-");
 	});
 
 	$effect(() => {
