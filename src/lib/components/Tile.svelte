@@ -12,7 +12,7 @@
 		isColorblindMode,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { getAdjacentDirection, numberToLetter } from "$lib/utils";
+	import { getAdjacentDirection, decToLetter } from "$lib/utils";
 	import { isActive } from "$lib/main";
 
 	const { i, j }: { i: number; j: number } = $props();
@@ -40,7 +40,7 @@
 			if (e.button === 0 && !isSelectedColor(i, j)) changeColor(i, j, colorsIndexer.value);
 			else deactivate(i, j);
 		}
-		
+
 		isChangeHashAllowed.value = false;
 		clickedTile.value = { row: i, column: j };
 		numTilesEntered.reset();
@@ -105,7 +105,7 @@
 	style:background-color={colors.value[tiles.value[i][j].colorIndex]}
 	style:color={isActive(i, j) ? colors.value[0] : colors.value[1]}
 >
-	{isXed(i, j) ? "X" : isColorblindMode.value ? numberToLetter(tiles.value[i][j].colorIndex) : ""}
+	{isXed(i, j) ? "X" : isColorblindMode.value ? decToLetter(tiles.value[i][j].colorIndex) : ""}
 </button>
 
 <style lang="scss">

@@ -19,18 +19,6 @@ export function getRandomHexColor(): string {
 	return result;
 }
 
-export function numberToLetter(n: number): string {
-	// 1 === a
-	if (n === 0) return "";
-	else return String.fromCharCode(96 + n);
-}
-
-export function letterToNumber(l: string): number {
-	// a === 1
-	if (l === "") return 0;
-	else return l.charCodeAt(0) - 96;
-}
-
 export function extractPropertyFrom2DArray<T, K extends keyof T>(
 	items: T[][],
 	property: K
@@ -50,9 +38,23 @@ export function compare2DArrays(arr1: number[][], arr2: number[][]): boolean {
 }
 
 // prettier-ignore
-export const array2DToHexString = (arr: number[][]): string =>
+export const dec2DArrayToHex = (arr: number[][]): string =>
 	arr.flat().map((dec) => decToHex(dec)).join("");
 
 export const hexToDec = (hex: string): number => parseInt(hex, 16);
 
 export const decToHex = (dec: number): string => dec.toString(16);
+
+export const hexToLetter = (hex: string): string => decToLetter(hexToDec(hex));
+
+export function decToLetter(dec: number): string {
+	// 1 => a
+	if (dec === 0) return "";
+	else return String.fromCharCode(96 + dec);
+}
+
+export function letterToDec(l: string): number {
+	// a => 1
+	if (l === "") return 0;
+	else return l.charCodeAt(0) - 96;
+}

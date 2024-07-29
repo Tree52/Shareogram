@@ -11,7 +11,7 @@
 		bgColor,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { getRandomHexColor, numberToLetter } from "$lib/utils";
+	import { getRandomHexColor, decToLetter } from "$lib/utils";
 	import { checkTileColors, isMulticolor } from "$lib/main";
 
 	function browseHistory(): void {
@@ -74,7 +74,7 @@
 						colorsIndexer.value = i;
 					}}
 					>{#if i !== 0 && isColorblindMode.value}
-						<label for={colors.value[i]}>{numberToLetter(i)}</label>
+						<label for={colors.value[i]}>{decToLetter(i)}</label>
 					{/if}</button
 				>
 			{/each}

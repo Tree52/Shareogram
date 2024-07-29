@@ -8,7 +8,7 @@
 		isColorblindMode
 	} from "$lib/refs.svelte";
 	import Tile from "$lib/components/Tile.svelte";
-	import { letterToNumber, numberToLetter } from "$lib/utils";
+	import { letterToDec, decToLetter } from "$lib/utils";
 	import { isActive } from "$lib/main";
 
 	type Hint = {
@@ -26,7 +26,7 @@
 						column === 0 ? null : value[row][column - 1].colorIndex;
 					const currentColorIndex: number = value[row][column].colorIndex;
 					if (previousColorIndex !== currentColorIndex)
-						rowHints[row].push({ count: 1, color: numberToLetter(currentColorIndex) });
+						rowHints[row].push({ count: 1, color: decToLetter(currentColorIndex) });
 					else rowHints[row][rowHints[row].length - 1].count++;
 				}
 			}
@@ -45,7 +45,7 @@
 						row === 0 ? null : value[row - 1][column].colorIndex;
 					const currentColorIndex: number = value[row][column].colorIndex;
 					if (previousColorIndex !== currentColorIndex)
-						columnHints[column].push({ count: 1, color: numberToLetter(currentColorIndex) });
+						columnHints[column].push({ count: 1, color: decToLetter(currentColorIndex) });
 					else columnHints[column][columnHints[column].length - 1].count++;
 				}
 			}
@@ -74,7 +74,7 @@
 				{#each { length: tiles.numColumns } as unused, i}
 					<th>
 						{#each columnHints[i] as columnHint}
-							<div style:color={colors.value[letterToNumber(columnHint.color)]}>
+							<div style:color={colors.value[letterToDec(columnHint.color)]}>
 								{isColorblindMode.value ? columnHint.count + columnHint.color : columnHint.count}
 							</div>
 						{/each}
@@ -96,7 +96,7 @@
 						style:height="var(--tile-width)"
 					>
 						{#each rowHints[i] as rowHint}
-							<div style:padding="2px" style:color={colors.value[letterToNumber(rowHint.color)]}>
+							<div style:padding="2px" style:color={colors.value[letterToDec(rowHint.color)]}>
 								{isColorblindMode.value ? rowHint.count + rowHint.color : rowHint.count}
 							</div>
 						{/each}

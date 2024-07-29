@@ -13,7 +13,14 @@
 		colors,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { extractPropertyFrom2DArray, array2DToHexString, hexToDec, numberToLetter, letterToNumber, decToHex } from "$lib/utils";
+	import {
+		extractPropertyFrom2DArray,
+		hexToDec,
+		dec2DArrayToHex,
+		decToLetter,
+		letterToDec,
+		decToHex
+	} from "$lib/utils";
 	import { initializeTiles } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Content from "$lib/components/Content.svelte";
@@ -26,21 +33,32 @@
 		for (let i: number = 1; i < solution.length; i++) {
 			if (solution[i - 1] === solution[i]) count++;
 			else {
-				hash += count + (solution[i - 1] === "0" ? "x" : numberToLetter(hexToDec(solution[i - 1])));
+				hash += count + (solution[i - 1] === "0" ? "x" : decToLetter(hexToDec(solution[i - 1])));
 				count = 1;
 			}
 		}
 
-		return hash += count + (solution[solution.length - 1] === "0" ? "x" : numberToLetter(hexToDec(solution[solution.length - 1])));;
+		return (hash +=
+			count +
+			(solution[solution.length - 1] === "0"
+				? "x"
+				: decToLetter(hexToDec(solution[solution.length - 1]))));
 	}
 
 	const hash: string = $derived.by(() => {
 		let hash: string =
-			Number(isGame.value) + "_" + editorWidth.value + "_" + editorHeight.value + "_" + bgColor.value.slice(1) + "_";
+			Number(isGame.value) +
+			"_" +
+			editorWidth.value +
+			"_" +
+			editorHeight.value +
+			"_" +
+			bgColor.value.slice(1) +
+			"_";
 		for (let i: number = 0; i < colors.value.length; i++) hash += colors.value[i].slice(1) + "_";
-		const solution: string = array2DToHexString(extractPropertyFrom2DArray(tiles.value, "colorIndex"));
+		const solution: string = dec2DArrayToHex(extractPropertyFrom2DArray(tiles.value, "colorIndex"));
 		const shortSolution: string = shortenSolution(solution);
-		return hash += shortSolution.length < solution.length ? shortSolution : solution;
+		return (hash += shortSolution.length < solution.length ? shortSolution : solution);
 	});
 
 	function handleMouseDown(e: MouseEvent) {
@@ -61,8 +79,8 @@
 		isChangeHashAllowed.reset();
 	}
 
-	const scrapeHash = (hash: string): string[] => hash.split('_');
-	
+	const scrapeHash = (hash: string): string[] => hash.split("_");
+
 	function convertString(input: string) {
 		const splitString: string[] = input.match(/\d+\w/g) as string[];
 		let solution: string = "";
@@ -71,7 +89,7 @@
 			const color: string = splitString[i][splitString[i].length - 1];
 			for (let j: number = 0; j < count; j++) {
 				if (color === "x") solution += "0";
-				else solution += decToHex(letterToNumber(color));
+				else solution += decToHex(letterToDec(color));
 			}
 		}
 		return solution;
@@ -84,11 +102,23 @@
 			editorWidth.value = Number(scrapedHash[1]);
 			editorHeight.value = Number(scrapedHash[2]);
 			bgColor.value = "#" + scrapedHash[3];
-			for (let i: number = 4; i < scrapedHash.length - 1; i++) colors.value[i - 4] = "#" + scrapedHash[i];
-			if (scrapedHash[scrapedHash.length - 1].includes("x") || scrapedHash[scrapedHash.length - 1].includes("a")) {
-				tiles.value = initializeTiles(editorWidth.value, editorHeight.value, convertString(scrapedHash[scrapedHash.length - 1]));
+			for (let i: number = 4; i < scrapedHash.length - 1; i++)
+				colors.value[i - 4] = "#" + scrapedHash[i];
+			if (
+				scrapedHash[scrapedHash.length - 1].includes("x") ||
+				scrapedHash[scrapedHash.length - 1].includes("a")
+			) {
+				tiles.value = initializeTiles(
+					editorWidth.value,
+					editorHeight.value,
+					convertString(scrapedHash[scrapedHash.length - 1])
+				);
 			} else {
-				tiles.value = initializeTiles(editorWidth.value, editorHeight.value, scrapedHash[scrapedHash.length - 1]);
+				tiles.value = initializeTiles(
+					editorWidth.value,
+					editorHeight.value,
+					scrapedHash[scrapedHash.length - 1]
+				);
 			}
 		}
 	});
