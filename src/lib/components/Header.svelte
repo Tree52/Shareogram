@@ -69,11 +69,11 @@
 			{#each colors.value as unused, i}
 				<button
 					style:background-color={colors.value[i]}
-					style:color={colors.value[0]}
+					style:color={i === 0 ? colors.value[1] : colors.value[0]}
 					onclick={(): void => {
 						colorsIndexer.value = i;
 					}}
-					>{#if i !== 0 && isColorblindMode.value}
+					>{#if isColorblindMode.value}
 						<label for={colors.value[i]}>{decToLetter(i)}</label>
 					{/if}</button
 				>

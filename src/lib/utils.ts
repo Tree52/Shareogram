@@ -47,14 +47,6 @@ export const decToHex = (dec: number): string => dec.toString(16);
 
 export const hexToLetter = (hex: string): string => decToLetter(hexToDec(hex));
 
-export function decToLetter(dec: number): string {
-	// 1 => a
-	if (dec === 0) return "";
-	else return String.fromCharCode(96 + dec);
-}
+export const decToLetter = (dec: number): string => String.fromCharCode(97 + dec);
 
-export function letterToDec(l: string): number {
-	// a => 1
-	if (l === "") return 0;
-	else return l.charCodeAt(0) - 96;
-}
+export const letterToDec = (l: string): number => l.charCodeAt(0) - 97;

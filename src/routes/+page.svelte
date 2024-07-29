@@ -30,19 +30,17 @@
 	function shortenSolution(tileActivity: string): string {
 		let hash: string = "";
 		let count: number = 1;
+
 		for (let i: number = 1; i < tileActivity.length; i++) {
 			if (tileActivity[i - 1] === tileActivity[i]) count++;
 			else {
-				hash += count + (tileActivity[i - 1] === "0" ? "x" : decToLetter(hexToDec(tileActivity[i - 1])));
+				hash += count + decToLetter(hexToDec(tileActivity[i - 1]));
 				count = 1;
 			}
 		}
 
-		return (hash +=
-			count +
-			(tileActivity[tileActivity.length - 1] === "0"
-				? "x"
-				: decToLetter(hexToDec(tileActivity[tileActivity.length - 1]))));
+		hash += count + decToLetter(hexToDec(tileActivity[tileActivity.length - 1]));
+		return hash;
 	}
 
 	let goal: string = "";
