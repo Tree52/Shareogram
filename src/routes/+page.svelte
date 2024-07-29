@@ -11,7 +11,10 @@
 		isGame,
 		bgColor,
 		colors,
-		isChangeHashAllowed
+		isChangeHashAllowed,
+		rowHints,
+		columnHints,
+		type Tile
 	} from "$lib/refs.svelte";
 	import {
 		extractPropertyFrom2DArray,
@@ -19,7 +22,7 @@
 		hexToLetter,
 		letterToHex
 	} from "$lib/utils";
-	import { initializeTiles } from "$lib/main";
+	import { initializeTiles, calculateRowHints, calculateColumnHints } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Content from "$lib/components/Content.svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -76,12 +79,23 @@
 			const tileActivityIndex: number = isGame.value
 				? scrapedHash.length - 2
 				: scrapedHash.length - 1;
-			tiles.value = initializeTiles(
-				editorWidth.value,
-				editorHeight.value,
-				elongateActivity(scrapedHash[tileActivityIndex])
-			);
-			if (isGame.value) goal = scrapedHash[scrapedHash.length - 1];
+				
+				if (isGame.value) {
+					goal = scrapedHash[scrapedHash.length - 1];
+					tiles.value = initializeTiles(
+						editorWidth.value,
+						editorHeight.value,
+						elongateActivity(goal)
+					);
+					rowHints.value = calculateRowHints(tiles.value);
+					columnHints.value = calculateColumnHints(tiles.value);
+				}
+
+				tiles.value = initializeTiles(
+					editorWidth.value,
+					editorHeight.value,
+					elongateActivity(scrapedHash[tileActivityIndex])
+				);
 		}
 
 		importFlag = false;

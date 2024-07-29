@@ -2,66 +2,20 @@
 	import {
 		tiles,
 		isGame,
-		type Tile as TileT,
 		borderOn,
 		colors,
-		isColorblindMode
+		isColorblindMode,
+		rowHints,
+		columnHints
 	} from "$lib/refs.svelte";
 	import Tile from "$lib/components/Tile.svelte";
-	import { letterToDec, decToLetter } from "$lib/utils";
-	import { isActive } from "$lib/main";
+	import { letterToDec } from "$lib/utils";
+	import { calculateRowHints, calculateColumnHints } from "$lib/main";
 
-	type Hint = {
-		count: number;
-		color: string;
-	};
-
-	// Todo: have these run on import.
-	function calculateRowHints(value: TileT[][]): Hint[][] {
-		const rowHints: Hint[][] = [[]];
-		for (let row: number = 0; row < tiles.numRows; row++) {
-			rowHints[row] = [{ count: 0, color: "" }];
-			for (let column: number = 0; column < tiles.numColumns; column++) {
-				if (isActive(row, column)) {
-					const previousColorIndex: number | null =
-						column === 0 ? null : value[row][column - 1].colorIndex;
-					const currentColorIndex: number = value[row][column].colorIndex;
-					if (previousColorIndex !== currentColorIndex)
-						rowHints[row].push({ count: 1, color: decToLetter(currentColorIndex) });
-					else rowHints[row][rowHints[row].length - 1].count++;
-				}
-			}
-			if (rowHints[row].length > 1 && rowHints[row][0].count === 0) rowHints[row].shift();
-		}
-		return rowHints;
-	}
-
-	function calculateColumnHints(value: TileT[][]): Hint[][] {
-		const columnHints: Hint[][] = [[]];
-		for (let column: number = 0; column < tiles.numColumns; column++) {
-			columnHints[column] = [{ count: 0, color: "" }];
-			for (let row: number = 0; row < tiles.numRows; row++) {
-				if (isActive(row, column)) {
-					const previousColorIndex: number | null =
-						row === 0 ? null : value[row - 1][column].colorIndex;
-					const currentColorIndex: number = value[row][column].colorIndex;
-					if (previousColorIndex !== currentColorIndex)
-						columnHints[column].push({ count: 1, color: decToLetter(currentColorIndex) });
-					else columnHints[column][columnHints[column].length - 1].count++;
-				}
-			}
-			if (columnHints[column].length > 1 && columnHints[column][0].count === 0)
-				columnHints[column].shift();
-		}
-		return columnHints;
-	}
-
-	let rowHints: Hint[][] = $state([[]]);
-	let columnHints: Hint[][] = $state([[]]);
 	$effect(() => {
 		if (!isGame.value) {
-			rowHints = calculateRowHints(tiles.value);
-			columnHints = calculateColumnHints(tiles.value);
+			rowHints.value = calculateRowHints(tiles.value);
+			columnHints.value = calculateColumnHints(tiles.value);
 		}
 	});
 </script>
@@ -74,7 +28,7 @@
 				<!-- eslint-disable-next-line -->
 				{#each { length: tiles.numColumns } as unused, i}
 					<th>
-						{#each columnHints[i] as columnHint}
+						{#each columnHints.value[i] as columnHint}
 							<div style:color={colors.value[letterToDec(columnHint.color)]}>
 								{isColorblindMode.value ? columnHint.count + columnHint.color : columnHint.count}
 							</div>
@@ -96,7 +50,7 @@
 						style:justify-content="right"
 						style:height="var(--tile-width)"
 					>
-						{#each rowHints[i] as rowHint}
+						{#each rowHints.value[i] as rowHint}
 							<div style:padding="2px" style:color={colors.value[letterToDec(rowHint.color)]}>
 								{isColorblindMode.value ? rowHint.count + rowHint.color : rowHint.count}
 							</div>

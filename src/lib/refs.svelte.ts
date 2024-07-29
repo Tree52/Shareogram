@@ -20,6 +20,11 @@ type RefTiles = Ref<Tile[][]> & {
 	numColumns: number;
 };
 
+export type Hint = {
+	count: number;
+	color: string;
+};
+
 const deepCopy = (obj: object): object => JSON.parse(JSON.stringify(obj));
 
 function ref<T>(initial: T): Ref<T> {
@@ -71,3 +76,5 @@ export const footerImport: Ref<string> = ref<string>("");
 export const borderOn: Ref<boolean> = ref<boolean>(true);
 export const isColorblindMode: Ref<boolean> = ref<boolean>(false);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);
+export const rowHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);
+export const columnHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);

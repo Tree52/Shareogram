@@ -1,5 +1,5 @@
-import { type Tile, tiles, colors } from "$lib/refs.svelte";
-import { getRandomHexColor, hexToDec } from "$lib/utils";
+import { type Tile, tiles, colors, type Hint } from "$lib/refs.svelte";
+import { getRandomHexColor, hexToDec, decToLetter } from "$lib/utils";
 
 export const isActive = (row: number, column: number): boolean =>
 	tiles.value[row][column].colorIndex !== 0;
@@ -41,4 +41,43 @@ export function checkTileColors() {
 			if (tiles.value[i][j].colorIndex > colors.value.length - 1) tiles.value[i][j].colorIndex = 0;
 		}
 	}
+}
+
+export function calculateRowHints(value: Tile[][]): Hint[][] {
+	const rowHints: Hint[][] = [[]];
+	for (let row: number = 0; row < tiles.numRows; row++) {
+		rowHints[row] = [{ count: 0, color: "" }];
+		for (let column: number = 0; column < tiles.numColumns; column++) {
+			if (isActive(row, column)) {
+				const previousColorIndex: number | null =
+					column === 0 ? null : value[row][column - 1].colorIndex;
+				const currentColorIndex: number = value[row][column].colorIndex;
+				if (previousColorIndex !== currentColorIndex)
+					rowHints[row].push({ count: 1, color: decToLetter(currentColorIndex) });
+				else rowHints[row][rowHints[row].length - 1].count++;
+			}
+		}
+		if (rowHints[row].length > 1 && rowHints[row][0].count === 0) rowHints[row].shift();
+	}
+	return rowHints;
+}
+
+export function calculateColumnHints(value: Tile[][]): Hint[][] {
+	const columnHints: Hint[][] = [[]];
+	for (let column: number = 0; column < tiles.numColumns; column++) {
+		columnHints[column] = [{ count: 0, color: "" }];
+		for (let row: number = 0; row < tiles.numRows; row++) {
+			if (isActive(row, column)) {
+				const previousColorIndex: number | null =
+					row === 0 ? null : value[row - 1][column].colorIndex;
+				const currentColorIndex: number = value[row][column].colorIndex;
+				if (previousColorIndex !== currentColorIndex)
+					columnHints[column].push({ count: 1, color: decToLetter(currentColorIndex) });
+				else columnHints[column][columnHints[column].length - 1].count++;
+			}
+		}
+		if (columnHints[column].length > 1 && columnHints[column][0].count === 0)
+			columnHints[column].shift();
+	}
+	return columnHints;
 }
