@@ -17,12 +17,7 @@
 		type Tile,
 		solution
 	} from "$lib/refs.svelte";
-	import {
-		extractPropertyFrom2DArray,
-		dec2DArrayToHex,
-		hexToLetter,
-		letterToHex
-	} from "$lib/utils";
+	import { extractPropertyFrom2DArray, dec2DArrayToHex, hexToLetter, letterToHex } from "$lib/utils";
 	import { initializeTiles, calculateRowHints, calculateColumnHints } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Content from "$lib/components/Content.svelte";
@@ -38,8 +33,7 @@
 		if (e.button === 0) isLeftHeld.reset();
 		else if (e.button === 2) isRightHeld.reset();
 		if (clickedTile.v.row !== -1) {
-			if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1)
-				tilesHistory.v.splice(tilesHistoryIndexer.v + 1);
+			if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1) tilesHistory.v.splice(tilesHistoryIndexer.v + 1);
 			tilesHistoryIndexer.v++;
 			tilesHistory.v.push($state.snapshot(tiles.v));
 		}
@@ -71,9 +65,7 @@
 			editorHeight.v = Number(scrapedHash[2]);
 			bgColor.v = "#" + scrapedHash[3];
 
-			const scrapedColors: string[] = isGame.v
-				? scrapedHash.slice(4, -2)
-				: scrapedHash.slice(4, -1);
+			const scrapedColors: string[] = isGame.v ? scrapedHash.slice(4, -2) : scrapedHash.slice(4, -1);
 			for (let i: number = 0; i < scrapedColors.length; i++) colors.v[i] = "#" + scrapedColors[i];
 
 			const tileActivityIndex: number = isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1;
@@ -86,11 +78,7 @@
 				columnHints.v = calculateColumnHints(tiles.v);
 			}
 
-			tiles.v = initializeTiles(
-				editorWidth.v,
-				editorHeight.v,
-				elongateActivity(scrapedHash[tileActivityIndex])
-			);
+			tiles.v = initializeTiles(editorWidth.v, editorHeight.v, elongateActivity(scrapedHash[tileActivityIndex]));
 		}
 
 		importFlag = false;
@@ -113,16 +101,9 @@
 	}
 
 	const hash: string = $derived.by(() => {
-		const hashElements: (number | string)[] = [
-			Number(isGame.v),
-			editorWidth.v,
-			editorHeight.v,
-			bgColor.v.slice(1)
-		];
+		const hashElements: (number | string)[] = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
 		for (let i: number = 0; i < colors.v.length; i++) hashElements.push(colors.v[i].slice(1));
-		const tileActivity: string = shortenActivity(
-			dec2DArrayToHex(extractPropertyFrom2DArray(tiles.v, "colorIndex"))
-		);
+		const tileActivity: string = shortenActivity(dec2DArrayToHex(extractPropertyFrom2DArray(tiles.v, "colorIndex")));
 		hashElements.push(tileActivity);
 		if (isGame.v) hashElements.push(goal);
 		else goal = tileActivity;
@@ -138,11 +119,7 @@
 	<title>Shareogram</title>
 </svelte:head>
 
-<svelte:window
-	onmousedown={handleMouseDown}
-	onmouseup={handleMouseUp}
-	oncontextmenu={(e: MouseEvent): void => e.preventDefault()}
-/>
+<svelte:window onmousedown={handleMouseDown} onmouseup={handleMouseUp} oncontextmenu={(e: MouseEvent): void => e.preventDefault()} />
 
 <Header />
 <Content />

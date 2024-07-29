@@ -1,8 +1,7 @@
 import { type Tile, tiles, colors, type Hint } from "$lib/refs.svelte";
 import { getRandomHexColor, hexToDec, decToLetter } from "$lib/utils";
 
-export const isActive = (row: number, column: number): boolean =>
-	tiles.v[row][column].colorIndex !== 0;
+export const isActive = (row: number, column: number): boolean => tiles.v[row][column].colorIndex !== 0;
 
 export const isMulticolor = (): boolean => colors.v.length > 2;
 
@@ -17,8 +16,7 @@ export function initializeTiles(width: number, height: number, importString?: st
 				if (importString) {
 					const decimal: number = hexToDec(importString[indexer]);
 					if (colors.v.length - 1 < decimal) {
-						for (let i: number = colors.v.length - 1; i < decimal; i++)
-							colors.v.push(getRandomHexColor());
+						for (let i: number = colors.v.length - 1; i < decimal; i++) colors.v.push(getRandomHexColor());
 					}
 
 					tiles[i][j] = {
@@ -49,11 +47,9 @@ export function calculateRowHints(value: Tile[][]): Hint[][] {
 		rowHints[row] = [{ count: 0, color: "" }];
 		for (let column: number = 0; column < tiles.numColumns; column++) {
 			if (isActive(row, column)) {
-				const previousColorIndex: number | null =
-					column === 0 ? null : value[row][column - 1].colorIndex;
+				const previousColorIndex: number | null = column === 0 ? null : value[row][column - 1].colorIndex;
 				const currentColorIndex: number = value[row][column].colorIndex;
-				if (previousColorIndex !== currentColorIndex)
-					rowHints[row].push({ count: 1, color: decToLetter(currentColorIndex) });
+				if (previousColorIndex !== currentColorIndex) rowHints[row].push({ count: 1, color: decToLetter(currentColorIndex) });
 				else rowHints[row][rowHints[row].length - 1].count++;
 			}
 		}
@@ -68,16 +64,13 @@ export function calculateColumnHints(value: Tile[][]): Hint[][] {
 		columnHints[column] = [{ count: 0, color: "" }];
 		for (let row: number = 0; row < tiles.numRows; row++) {
 			if (isActive(row, column)) {
-				const previousColorIndex: number | null =
-					row === 0 ? null : value[row - 1][column].colorIndex;
+				const previousColorIndex: number | null = row === 0 ? null : value[row - 1][column].colorIndex;
 				const currentColorIndex: number = value[row][column].colorIndex;
-				if (previousColorIndex !== currentColorIndex)
-					columnHints[column].push({ count: 1, color: decToLetter(currentColorIndex) });
+				if (previousColorIndex !== currentColorIndex) columnHints[column].push({ count: 1, color: decToLetter(currentColorIndex) });
 				else columnHints[column][columnHints[column].length - 1].count++;
 			}
 		}
-		if (columnHints[column].length > 1 && columnHints[column][0].count === 0)
-			columnHints[column].shift();
+		if (columnHints[column].length > 1 && columnHints[column][0].count === 0) columnHints[column].shift();
 	}
 	return columnHints;
 }

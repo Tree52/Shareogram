@@ -82,26 +82,11 @@
 	{/if}
 	<div>
 		<!-- eslint-disable-next-line -->
-		<div
-			style:width="40rem"
-			style:display="flex"
-			style:flex-wrap="wrap"
-			style:justify-content="right"
-		>
-			<input
-				type="color"
-				onclick={handleOnClick}
-				onchange={handleOnChange}
-				bind:value={bgColor.v}
-			/>
+		<div style:width="40rem" style:display="flex" style:flex-wrap="wrap" style:justify-content="right">
+			<input type="color" onclick={handleOnClick} onchange={handleOnChange} bind:value={bgColor.v} />
 			<!-- eslint-disable-next-line -->
 			{#each colors.v as unused, i}
-				<input
-					type="color"
-					onclick={handleOnClick}
-					onchange={handleOnChange}
-					bind:value={colors.v[i]}
-				/>
+				<input type="color" onclick={handleOnClick} onchange={handleOnChange} bind:value={colors.v[i]} />
 			{/each}
 		</div>
 		{#if !isGame.v}

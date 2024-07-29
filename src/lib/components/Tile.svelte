@@ -18,8 +18,7 @@
 	const { i, j }: { i: number; j: number } = $props();
 
 	const isXed = (row: number, column: number): boolean => tiles.v[row][column].Xed;
-	const isSelectedColor = (row: number, column: number): boolean =>
-		tiles.v[row][column].colorIndex === colorsIndexer.v;
+	const isSelectedColor = (row: number, column: number): boolean => tiles.v[row][column].colorIndex === colorsIndexer.v;
 	function changeColor(row: number, column: number, colorIndex: number): void {
 		tiles.v[row][column].colorIndex = colorIndex;
 	}
@@ -47,17 +46,11 @@
 	}
 
 	function handleMouseEnter(): void {
-		if (
-			(!isLeftHeld.v && !isRightHeld.v) ||
-			(isLeftHeld.v && isRightHeld.v) ||
-			clickedTile.v.row === -1
-		)
-			return;
+		if ((!isLeftHeld.v && !isRightHeld.v) || (isLeftHeld.v && isRightHeld.v) || clickedTile.v.row === -1) return;
 
 		numTilesEntered.v++;
 
-		if (numTilesEntered.v === 1)
-			direction.v = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
+		if (numTilesEntered.v === 1) direction.v = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
 
 		if (isGame.v) {
 			if (direction.v === "above" || direction.v === "below") {
@@ -65,14 +58,9 @@
 				const endIndex: number = Math.max(clickedTile.v.row, i);
 				for (let l: number = startIndex; l < endIndex + 1; l++) {
 					if (isLeftHeld.v && !isXed(l, clickedTile.v.column)) {
-						changeColor(
-							l,
-							clickedTile.v.column,
-							tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex
-						);
+						changeColor(l, clickedTile.v.column, tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex);
 					} else if (isRightHeld.v && !isActive(l, clickedTile.v.column)) {
-						tiles.v[l][clickedTile.v.column].Xed =
-							tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
+						tiles.v[l][clickedTile.v.column].Xed = tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
 					}
 				}
 			} else {
@@ -80,14 +68,9 @@
 				const endIndex: number = Math.max(clickedTile.v.column, j);
 				for (let m: number = startIndex; m < endIndex + 1; m++) {
 					if (isLeftHeld.v && !isXed(clickedTile.v.row, m)) {
-						changeColor(
-							clickedTile.v.row,
-							m,
-							tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex
-						);
+						changeColor(clickedTile.v.row, m, tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex);
 					} else if (isRightHeld.v && !isActive(clickedTile.v.row, m)) {
-						tiles.v[clickedTile.v.row][m].Xed =
-							tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
+						tiles.v[clickedTile.v.row][m].Xed = tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
 					}
 				}
 			}

@@ -1,15 +1,7 @@
 <script lang="ts">
 	import { extractPropertyFrom2DArray, compare2DArrays } from "$lib/utils";
 	import { initializeTiles } from "$lib/main";
-	import {
-		tiles,
-		isGame,
-		tilesHistory,
-		tilesHistoryIndexer,
-		editorWidth,
-		editorHeight,
-		solution
-	} from "$lib/refs.svelte";
+	import { tiles, isGame, tilesHistory, tilesHistoryIndexer, editorWidth, editorHeight, solution } from "$lib/refs.svelte";
 
 	const sanitizeNumberInput = (n: number): number => Number(String(n).replace(/[^0-9]/g, ""));
 

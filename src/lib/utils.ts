@@ -19,10 +19,7 @@ export function getRandomHexColor(): string {
 	return result;
 }
 
-export function extractPropertyFrom2DArray<T, K extends keyof T>(
-	items: T[][],
-	property: K
-): T[K][][] {
+export function extractPropertyFrom2DArray<T, K extends keyof T>(items: T[][], property: K): T[K][][] {
 	return items.map((innerArray) => innerArray.map((item) => item[property]));
 }
 

@@ -1,13 +1,5 @@
 <script lang="ts">
-	import {
-		tiles,
-		isGame,
-		borderOn,
-		colors,
-		isColorblindMode,
-		rowHints,
-		columnHints
-	} from "$lib/refs.svelte";
+	import { tiles, isGame, borderOn, colors, isColorblindMode, rowHints, columnHints } from "$lib/refs.svelte";
 	import Tile from "$lib/components/Tile.svelte";
 	import { letterToDec } from "$lib/utils";
 	import { calculateRowHints, calculateColumnHints } from "$lib/main";
@@ -44,12 +36,7 @@
 		{#each { length: tiles.numRows } as ununsed, i}
 			<tr>
 				{#if isGame.v}
-					<td
-						style:display="flex"
-						style:align-items="center"
-						style:justify-content="right"
-						style:height="var(--tile-width)"
-					>
+					<td style:display="flex" style:align-items="center" style:justify-content="right" style:height="var(--tile-width)">
 						{#each rowHints.v[i] as rowHint}
 							<div style:padding="2px" style:color={colors.v[letterToDec(rowHint.color)]}>
 								{isColorblindMode.v ? rowHint.count + rowHint.color : rowHint.count}
@@ -60,12 +47,8 @@
 				<!-- eslint-disable-next-line -->
 				{#each { length: tiles.numColumns } as unused, j}
 					<td
-						style:border-top={i % 5 === 0 && i !== 0 && borderOn.v
-							? `solid 2px ${colors.v[1]}`
-							: "0"}
-						style:border-left={j % 5 === 0 && j !== 0 && borderOn.v
-							? `solid 2px ${colors.v[1]}`
-							: "0"}
+						style:border-top={i % 5 === 0 && i !== 0 && borderOn.v ? `solid 2px ${colors.v[1]}` : "0"}
+						style:border-left={j % 5 === 0 && j !== 0 && borderOn.v ? `solid 2px ${colors.v[1]}` : "0"}
 					>
 						<Tile {i} {j} />
 					</td>
