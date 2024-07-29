@@ -27,24 +27,25 @@
 	import Footer from "$lib/components/Footer.svelte";
 	import "$lib/../global.scss";
 
-	function shortenSolution(solution: string): string {
+	function shortenSolution(tileActivity: string): string {
 		let hash: string = "";
 		let count: number = 1;
-		for (let i: number = 1; i < solution.length; i++) {
-			if (solution[i - 1] === solution[i]) count++;
+		for (let i: number = 1; i < tileActivity.length; i++) {
+			if (tileActivity[i - 1] === tileActivity[i]) count++;
 			else {
-				hash += count + (solution[i - 1] === "0" ? "x" : decToLetter(hexToDec(solution[i - 1])));
+				hash += count + (tileActivity[i - 1] === "0" ? "x" : decToLetter(hexToDec(tileActivity[i - 1])));
 				count = 1;
 			}
 		}
 
 		return (hash +=
 			count +
-			(solution[solution.length - 1] === "0"
+			(tileActivity[tileActivity.length - 1] === "0"
 				? "x"
-				: decToLetter(hexToDec(solution[solution.length - 1]))));
+				: decToLetter(hexToDec(tileActivity[tileActivity.length - 1]))));
 	}
 
+	let goal: string = "";
 	const hash: string = $derived.by(() => {
 		let hash: string =
 			Number(isGame.value) +
@@ -56,9 +57,13 @@
 			bgColor.value.slice(1) +
 			"_";
 		for (let i: number = 0; i < colors.value.length; i++) hash += colors.value[i].slice(1) + "_";
-		const solution: string = dec2DArrayToHex(extractPropertyFrom2DArray(tiles.value, "colorIndex"));
-		const shortSolution: string = shortenSolution(solution);
-		return (hash += shortSolution.length < solution.length ? shortSolution : solution);
+		const tileActivity: string = dec2DArrayToHex(extractPropertyFrom2DArray(tiles.value, "colorIndex"));
+		const tileActivityShort: string = shortenSolution(tileActivity);
+		const tileActivityPush: string = tileActivityShort.length < tileActivity.length ? tileActivityShort : tileActivity
+		hash += tileActivityPush;
+		if (!isGame.value) goal = tileActivityPush;
+		else hash += "_" + goal;
+		return hash;
 	});
 
 	function handleMouseDown(e: MouseEvent) {
