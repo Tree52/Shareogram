@@ -78,3 +78,4 @@ export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);
 export const rowHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);
 export const columnHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);
 export const solution: Ref<number[][]> = ref<number[][]>([[]]);
+export const goal: Ref<string> = ref<string>("");

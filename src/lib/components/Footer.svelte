@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { extractPropertyFrom2DArray, compare2DArrays } from "$lib/utils";
-	import { initializeTiles } from "$lib/main";
-	import { tiles, isGame, tilesHistory, tilesHistoryIndexer, editorWidth, editorHeight, solution } from "$lib/refs.svelte";
+	import { initializeTiles, encodeTiles } from "$lib/main";
+	import { tiles, isGame, tilesHistory, tilesHistoryIndexer, editorWidth, editorHeight, solution, goal } from "$lib/refs.svelte";
 
 	const sanitizeNumberInput = (n: number): number => Number(String(n).replace(/[^0-9]/g, ""));
 
@@ -38,6 +38,7 @@
 			onclick={(): void => {
 				isGame.v = true;
 				solution.v = tileColorIndices;
+				goal.v = encodeTiles(tiles.v);
 				newEditor(editorWidth.v, editorHeight.v);
 			}}>Start Game</button
 		>
