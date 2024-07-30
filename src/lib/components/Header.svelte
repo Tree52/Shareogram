@@ -7,11 +7,10 @@
 		colors,
 		colorsIndexer,
 		isGame,
-		isColorblindMode,
 		bgColor,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { getRandomHexColor, decToLetter } from "$lib/utils";
+	import { getRandomHexColor } from "$lib/utils";
 	import { checkTileColors, isMulticolor } from "$lib/main";
 
 	function browseHistory(): void {
@@ -69,14 +68,10 @@
 			{#each colors.v as unused, i}
 				<button
 					style:background-color={colors.v[i]}
-					style:color={i === 0 ? colors.v[1] : colors.v[0]}
 					onclick={(): void => {
 						colorsIndexer.v = i;
 					}}
-					>{#if isColorblindMode.v}
-						<label for={colors.v[i]}>{decToLetter(i)}</label>
-					{/if}</button
-				>
+				></button>
 			{/each}
 		</div>
 	{/if}
@@ -106,9 +101,6 @@
 					}}>+</button
 				>
 			{/if}
-		{/if}
-		{#if isMulticolor()}
-			<input type="checkbox" bind:checked={isColorblindMode.v} />
 		{/if}
 		{#if tiles.numRows > 5 || tiles.numColumns > 5}
 			<input type="checkbox" bind:checked={borderOn.v} />

@@ -9,10 +9,9 @@
 		isGame,
 		colors,
 		colorsIndexer,
-		isColorblindMode,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { getAdjacentDirection, decToLetter } from "$lib/utils";
+	import { getAdjacentDirection } from "$lib/utils";
 	import { isActive } from "$lib/main";
 
 	const { i, j }: { i: number; j: number } = $props();
@@ -85,9 +84,9 @@
 	onmousedown={handleMouseDown}
 	onmouseenter={handleMouseEnter}
 	style:background-color={colors.v[tiles.v[i][j].colorIndex]}
-	style:color={isActive(i, j) ? colors.v[0] : colors.v[1]}
+	style:color={colors.v[1]}
 >
-	{isXed(i, j) ? "X" : isColorblindMode.v ? decToLetter(tiles.v[i][j].colorIndex) : ""}
+	{isXed(i, j) ? "X" : ""}
 </button>
 
 <style lang="scss">

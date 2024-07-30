@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tiles, isGame, borderOn, colors, isColorblindMode, rowHints, columnHints } from "$lib/refs.svelte";
+	import { tiles, isGame, borderOn, colors, rowHints, columnHints } from "$lib/refs.svelte";
 	import Tile from "$lib/components/Tile.svelte";
 	import { letterToDec } from "$lib/utils";
 	import { calculateRowHints, calculateColumnHints } from "$lib/main";
@@ -22,7 +22,7 @@
 					<th>
 						{#each columnHints.v[i] as columnHint}
 							<div style:color={colors.v[letterToDec(columnHint.color)]}>
-								{isColorblindMode.v ? columnHint.count + columnHint.color : columnHint.count}
+								{columnHint.count}
 							</div>
 						{/each}
 					</th>
@@ -39,7 +39,7 @@
 					<td style:display="flex" style:align-items="center" style:justify-content="right" style:height="var(--tile-width)">
 						{#each rowHints.v[i] as rowHint}
 							<div style:padding="2px" style:color={colors.v[letterToDec(rowHint.color)]}>
-								{isColorblindMode.v ? rowHint.count + rowHint.color : rowHint.count}
+								{rowHint.count}
 							</div>
 						{/each}
 					</td>

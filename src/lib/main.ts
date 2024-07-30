@@ -64,6 +64,6 @@ export function calculateColumnHints(tiles: Tile[][]): Hint[][] {
 		}
 		if (columnHints[column].length > 1 && columnHints[column][0].count === 0) columnHints[column].shift();
 	}
-	
+
 	return columnHints;
 }
