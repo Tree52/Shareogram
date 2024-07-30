@@ -86,6 +86,5 @@ export const isGame: Ref<boolean> = ref<boolean>(false);
 export const clickedTile: Ref<TilePosition> = ref<TilePosition>({ row: -1, column: -1 });
 export const direction: Ref<string> = ref<string>("");
 export const numTilesEntered: Ref<number> = ref<number>(0);
-export const footerImport: Ref<string> = ref<string>("");
 export const borderOn: Ref<boolean> = ref<boolean>(true);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);
