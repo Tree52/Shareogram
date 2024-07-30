@@ -1,15 +1,7 @@
 <script lang="ts">
-	import { tiles, isGame, borderOn, colors, rowHints, columnHints } from "$lib/refs.svelte";
+	import { tiles, isGame, borderOn, colors, tilesSolution } from "$lib/refs.svelte";
 	import Tile from "$lib/components/Tile.svelte";
 	import { letterToDec } from "$lib/utils";
-	import { calculateRowHints, calculateColumnHints } from "$lib/main";
-
-	$effect(() => {
-		if (!isGame.v) {
-			rowHints.v = calculateRowHints(tiles.v);
-			columnHints.v = calculateColumnHints(tiles.v);
-		}
-	});
 </script>
 
 <table>
@@ -20,7 +12,7 @@
 				<!-- eslint-disable-next-line -->
 				{#each { length: tiles.numColumns } as unused, i}
 					<th>
-						{#each columnHints.v[i] as columnHint}
+						{#each tilesSolution.columnHints[i] as columnHint}
 							<div style:color={colors.v[letterToDec(columnHint.color)]}>
 								{columnHint.count}
 							</div>
@@ -37,7 +29,7 @@
 			<tr>
 				{#if isGame.v}
 					<td style:display="flex" style:align-items="center" style:justify-content="right" style:height="var(--tile-width)">
-						{#each rowHints.v[i] as rowHint}
+						{#each tilesSolution.rowHints[i] as rowHint}
 							<div style:padding="2px" style:color={colors.v[letterToDec(rowHint.color)]}>
 								{rowHint.count}
 							</div>

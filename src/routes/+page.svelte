@@ -12,11 +12,9 @@
 		bgColor,
 		colors,
 		isChangeHashAllowed,
-		rowHints,
-		columnHints,
 		tilesSolution
 	} from "$lib/refs.svelte";
-	import { calculateRowHints, calculateColumnHints, decodeTiles } from "$lib/main";
+	import { decodeTiles } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Nonogram from "$lib/components/Nonogram.svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -56,11 +54,7 @@
 
 			tiles.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1]);
 
-			if (isGame.v) {
-				tilesSolution.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[scrapedHash.length - 1]);
-				rowHints.v = calculateRowHints(tilesSolution.v);
-				columnHints.v = calculateColumnHints(tilesSolution.v);
-			}
+			if (isGame.v) tilesSolution.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[scrapedHash.length - 1]);
 		}
 
 		importFlag = false;

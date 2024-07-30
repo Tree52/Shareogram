@@ -1,4 +1,4 @@
-import { initializeTiles, encodeTiles } from "$lib/main";
+import { initializeTiles, encodeTiles, calculateRowHints, calculateColumnHints } from "$lib/main";
 import { extractPropertyFrom2DArray } from "$lib/utils";
 
 export type Tile = {
@@ -21,6 +21,8 @@ type RefTiles = Ref<Tile[][]> & {
 	numColumns: number;
 	colorIndices: number[][];
 	encoded: string;
+	rowHints: Hint[][];
+	columnHints: Hint[][];
 };
 
 export type Hint = {
@@ -49,6 +51,8 @@ function refTiles(): RefTiles {
 	const numColumns: number = $derived(baseRef.v[0].length);
 	const colorIndices: number[][] = $derived(extractPropertyFrom2DArray(baseRef.v, "colorIndex"));
 	const encoded: string = $derived(encodeTiles(baseRef.v));
+	const rowHints: Hint[][] = $derived(calculateRowHints(baseRef.v));
+	const columnHints: Hint[][] = $derived(calculateColumnHints(baseRef.v));
 
 	// prettier-ignore
 	return {
@@ -58,7 +62,9 @@ function refTiles(): RefTiles {
     get numRows(): number { return numRows; },
     get numColumns(): number { return numColumns; },
     get colorIndices(): number[][] { return colorIndices; },
-    get encoded(): string { return encoded; }
+    get encoded(): string { return encoded; },
+    get rowHints(): Hint[][] { return rowHints; },
+    get columnHints(): Hint[][] { return columnHints; },
   };
 }
 
@@ -83,5 +89,3 @@ export const numTilesEntered: Ref<number> = ref<number>(0);
 export const footerImport: Ref<string> = ref<string>("");
 export const borderOn: Ref<boolean> = ref<boolean>(true);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);
-export const rowHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);
-export const columnHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);
