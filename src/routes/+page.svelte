@@ -14,10 +14,9 @@
 		isChangeHashAllowed,
 		rowHints,
 		columnHints,
-		type Tile,
-		goal
+		tilesSolution
 	} from "$lib/refs.svelte";
-	import { calculateRowHints, calculateColumnHints, encodeTiles, decodeTiles } from "$lib/main";
+	import { calculateRowHints, calculateColumnHints, decodeTiles } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Nonogram from "$lib/components/Nonogram.svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -58,10 +57,9 @@
 			tiles.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1]);
 
 			if (isGame.v) {
-				goal.v = scrapedHash[scrapedHash.length - 1];
-				const goalTiles: Tile[][] = decodeTiles(editorWidth.v, editorHeight.v, goal.v);
-				rowHints.v = calculateRowHints(goalTiles);
-				columnHints.v = calculateColumnHints(goalTiles);
+				tilesSolution.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[scrapedHash.length - 1]);
+				rowHints.v = calculateRowHints(tilesSolution.v);
+				columnHints.v = calculateColumnHints(tilesSolution.v);
 			}
 		}
 
@@ -71,9 +69,8 @@
 	const hash: string = $derived.by(() => {
 		const hashElements: (number | string)[] = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
 		for (let i: number = 0; i < colors.v.length; i++) hashElements.push(colors.v[i].slice(1));
-		const tileActivity: string = encodeTiles(tiles.v);
-		hashElements.push(tileActivity);
-		if (isGame.v) hashElements.push(goal.v);
+		hashElements.push(tiles.encoded);
+		if (isGame.v) hashElements.push(tilesSolution.encoded);
 		return hashElements.join("-");
 	});
 

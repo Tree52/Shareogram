@@ -1,4 +1,5 @@
-import { initializeTiles } from "$lib/main";
+import { initializeTiles, encodeTiles } from "$lib/main";
+import { extractPropertyFrom2DArray } from "$lib/utils";
 
 export type Tile = {
 	colorIndex: number;
@@ -18,6 +19,8 @@ type Ref<T> = {
 type RefTiles = Ref<Tile[][]> & {
 	numRows: number;
 	numColumns: number;
+	colorIndices: number[][];
+	encoded: string;
 };
 
 export type Hint = {
@@ -44,6 +47,8 @@ function refTiles(): RefTiles {
 	const baseRef: Ref<Tile[][]> = ref<Tile[][]>(initialTiles);
 	const numRows: number = $derived(baseRef.v.length);
 	const numColumns: number = $derived(baseRef.v[0].length);
+	const colorIndices: number[][] = $derived(extractPropertyFrom2DArray(baseRef.v, "colorIndex"));
+	const encoded: string = $derived(encodeTiles(baseRef.v));
 
 	// prettier-ignore
 	return {
@@ -52,6 +57,8 @@ function refTiles(): RefTiles {
     reset: baseRef.reset,
     get numRows(): number { return numRows; },
     get numColumns(): number { return numColumns; },
+    get colorIndices(): number[][] { return colorIndices; },
+    get encoded(): string { return encoded; }
   };
 }
 
@@ -63,6 +70,7 @@ export const editorWidth: Ref<number> = ref<number>(5);
 export const editorHeight: Ref<number> = ref<number>(5);
 const initialTiles: Tile[][] = initializeTiles(editorWidth.v, editorHeight.v);
 export const tiles: RefTiles = refTiles();
+export const tilesSolution: RefTiles = refTiles();
 export const tilesHistory: Ref<Tile[][][]> = ref<Tile[][][]>([initialTiles]);
 export const tilesHistoryIndexer: Ref<number> = ref<number>(0);
 
@@ -77,4 +85,3 @@ export const borderOn: Ref<boolean> = ref<boolean>(true);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);
 export const rowHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);
 export const columnHints: Ref<Hint[][]> = ref<Hint[][]>([[]]);
-export const goal: Ref<string> = ref<string>("");
