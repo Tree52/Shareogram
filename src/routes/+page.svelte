@@ -15,10 +15,8 @@
 		rowHints,
 		columnHints,
 		type Tile,
-		solution,
 		goal
 	} from "$lib/refs.svelte";
-	import { extractPropertyFrom2DArray } from "$lib/utils";
 	import { calculateRowHints, calculateColumnHints, encodeTiles, decodeTiles } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Nonogram from "$lib/components/Nonogram.svelte";
@@ -62,7 +60,6 @@
 			if (isGame.v) {
 				goal.v = scrapedHash[scrapedHash.length - 1];
 				const goalTiles: Tile[][] = decodeTiles(editorWidth.v, editorHeight.v, goal.v);
-				solution.v = extractPropertyFrom2DArray(goalTiles, "colorIndex");
 				rowHints.v = calculateRowHints(goalTiles);
 				columnHints.v = calculateColumnHints(goalTiles);
 			}
