@@ -17,8 +17,8 @@
 		type Tile,
 		solution
 	} from "$lib/refs.svelte";
-	import { extractPropertyFrom2DArray, dec2DArrayToHex, hexToLetter, letterToHex } from "$lib/utils";
-	import { initializeTiles, calculateRowHints, calculateColumnHints } from "$lib/main";
+	import { decToLetter, extractPropertyFrom2DArray, letterToDec, splitString } from "$lib/utils";
+	import { calculateRowHints, calculateColumnHints } from "$lib/main";
 	import Header from "$lib/components/Header.svelte";
 	import Nonogram from "$lib/components/Nonogram.svelte";
 	import Footer from "$lib/components/Footer.svelte";
@@ -43,15 +43,27 @@
 
 	const scrapeHash = (hash: string): string[] => hash.split("-");
 
-	function elongateActivity(input: string) {
-		const splitString: string[] = input.match(/\d+\w/g) as string[];
-		let activity: string = "";
-		for (let i: number = 0; i < splitString.length; i++) {
-			const count: number = Number(splitString[i].slice(0, -1));
-			const color: string = splitString[i][splitString[i].length - 1];
-			for (let j: number = 0; j < count; j++) activity += letterToHex(color);
+	function decodeTiles(width: number, height: number, encodedTiles: string): Tile[][] {
+		const split: { numbers: number[]; letters: string[] } = splitString(encodedTiles);
+		const tiles: Tile[][] = [];
+		let row: number = 0;
+		let column: number = 0;
+
+		for (let i: number = 0; i < width; i++) tiles[i] = [];
+
+		for (let i: number = 0; i < split.numbers.length; i++) {
+			for (let j: number = 0; j < split.numbers[i]; j++) {
+				if (split.letters[i] === "x") tiles[row][column++] = { colorIndex: 0, Xed: true };
+				else tiles[row][column++] = { colorIndex: letterToDec(split.letters[i]), Xed: false };
+
+				if (column > width - 1) {
+					row++;
+					column = 0;
+				}
+			}
 		}
-		return activity;
+
+		return tiles;
 	}
 
 	let goal: string = "";
@@ -72,38 +84,47 @@
 
 			if (isGame.v) {
 				goal = scrapedHash[scrapedHash.length - 1];
-				tiles.v = initializeTiles(editorWidth.v, editorHeight.v, elongateActivity(goal));
+				tiles.v = decodeTiles(editorWidth.v, editorHeight.v, goal);
 				solution.v = extractPropertyFrom2DArray(tiles.v, "colorIndex");
 				rowHints.v = calculateRowHints(tiles.v);
 				columnHints.v = calculateColumnHints(tiles.v);
 			}
 
-			tiles.v = initializeTiles(editorWidth.v, editorHeight.v, elongateActivity(scrapedHash[tileActivityIndex]));
+			tiles.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[tileActivityIndex]);
 		}
 
 		importFlag = false;
 	});
 
-	function shortenActivity(tileActivity: string): string {
-		let shortActivity: string = "";
+	function encodeTiles(tiles: Tile[][]): string {
+		let encoded: string = "";
+		const numRows: number = tiles.length;
+		const numColumns: number = tiles[0].length;
 		let count: number = 1;
 
-		for (let i: number = 1; i < tileActivity.length; i++) {
-			if (tileActivity[i - 1] === tileActivity[i]) count++;
-			else {
-				shortActivity += count + hexToLetter(tileActivity[i - 1]);
-				count = 1;
+		for (let i: number = 0; i < numRows; i++) {
+			for (let j: number = 0; j < numColumns; j++) {
+				if (i === 0 && j === 0) continue;
+				else {
+					const prevTile: Tile = j === 0 ? tiles[i - 1][numRows - 1] : tiles[i][j - 1];
+					if (prevTile.colorIndex === tiles[i][j].colorIndex && prevTile.Xed === tiles[i][j].Xed) count++;
+					else {
+						encoded += count + (prevTile.Xed ? "x" : decToLetter(prevTile.colorIndex));
+						count = 1;
+					}
+				}
 			}
 		}
 
-		shortActivity += count + hexToLetter(tileActivity[tileActivity.length - 1]);
-		return shortActivity;
+		const lastTile: Tile = tiles[numRows - 1][numColumns - 1];
+		encoded += count + (lastTile.Xed ? "x" : decToLetter(lastTile.colorIndex));
+		return encoded;
 	}
 
 	const hash: string = $derived.by(() => {
 		const hashElements: (number | string)[] = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
 		for (let i: number = 0; i < colors.v.length; i++) hashElements.push(colors.v[i].slice(1));
-		const tileActivity: string = shortenActivity(dec2DArrayToHex(extractPropertyFrom2DArray(tiles.v, "colorIndex")));
+		const tileActivity: string = encodeTiles(tiles.v);
 		hashElements.push(tileActivity);
 		if (isGame.v) hashElements.push(goal);
 		else goal = tileActivity;
@@ -131,7 +152,7 @@
 
 <style lang="scss">
 	@import "$lib/../mixins.scss";
-	
+
 	main {
 		flex: 1;
 		@include center-div;

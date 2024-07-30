@@ -34,18 +34,24 @@ export function compare2DArrays(arr1: number[][], arr2: number[][]): boolean {
 	return true;
 }
 
-// prettier-ignore
-export const dec2DArrayToHex = (arr: number[][]): string =>
-	arr.flat().map((dec) => decToHex(dec)).join("");
-
-export const hexToDec = (hex: string): number => parseInt(hex, 16);
-
-export const decToHex = (dec: number): string => dec.toString(16);
-
-export const hexToLetter = (hex: string): string => decToLetter(hexToDec(hex));
-
 export const decToLetter = (dec: number): string => String.fromCharCode(97 + dec);
 
 export const letterToDec = (l: string): number => l.charCodeAt(0) - 97;
 
-export const letterToHex = (l: string): string => decToHex(letterToDec(l));
+export function splitString(input: string): { numbers: number[]; letters: string[] } {
+	const splitString: RegExpMatchArray | null = input.match(/(\d+|[a-z])/g);
+	const numbers: number[] = [];
+	const letters: string[] = [];
+
+	if (splitString) {
+		for (let i = 0; i < splitString.length; i++) {
+			const match: string = splitString[i];
+			if (isNaN(Number(match))) letters.push(match);
+			else numbers.push(Number(match));
+		}
+	}
+
+	if (numbers.length !== letters.length) throw new Error("Error: different number of counts and letters.");
+
+	return { numbers, letters };
+}
