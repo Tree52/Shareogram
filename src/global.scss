@@ -1,40 +1,40 @@
 @import "$lib/../mixins.scss";
 
 :root {
-	--tile-width: 3rem;
-	--tile-font-size: calc(var(--tile-width) / 1.5);
+  --tile-width: 3rem;
+  --tile-font-size: calc(var(--tile-width) / 1.5);
 }
 
 html {
-	font-family: Impact, sans-serif;
-	height: 100%;
+  font-family: Impact, sans-serif;
+  height: 100%;
 
-	body {
-		display: flex;
-		flex-direction: column;
-		height: inherit;
-		margin: 0;
-		user-select: none;
+  body {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    margin: 0;
+    user-select: none;
 
-		button,
-		input {
-			border: 0;
-			font-family: Arial, sans-serif;
-			height: 1.75rem;
-			@include center-div;
-		}
+    button,
+    input {
+      border: 0;
+      font-family: Arial, sans-serif;
+      height: 1.75rem;
+      @include center-div;
+    }
 
-		button {
-			padding: 0.5rem;
-		}
+    button {
+      padding: 0.5rem;
+    }
 
-		input {
-			padding: 0;
+    input {
+      padding: 0;
 
-			&:focus {
-				border: none;
-				outline: none;
-			}
-		}
-	}
+      &:focus {
+        border: none;
+        outline: none;
+      }
+    }
+  }
 }
