@@ -26,36 +26,44 @@ export function checkTileColors() {
 	}
 }
 
-export function calculateRowHints(value: Tile[][]): Hint[][] {
+export function calculateRowHints(tiles: Tile[][]): Hint[][] {
 	const rowHints: Hint[][] = [[]];
-	for (let row: number = 0; row < tiles.numRows; row++) {
+	const numRows: number = tiles.length;
+	const numColumns: number = tiles[0].length;
+
+	for (let row: number = 0; row < numRows; row++) {
 		rowHints[row] = [{ count: 0, color: "" }];
-		for (let column: number = 0; column < tiles.numColumns; column++) {
+		for (let column: number = 0; column < numColumns; column++) {
 			if (isActive(row, column)) {
-				const previousColorIndex: number | null = column === 0 ? null : value[row][column - 1].colorIndex;
-				const currentColorIndex: number = value[row][column].colorIndex;
+				const previousColorIndex: number | null = column === 0 ? null : tiles[row][column - 1].colorIndex;
+				const currentColorIndex: number = tiles[row][column].colorIndex;
 				if (previousColorIndex !== currentColorIndex) rowHints[row].push({ count: 1, color: decToLetter(currentColorIndex) });
 				else rowHints[row][rowHints[row].length - 1].count++;
 			}
 		}
 		if (rowHints[row].length > 1 && rowHints[row][0].count === 0) rowHints[row].shift();
 	}
+
 	return rowHints;
 }
 
-export function calculateColumnHints(value: Tile[][]): Hint[][] {
+export function calculateColumnHints(tiles: Tile[][]): Hint[][] {
 	const columnHints: Hint[][] = [[]];
-	for (let column: number = 0; column < tiles.numColumns; column++) {
+	const numRows: number = tiles.length;
+	const numColumns: number = tiles[0].length;
+
+	for (let column: number = 0; column < numColumns; column++) {
 		columnHints[column] = [{ count: 0, color: "" }];
-		for (let row: number = 0; row < tiles.numRows; row++) {
+		for (let row: number = 0; row < numRows; row++) {
 			if (isActive(row, column)) {
-				const previousColorIndex: number | null = row === 0 ? null : value[row - 1][column].colorIndex;
-				const currentColorIndex: number = value[row][column].colorIndex;
+				const previousColorIndex: number | null = row === 0 ? null : tiles[row - 1][column].colorIndex;
+				const currentColorIndex: number = tiles[row][column].colorIndex;
 				if (previousColorIndex !== currentColorIndex) columnHints[column].push({ count: 1, color: decToLetter(currentColorIndex) });
 				else columnHints[column][columnHints[column].length - 1].count++;
 			}
 		}
 		if (columnHints[column].length > 1 && columnHints[column][0].count === 0) columnHints[column].shift();
 	}
+	
 	return columnHints;
 }
