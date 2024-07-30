@@ -37,12 +37,10 @@
 		isChangeHashAllowed.reset();
 	}
 
-	const scrapeHash = (hash: string): string[] => hash.split("-");
-
 	let importFlag: boolean = true;
 	$effect.pre(() => {
 		if (window.location.hash && importFlag) {
-			const scrapedHash: string[] = scrapeHash(window.location.hash.slice(1));
+			const scrapedHash: string[] = window.location.hash.slice(1).split("-");
 
 			isGame.v = Boolean(Number(scrapedHash[0]));
 			editorWidth.v = Number(scrapedHash[1]);
@@ -68,9 +66,8 @@
 		return hashElements.join("-");
 	});
 
-	$effect(() => {
-		if (isChangeHashAllowed.v) window.location.hash = hash;
-	});
+	// prettier-ignore
+	$effect(() => { if (isChangeHashAllowed.v) window.location.hash = hash; });
 </script>
 
 <svelte:head>

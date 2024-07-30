@@ -10,8 +10,8 @@
 		bgColor,
 		isChangeHashAllowed
 	} from "$lib/refs.svelte";
-	import { getRandomHexColor } from "$lib/utils";
 	import { checkTileColors, isMulticolor } from "$lib/main";
+	import { getRandomHexColor } from "$lib/utils";
 
 	function browseHistory(): void {
 		tiles.v = $state.snapshot(tilesHistory.v[tilesHistoryIndexer.v]);
@@ -37,13 +37,10 @@
 		else if (e.ctrlKey && e.key === "y") redo();
 	}
 
-	function handleOnClick(): void {
-		isChangeHashAllowed.v = false;
-	}
-
-	function handleOnChange(): void {
-		isChangeHashAllowed.reset();
-	}
+	// prettier-ignore
+	function handleOnClick(): void { isChangeHashAllowed.v = false; }
+	// prettier-ignore
+	function handleOnChange(): void { isChangeHashAllowed.reset(); }
 
 	$effect(() => {
 		document.body.style.backgroundColor = bgColor.v;
@@ -66,17 +63,15 @@
 		<div class="middle">
 			<!-- eslint-disable-next-line -->
 			{#each colors.v as unused, i}
+				<!-- prettier-ignore -->
 				<button
 					style:background-color={colors.v[i]}
-					onclick={(): void => {
-						colorsIndexer.v = i;
-					}}
+					onclick={(): void => { colorsIndexer.v = i; }}
 				></button>
 			{/each}
 		</div>
 	{/if}
 	<div>
-		<!-- eslint-disable-next-line -->
 		<div style:width="40rem" style:display="flex" style:flex-wrap="wrap" style:justify-content="right">
 			<input type="color" onclick={handleOnClick} onchange={handleOnChange} bind:value={bgColor.v} />
 			<!-- eslint-disable-next-line -->
@@ -84,24 +79,18 @@
 				<input type="color" onclick={handleOnClick} onchange={handleOnChange} bind:value={colors.v[i]} />
 			{/each}
 		</div>
+
 		{#if !isGame.v}
 			{#if isMulticolor()}
-				<button
-					onclick={(): void => {
-						colors.v.pop();
-						colorsIndexer.v = 1;
-						checkTileColors();
-					}}>-</button
-				>
+				<!-- prettier-ignore -->
+				<button onclick={(): void => { colors.v.pop(); colorsIndexer.v = 1; checkTileColors(); }}>-</button>
 			{/if}
 			{#if colors.v.length < 16}
-				<button
-					onclick={(): void => {
-						colors.v.push(getRandomHexColor());
-					}}>+</button
-				>
+				<!-- prettier-ignore -->
+				<button onclick={(): void => { colors.v.push(getRandomHexColor()); }}>+</button>
 			{/if}
 		{/if}
+
 		{#if tiles.numRows > 5 || tiles.numColumns > 5}
 			<input type="checkbox" bind:checked={borderOn.v} />
 		{/if}

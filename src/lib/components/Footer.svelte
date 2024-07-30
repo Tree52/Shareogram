@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { tiles, isGame, tilesHistory, tilesHistoryIndexer, editorWidth, editorHeight, tilesSolution } from "$lib/refs.svelte";
 	import { compare2DArrays } from "$lib/utils";
 	import { initializeTiles } from "$lib/main";
-	import { tiles, isGame, tilesHistory, tilesHistoryIndexer, editorWidth, editorHeight, tilesSolution } from "$lib/refs.svelte";
 
 	const sanitizeNumberInput = (n: number): number => Number(String(n).replace(/[^0-9]/g, ""));
 
@@ -17,37 +17,24 @@
 
 <footer>
 	{#if !isGame.v}
+		<!-- prettier-ignore -->
 		<input
 			bind:value={editorWidth.v}
-			oninput={() => {
-				editorWidth.v = sanitizeNumberInput(editorWidth.v);
-				newEditor(editorWidth.v, editorHeight.v);
-			}}
+			oninput={(): void => { editorWidth.v = sanitizeNumberInput(editorWidth.v); newEditor(editorWidth.v, editorHeight.v); }}
 			autocomplete="off"
 		/>
+		<!-- prettier-ignore -->
 		<input
 			bind:value={editorHeight.v}
-			oninput={() => {
-				editorHeight.v = sanitizeNumberInput(editorHeight.v);
-				newEditor(editorWidth.v, editorHeight.v);
-			}}
+			oninput={(): void => { editorHeight.v = sanitizeNumberInput(editorHeight.v); newEditor(editorWidth.v, editorHeight.v); }}
 			autocomplete="off"
 		/>
-		<button
-			onclick={(): void => {
-				isGame.v = true;
-				tilesSolution.v = tiles.v;
-				newEditor(editorWidth.v, editorHeight.v);
-			}}>Start Game</button
-		>
+		<!-- prettier-ignore -->
+		<button onclick={(): void => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(editorWidth.v, editorHeight.v); }}>Start Game</button>
 	{:else}
 		<span>{win ? "You win" : "Keep trying"}</span>
-		<button
-			onclick={(): void => {
-				isGame.reset();
-				newEditor(editorWidth.v, editorHeight.v);
-			}}>New Editor</button
-		>
+		<!-- prettier-ignore -->
+		<button onclick={(): void => { isGame.reset(); newEditor(editorWidth.v, editorHeight.v); }}>New Editor</button>
 	{/if}
 </footer>
 
