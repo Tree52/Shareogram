@@ -51,6 +51,7 @@
 			for (let i: number = 0; i < scrapedColors.length; i++) colors.v[i] = "#" + scrapedColors[i];
 
 			tiles.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1]);
+			tilesHistory.v[0] = $state.snapshot(tiles.v);
 
 			if (isGame.v) tilesSolution.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[scrapedHash.length - 1]);
 		}
