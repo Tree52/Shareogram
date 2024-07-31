@@ -90,7 +90,7 @@
     {#if !isGame.v}
       {#if isMulticolor()}
         <!-- prettier-ignore -->
-        <button onclick={(): void => { colors.v.pop(); colorsIndexer.v = 1; checkTileColors(); }}>-</button>
+        <button onclick={(): void => { colors.v.pop(); if(colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors() }}>-</button>
       {/if}
       {#if colors.v.length < 16}
         <!-- prettier-ignore -->
