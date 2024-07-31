@@ -13,7 +13,7 @@
   }
 
   // prettier-ignore
-  function handleKeydown(e: KeyboardEvent): void { e.preventDefault() }
+  function handleKeydown(e: KeyboardEvent): void { if (e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "Tab") e.preventDefault() }
 </script>
 
 <footer>
