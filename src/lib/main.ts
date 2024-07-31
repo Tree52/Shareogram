@@ -1,18 +1,16 @@
-import { type Tile, tiles, colors, type Hint } from "$lib/refs.svelte";
+import { type Tile, tiles, colors, type Hint, editorWidth, editorHeight } from "$lib/refs.svelte";
 import { decToLetter, splitString, letterToDec } from "$lib/utils";
 
 export const isActive = (tile: Tile): boolean => tile.colorIndex !== 0;
 
 export const isMulticolor = (): boolean => colors.v.length > 2;
 
-export function initializeTiles(width: number, height: number): Tile[][] {
+export function initializeTiles(): Tile[][] {
   const tiles: Tile[][] = [[]];
 
-  if (width <= 50 && width > 0 && height <= 50 && height > 0) {
-    for (let i: number = 0; i < height; i++) {
-      tiles[i] = [];
-      for (let j: number = 0; j < width; j++) tiles[i][j] = { colorIndex: 0, Xed: false };
-    }
+  for (let i: number = 0; i < editorHeight.v; i++) {
+    tiles[i] = [];
+    for (let j: number = 0; j < editorWidth.v; j++) tiles[i][j] = { colorIndex: 0, Xed: false };
   }
 
   return tiles;
@@ -93,20 +91,20 @@ export function encodeTiles(tiles: Tile[][]): string {
   return encoded;
 }
 
-export function decodeTiles(width: number, height: number, encodedTiles: string): Tile[][] {
+export function decodeTiles(encodedTiles: string): Tile[][] {
   const split: { numbers: number[]; letters: string[] } = splitString(encodedTiles);
   const tiles: Tile[][] = [];
   let row: number = 0;
   let column: number = 0;
 
-  for (let i: number = 0; i < height; i++) tiles[i] = [];
+  for (let i: number = 0; i < editorHeight.v; i++) tiles[i] = [];
 
   for (let i: number = 0; i < split.numbers.length; i++) {
     for (let j: number = 0; j < split.numbers[i]; j++) {
       if (split.letters[i] === "x") tiles[row][column++] = { colorIndex: 0, Xed: true };
       else tiles[row][column++] = { colorIndex: letterToDec(split.letters[i]), Xed: false };
 
-      if (column > width - 1) {
+      if (column > editorWidth.v - 1) {
         row++;
         column = 0;
       }

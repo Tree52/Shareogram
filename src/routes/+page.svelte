@@ -50,10 +50,10 @@
       const scrapedColors: string[] = isGame.v ? scrapedHash.slice(4, -2) : scrapedHash.slice(4, -1);
       for (let i: number = 0; i < scrapedColors.length; i++) colors.v[i] = "#" + scrapedColors[i];
 
-      tiles.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1]);
+      tiles.v = decodeTiles(scrapedHash[isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1]);
       tilesHistory.v[0] = $state.snapshot(tiles.v);
 
-      if (isGame.v) tilesSolution.v = decodeTiles(editorWidth.v, editorHeight.v, scrapedHash[scrapedHash.length - 1]);
+      if (isGame.v) tilesSolution.v = decodeTiles(scrapedHash[scrapedHash.length - 1]);
     }
 
     importFlag = false;

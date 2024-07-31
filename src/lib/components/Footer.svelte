@@ -5,8 +5,8 @@
 
   const win: boolean = $derived(compare2DArrays(tilesSolution.colorIndices, tiles.colorIndices));
 
-  function newEditor(width: number, height: number): void {
-    tiles.v = initializeTiles(width, height);
+  function newEditor(): void {
+    tiles.v = initializeTiles();
     tilesHistory.reset();
     tilesHistory.v[0] = $state.snapshot(tiles.v);
     tilesHistoryIndexer.reset();
@@ -24,7 +24,7 @@
       min="1"
       max="50"
 			bind:value={editorWidth.v}
-			oninput={(): void => { newEditor(editorWidth.v, editorHeight.v); }}
+			oninput={(): void => { newEditor(); }}
       onkeydown={handleKeydown}
       />
     <!-- prettier-ignore -->
@@ -33,15 +33,15 @@
       min="1"
       max="50"
 			bind:value={editorHeight.v}
-			oninput={(): void => { newEditor(editorWidth.v, editorHeight.v); }}
+			oninput={(): void => { newEditor(); }}
       onkeydown={handleKeydown}
       />
     <!-- prettier-ignore -->
-    <button onclick={(): void => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(editorWidth.v, editorHeight.v); }}>Start Game</button>
+    <button onclick={(): void => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(); }}>Start Game</button>
   {:else}
     <span>{win ? "You win" : "Keep trying"}</span>
     <!-- prettier-ignore -->
-    <button onclick={(): void => { isGame.reset(); newEditor(editorWidth.v, editorHeight.v); }}>New Editor</button>
+    <button onclick={(): void => { isGame.reset(); newEditor(); }}>New Editor</button>
   {/if}
 </footer>
 

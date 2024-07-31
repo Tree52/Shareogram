@@ -74,7 +74,7 @@ export const colorsIndexer: Ref<number> = ref<number>(1);
 
 export const editorWidth: Ref<number> = ref<number>(5);
 export const editorHeight: Ref<number> = ref<number>(5);
-const initialTiles: Tile[][] = initializeTiles(editorWidth.v, editorHeight.v);
+const initialTiles: Tile[][] = initializeTiles();
 export const tiles: RefTiles = refTiles();
 export const tilesSolution: RefTiles = refTiles();
 export const tilesHistory: Ref<Tile[][][]> = ref<Tile[][][]>([initialTiles]);

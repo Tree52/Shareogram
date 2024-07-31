@@ -9,6 +9,8 @@
     isGame,
     bgColor,
     isChangeHashAllowed,
+    editorWidth,
+    editorHeight,
   } from "$lib/refs.svelte";
   import { checkTileColors, isMulticolor } from "$lib/main";
   import { getRandomHexColor } from "$lib/utils";
@@ -91,7 +93,7 @@
       {/if}
     {/if}
 
-    {#if tiles.numRows > 5 || tiles.numColumns > 5}
+    {#if editorWidth.v > 5 || editorHeight.v > 5}
       <input type="checkbox" bind:checked={borderOn.v} />
     {/if}
   </div>
