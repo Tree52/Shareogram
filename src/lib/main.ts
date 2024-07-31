@@ -78,7 +78,7 @@ export function encodeTiles(tiles: Tile[][]): string {
     for (let j: number = 0; j < numColumns; j++) {
       if (i === 0 && j === 0) continue;
       else {
-        const prevTile: Tile = j === 0 ? tiles[i - 1][numRows - 1] : tiles[i][j - 1];
+        const prevTile: Tile = j === 0 ? tiles[i - 1][numColumns - 1] : tiles[i][j - 1];
         if (prevTile.colorIndex === tiles[i][j].colorIndex && prevTile.Xed === tiles[i][j].Xed) count++;
         else {
           encoded += count + (prevTile.Xed ? "x" : decToLetter(prevTile.colorIndex));
@@ -99,7 +99,7 @@ export function decodeTiles(width: number, height: number, encodedTiles: string)
   let row: number = 0;
   let column: number = 0;
 
-  for (let i: number = 0; i < width; i++) tiles[i] = [];
+  for (let i: number = 0; i < height; i++) tiles[i] = [];
 
   for (let i: number = 0; i < split.numbers.length; i++) {
     for (let j: number = 0; j < split.numbers[i]; j++) {
