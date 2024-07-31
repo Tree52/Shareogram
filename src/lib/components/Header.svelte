@@ -37,6 +37,7 @@
   function handleKeydown(e: KeyboardEvent): void {
     if (e.ctrlKey && e.key === "z") undo();
     else if (e.ctrlKey && e.key === "y") redo();
+    else if (/^[1-9]$/.test(e.key)) colorsIndexer.v = Number(e.key) > colors.v.length ? colorsIndexer.v : Number(e.key) - 1;
   }
 
   // prettier-ignore
@@ -61,18 +62,22 @@
       <span>Ctrl + y</span>
     </div>
   </div>
-  {#if isMulticolor()}
-    <div class="middle">
-      <!-- eslint-disable-next-line -->
-      {#each colors.v as unused, i}
-        <!-- prettier-ignore -->
-        <button
-					style:background-color={colors.v[i]}
-					onclick={(): void => { colorsIndexer.v = i; }}
-				></button>
-      {/each}
-    </div>
-  {/if}
+  <div class="middle">
+    <!-- eslint-disable-next-line -->
+    {#each colors.v as unused, i}
+      <!-- prettier-ignore -->
+      <div>
+          <button
+            style:background-color={colors.v[i]}
+            style:border={i === colorsIndexer.v ? (i === 0 ? `solid 2px ${colors.v[1]}` : `solid 2px ${colors.v[0]}`) : "0"}
+            onclick={(): void => { colorsIndexer.v = i; }}
+          ></button>
+          {#if i < 9}
+          <span>{i + 1}</span>
+          {/if}
+        </div>
+    {/each}
+  </div>
   <div>
     <div style:width="40rem" style:display="flex" style:flex-wrap="wrap" style:justify-content="right">
       <input type="color" onclick={handleOnClick} onchange={handleOnChange} bind:value={bgColor.v} />
@@ -127,14 +132,14 @@
       position: absolute;
       transform: translateX(-50%);
 
+      div {
+        align-items: center;
+        flex-direction: column;
+      }
+
       button {
-        font-size: var(--tile-font-size);
         height: var(--tile-width);
         width: var(--tile-width);
-
-        &:active {
-          border: 2px solid white;
-        }
       }
     }
 
