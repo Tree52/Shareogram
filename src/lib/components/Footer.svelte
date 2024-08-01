@@ -13,7 +13,7 @@
   }
 
   // prettier-ignore
-  function handleKeydown(e: KeyboardEvent): void { if (e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "Tab") e.preventDefault() }
+  function onkeydown(e: KeyboardEvent): void { if (e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "Tab") e.preventDefault() }
 </script>
 
 <footer>
@@ -25,7 +25,7 @@
       max="50"
 			bind:value={editorWidth.v}
 			oninput={(): void => { newEditor(); }}
-      onkeydown={handleKeydown}
+      {onkeydown}
       />
     <!-- prettier-ignore -->
     <input
@@ -34,7 +34,7 @@
       max="50"
 			bind:value={editorHeight.v}
 			oninput={(): void => { newEditor(); }}
-      onkeydown={handleKeydown}
+      {onkeydown}
       />
     <!-- prettier-ignore -->
     <button onclick={(): void => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(); }}>Start Game</button>

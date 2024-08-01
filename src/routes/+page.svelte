@@ -20,12 +20,12 @@
   import Footer from "$lib/components/Footer.svelte";
   import "$lib/../global.scss";
 
-  function handleMouseDown(e: MouseEvent) {
+  function onmousedown(e: MouseEvent) {
     if (e.button === 0) isLeftHeld.v = true;
     else if (e.button === 2) isRightHeld.v = true;
   }
 
-  function handleMouseUp(e: MouseEvent) {
+  function onmouseup(e: MouseEvent) {
     if (e.button === 0) isLeftHeld.reset();
     else if (e.button === 2) isRightHeld.reset();
     if (clickedTile.v.row !== -1) {
@@ -75,7 +75,7 @@
   <title>Shareogram</title>
 </svelte:head>
 
-<svelte:window onmousedown={handleMouseDown} onmouseup={handleMouseUp} oncontextmenu={(e: MouseEvent): void => e.preventDefault()} />
+<svelte:window {onmousedown} {onmouseup} oncontextmenu={(e: MouseEvent): void => e.preventDefault()} />
 
 <Header />
 
