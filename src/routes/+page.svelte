@@ -90,6 +90,7 @@
 
   main {
     flex: 1;
+    margin: 10px;
     @include center-div;
   }
 </style>

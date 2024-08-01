@@ -13,6 +13,7 @@
     editorHeight,
   } from "$lib/refs.svelte";
   import { checkTileColors, isMulticolor } from "$lib/main";
+  import Palette from "$lib/components/Palette.svelte";
   import { getRandomHexColor } from "$lib/utils";
 
   function browseHistory(): void {
@@ -55,28 +56,12 @@
   <div>
     <div class="left">
       <button id="undo" onclick={undo}>Undo</button>
-      <span>Ctrl + z</span>
+      Ctrl + z
     </div>
     <div class="left">
       <button id="undo" onclick={redo}>Redo</button>
-      <span>Ctrl + y</span>
+      Ctrl + y
     </div>
-  </div>
-  <div class="middle">
-    <!-- eslint-disable-next-line -->
-    {#each colors.v as unused, i}
-      <!-- prettier-ignore -->
-      <div>
-          <button
-            style:background-color={colors.v[i]}
-            style:border={i === colorsIndexer.v ? (i === 0 ? `solid 2px ${colors.v[1]}` : `solid 2px ${colors.v[0]}`) : "0"}
-            onclick={(): void => { colorsIndexer.v = i; }}
-          ></button>
-          {#if i < 9}
-          <span>{i + 1}</span>
-          {/if}
-        </div>
-    {/each}
   </div>
   <div>
     <div style:width="40rem" style:display="flex" style:flex-wrap="wrap" style:justify-content="right">
@@ -104,6 +89,10 @@
   </div>
 </header>
 
+<div class="middle">
+  <Palette />
+</div>
+
 <svelte:window onkeydown={handleKeydown} />
 
 <style lang="scss">
@@ -127,24 +116,15 @@
       flex-direction: column;
     }
 
-    .middle {
-      left: 50%;
-      position: absolute;
-      transform: translateX(-50%);
-
-      div {
-        align-items: center;
-        flex-direction: column;
-      }
-
-      button {
-        height: 2rem;
-        width: 2rem;
-      }
-    }
-
     input[type="color"] {
       padding: 1px;
     }
+  }
+
+  .middle {
+    display: flex;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
   }
 </style>

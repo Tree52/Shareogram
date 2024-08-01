@@ -1,35 +1,20 @@
 @import "$lib/../mixins.scss";
 
 html {
-  font-family: Impact, sans-serif;
   height: 100%;
 
   body {
     display: flex;
     flex-direction: column;
-    height: inherit;
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    height: 100%;
     margin: 0;
     user-select: none;
 
     button,
-    input {
+    input[type="number"] {
       border: 0;
-      font-family: Arial, sans-serif;
-      height: 1.75rem;
-      @include center-div;
-    }
-
-    button {
-      padding: 0.5rem;
-    }
-
-    input {
-      padding: 0;
-
-      &:focus {
-        border: none;
-        outline: none;
-      }
+      font-family: Arial, Helvetica, sans-serif;
     }
   }
 }

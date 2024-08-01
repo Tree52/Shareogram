@@ -50,15 +50,24 @@
 
   footer {
     @include center-div;
-    padding-top: 10px;
-  }
 
-  input {
-    text-align: center;
-    width: 3rem;
+    button,
+    input[type="number"] {
+      height: 2rem;
+    }
   }
 
   span {
     margin-right: 0.5rem;
+  }
+
+  input[type="number"] {
+    padding: 0;
+    text-align: center;
+    width: 3rem;
+
+    &:focus {
+      outline: none;
+    }
   }
 </style>
