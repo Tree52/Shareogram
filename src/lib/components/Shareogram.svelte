@@ -14,6 +14,7 @@
     isChangeHashAllowed,
     type Tile,
     bgColor,
+    tileWidth,
   } from "$lib/refs.svelte";
   import { getAdjacentDirection, letterToDec } from "$lib/utils";
   import { isActive } from "$lib/main";
@@ -88,7 +89,7 @@
         {#each { length: tiles.numColumns } as unused, i}
           <th>
             {#each tilesSolution.columnHints[i] as columnHint}
-              <div style:color={colors.v[letterToDec(columnHint.color)]}>
+              <div style:font-size={tileWidth.v / 1.5 + "px"} style:color={colors.v[letterToDec(columnHint.color)]}>
                 {columnHint.count}
               </div>
             {/each}
@@ -109,7 +110,9 @@
                 style:display="flex"
                 style:justify-content="center"
                 style:align-items="center"
-                style:width="26px"
+                style:width={tileWidth.v + "px"}
+                style:height={tileWidth.v + "px"}
+                style:font-size={tileWidth.v / 1.5 + "px"}
                 style:color={colors.v[letterToDec(rowHint.color)]}
               >
                 {rowHint.count}
@@ -125,7 +128,9 @@
             onmouseenter={(): void => { handleMouseEnter(i, j); }}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             style:color={colors.v[1]}
-            style:width="3rem"
+            style:width={tileWidth.v + "px"}
+            style:height={tileWidth.v + "px"}
+            style:font-size={tileWidth.v / 1.5 + "px"}
             style:text-align="center"
             style:border-top={i % 5 === 0 && i !== 0 && borderOn.v ? `solid 2px ${colors.v[1]}` : `solid 2px ${bgColor.v}`}
             style:border-left={j % 5 === 0 && j !== 0 && borderOn.v ? `solid 2px ${colors.v[1]}` : `solid 2px ${bgColor.v}`}
@@ -137,10 +142,6 @@
 </table>
 
 <style lang="scss">
-  td {
-    height: 3rem;
-  }
-
   th {
     font-weight: normal;
     vertical-align: bottom;

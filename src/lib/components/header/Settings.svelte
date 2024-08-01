@@ -1,5 +1,15 @@
 <script lang="ts">
-  import { borderOn, colors, colorsIndexer, isGame, bgColor, isChangeHashAllowed, editorWidth, editorHeight } from "$lib/refs.svelte";
+  import {
+    borderOn,
+    colors,
+    colorsIndexer,
+    isGame,
+    bgColor,
+    isChangeHashAllowed,
+    editorWidth,
+    editorHeight,
+    tileWidth,
+  } from "$lib/refs.svelte";
   import { checkTileColors, isMulticolor } from "$lib/main";
   import { getRandomHexColor } from "$lib/utils";
 
@@ -35,8 +45,10 @@
   {/if}
 
   {#if editorWidth.v > 5 || editorHeight.v > 5}
-    <input type="checkbox" bind:checked={borderOn.v} />
+    <input type="checkbox" style:accent-color={colors.v[1]} bind:checked={borderOn.v} />
   {/if}
+
+  <input type="range" min="10" max="100" style:accent-color={colors.v[1]} bind:value={tileWidth.v} />
 </div>
 
 <style lang="scss">
@@ -50,6 +62,12 @@
       justify-content: right;
       margin-right: 4px;
       max-width: 36rem;
+    }
+
+    input[type="range"] {
+      direction: rtl;
+      height: 60px;
+      writing-mode: vertical-lr;
     }
   }
 </style>

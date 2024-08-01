@@ -88,3 +88,4 @@ export const direction: Ref<string> = ref<string>("");
 export const numTilesEntered: Ref<number> = ref<number>(0);
 export const borderOn: Ref<boolean> = ref<boolean>(true);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);
+export const tileWidth: Ref<number> = ref<number>(50);
