@@ -3,38 +3,32 @@
   import { compare2DArrays } from "$lib/utils";
   import { initializeTiles } from "$lib/main";
 
+  const sanitizeNumberInput = (n: number): number => Math.max(0, Math.min(Number(String(n).replace(/[^0-9]/g, "")), 50));
+
   const win: boolean = $derived(compare2DArrays(tilesSolution.colorIndices, tiles.colorIndices));
 
   function newEditor(): void {
+    if (editorWidth.v < 1 || editorHeight.v < 1) return;
     tiles.v = initializeTiles();
     tilesHistory.reset();
     tilesHistory.v[0] = $state.snapshot(tiles.v);
     tilesHistoryIndexer.reset();
   }
-
-  // prettier-ignore
-  function onkeydown(e: KeyboardEvent): void { if (e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "Tab") e.preventDefault() }
 </script>
 
 <footer>
   {#if !isGame.v}
     <!-- prettier-ignore -->
     <input
-      type="number"
-      min="1"
-      max="50"
+      type="text"  
       bind:value={editorWidth.v}
-      oninput={(): void => { newEditor(); }}
-      {onkeydown}
+      oninput={(): void => { editorWidth.v = sanitizeNumberInput(editorWidth.v); newEditor(); }}
       />
     <!-- prettier-ignore -->
     <input
-      type="number"
-      min="1"
-      max="50"
+      type="text"  
       bind:value={editorHeight.v}
-      oninput={(): void => { newEditor(); }}
-      {onkeydown}
+      oninput={(): void => { editorHeight.v = sanitizeNumberInput(editorHeight.v); newEditor(); }}
       />
     <!-- prettier-ignore -->
     <button onclick={(): void => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(); }}>Start Game</button>
@@ -52,7 +46,7 @@
     @include center-div;
 
     button,
-    input[type="number"] {
+    input[type="text"] {
       height: 2rem;
     }
   }
@@ -61,10 +55,10 @@
     margin-right: 0.5rem;
   }
 
-  input[type="number"] {
+  input[type="text"] {
     padding: 0;
     text-align: center;
-    width: 3rem;
+    width: 2rem;
 
     &:focus {
       outline: none;
