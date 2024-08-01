@@ -1,5 +1,9 @@
 <script lang="ts">
   import { colors, colorsIndexer } from "$lib/refs.svelte";
+
+  function onkeydown(e: KeyboardEvent): void {
+    if (/^[1-9]$/.test(e.key)) colorsIndexer.v = Number(e.key) > colors.v.length ? colorsIndexer.v : Number(e.key) - 1;
+  }
 </script>
 
 <!-- eslint-disable-next-line -->
@@ -16,6 +20,8 @@
     {/if}
   </div>
 {/each}
+
+<svelte:window {onkeydown}></svelte:window>
 
 <style lang="scss">
   div {

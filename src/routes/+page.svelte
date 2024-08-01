@@ -15,8 +15,8 @@
     tilesSolution,
   } from "$lib/refs.svelte";
   import { decodeTiles } from "$lib/main";
-  import Header from "$lib/components/Header.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
+  import Header from "$lib/components/header/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
   import "$lib/../global.scss";
 
