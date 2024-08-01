@@ -132,8 +132,8 @@
             style:height={tileWidth.v + "px"}
             style:font-size={tileWidth.v / 1.5 + "px"}
             style:text-align="center"
-            style:border-top={i % 5 === 0 && i !== 0 && borderOn.v ? `solid 2px ${colors.v[1]}` : `solid 2px ${bgColor.v}`}
-            style:border-left={j % 5 === 0 && j !== 0 && borderOn.v ? `solid 2px ${colors.v[1]}` : `solid 2px ${bgColor.v}`}
+            style:border-top={borderOn.v === 0 ? "0" : (i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `solid 4px ${colors.v[1]}` : `solid 2px ${bgColor.v}`)}
+            style:border-left={borderOn.v === 0 ? "0" : (j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `solid 4px ${colors.v[1]}` : `solid 2px ${bgColor.v}`)}
           >{isXed(tiles.v[i][j]) ? "X" : ""}</td>
         {/each}
       </tr>
