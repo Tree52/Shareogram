@@ -23,8 +23,8 @@
       type="number"
       min="1"
       max="50"
-			bind:value={editorWidth.v}
-			oninput={(): void => { newEditor(); }}
+      bind:value={editorWidth.v}
+      oninput={(): void => { newEditor(); }}
       {onkeydown}
       />
     <!-- prettier-ignore -->
@@ -32,8 +32,8 @@
       type="number"
       min="1"
       max="50"
-			bind:value={editorHeight.v}
-			oninput={(): void => { newEditor(); }}
+      bind:value={editorHeight.v}
+      oninput={(): void => { newEditor(); }}
       {onkeydown}
       />
     <!-- prettier-ignore -->

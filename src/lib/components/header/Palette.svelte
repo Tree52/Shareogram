@@ -11,10 +11,10 @@
   <div>
     <!-- prettier-ignore -->
     <button
-			style:background-color={colors.v[i]}
-			style:border={i === colorsIndexer.v ? (i === 0 ? `solid 2px ${colors.v[1]}` : `solid 2px ${colors.v[0]}`) : "0"}
-			onclick={(): void => { colorsIndexer.v = i; }}
-		></button>
+      style:background-color={colors.v[i]}
+      style:border={i === colorsIndexer.v ? (i === 0 ? `solid 2px ${colors.v[1]}` : `solid 2px ${colors.v[0]}`) : "0"}
+      onclick={(): void => { colorsIndexer.v = i; }}
+    ></button>
     {#if i < 9}
       {i + 1}
     {/if}
