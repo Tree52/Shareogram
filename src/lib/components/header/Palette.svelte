@@ -21,7 +21,7 @@
   </div>
 {/each}
 
-<svelte:window {onkeydown}></svelte:window>
+<svelte:window {onkeydown} />
 
 <style lang="scss">
   div {

@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { tilesHistory, tilesHistoryIndexer, tiles } from "$lib/refs.svelte";
-	import { checkTileColors } from "$lib/main";
+  import { tilesHistory, tilesHistoryIndexer, tiles } from "$lib/refs.svelte";
+  import { checkTileColors } from "$lib/main";
 
-	function onkeydown(e: KeyboardEvent): void {
+  function onkeydown(e: KeyboardEvent): void {
     if (e.ctrlKey && e.key === "z") undo();
     else if (e.ctrlKey && e.key === "y") redo();
   }
 
-	function browseHistory(): void {
+  function browseHistory(): void {
     tiles.v = $state.snapshot(tilesHistory.v[tilesHistoryIndexer.v]);
     checkTileColors();
   }
 
-	function undo(): void {
+  function undo(): void {
     if (tilesHistoryIndexer.v !== 0) {
       tilesHistoryIndexer.v--;
       browseHistory();
@@ -27,32 +27,32 @@
   }
 </script>
 
-<svelte:window {onkeydown}></svelte:window>
+<svelte:window {onkeydown} />
 
 <div>
-	<div>
-		<button onclick={undo}>Undo</button>
-		Ctrl + z
-	</div>
-	<div>
-		<button onclick={redo}>Redo</button>
-		Ctrl + y
-	</div>
+  <div>
+    <button onclick={undo}>Undo</button>
+    Ctrl + z
+  </div>
+  <div>
+    <button onclick={redo}>Redo</button>
+    Ctrl + y
+  </div>
 </div>
 
 <style lang="scss">
-	div {
-		display: flex;
-		
-		div {
-			display: flex;
-			align-items: center;
-			flex-direction: column;
+  div {
+    display: flex;
 
-			button {
-				margin-bottom: 4px;
-				width: 4rem;
-			}
-		}
-	}
+    div {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+
+      button {
+        margin-bottom: 4px;
+        width: 4rem;
+      }
+    }
+  }
 </style>
