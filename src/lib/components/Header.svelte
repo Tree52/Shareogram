@@ -138,8 +138,8 @@
       }
 
       button {
-        height: var(--tile-width);
-        width: var(--tile-width);
+        height: 2rem;
+        width: 2rem;
       }
     }
 
