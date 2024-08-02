@@ -3,8 +3,8 @@
   import { checkTileColors } from "$lib/main";
 
   function onkeydown(e: KeyboardEvent): void {
-    if (e.ctrlKey && e.key === "z") undo();
-    else if (e.ctrlKey && e.key === "y") redo();
+    if (e.key === "z") undo();
+    else if (e.key === "y") redo();
   }
 
   function browseHistory(): void {
@@ -30,29 +30,17 @@
 <svelte:window {onkeydown} />
 
 <div>
-  <div>
-    <button onclick={undo}>Undo</button>
-    Ctrl + z
-  </div>
-  <div>
-    <button onclick={redo}>Redo</button>
-    Ctrl + y
-  </div>
+  <button onclick={undo}>Undo (z)</button>
+  <button onclick={redo}>Redo (y)</button>
 </div>
 
 <style lang="scss">
   div {
     display: flex;
 
-    div {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-
-      button {
-        margin-bottom: 4px;
-        width: 4rem;
-      }
+    button {
+      margin-bottom: 4px;
+      width: 4rem;
     }
   }
 </style>
