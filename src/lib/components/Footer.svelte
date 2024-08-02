@@ -53,6 +53,7 @@
 
   span {
     margin-right: 0.5rem;
+    font-size: 1.25rem;
   }
 
   input[type="text"] {
