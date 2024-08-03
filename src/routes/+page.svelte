@@ -86,11 +86,11 @@
 <Footer />
 
 <style lang="scss">
-  @import "$lib/../mixins.scss";
-
   main {
     flex: 1;
     margin: 10px;
-    @include center-div;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

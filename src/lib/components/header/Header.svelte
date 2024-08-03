@@ -14,8 +14,6 @@
 </div>
 
 <style lang="scss">
-  @import "$lib/../mixins.scss";
-
   header {
     display: flex;
     justify-content: space-between;

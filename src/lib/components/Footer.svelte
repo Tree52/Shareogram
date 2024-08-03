@@ -40,10 +40,10 @@
 </footer>
 
 <style lang="scss">
-  @import "$lib/../mixins.scss";
-
   footer {
-    @include center-div;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     button,
     input[type="text"] {
