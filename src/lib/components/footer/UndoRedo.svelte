@@ -39,8 +39,7 @@
     display: flex;
 
     button {
-      margin-bottom: 4px;
-      width: 4rem;
+      width: 6rem;
     }
   }
 </style>

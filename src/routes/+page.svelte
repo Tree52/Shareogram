@@ -16,8 +16,8 @@
   } from "$lib/refs.svelte";
   import { decodeTiles } from "$lib/main";
   import Shareogram from "$lib/components/Shareogram.svelte";
-  import Header from "$lib/components/header/Header.svelte";
-  import Footer from "$lib/components/Footer.svelte";
+  import Footer from "$lib/components/footer/Footer.svelte";
+  import Header from "$lib/components/Header.svelte";
   import "$lib/../global.scss";
 
   function onmousedown(e: MouseEvent) {
@@ -87,10 +87,10 @@
 
 <style lang="scss">
   main {
-    flex: 1;
-    margin: 10px;
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    margin: 10px;
   }
 </style>

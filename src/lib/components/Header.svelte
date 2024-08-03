@@ -16,7 +16,7 @@
   }
 </script>
 
-<footer>
+<header>
   {#if !isGame.v}
     <!-- prettier-ignore -->
     <input
@@ -37,13 +37,13 @@
     <!-- prettier-ignore -->
     <button onclick={(): void => { isGame.reset(); newEditor(); }}>New Editor</button>
   {/if}
-</footer>
+</header>
 
 <style lang="scss">
-  footer {
+  header {
+    align-items: center;
     display: flex;
     justify-content: center;
-    align-items: center;
 
     button,
     input[type="text"] {
@@ -52,8 +52,8 @@
   }
 
   span {
-    margin-right: 0.5rem;
     font-size: 1.25rem;
+    margin-right: 0.5rem;
   }
 
   input[type="text"] {
