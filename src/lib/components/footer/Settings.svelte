@@ -13,10 +13,19 @@
   import { checkTileColors, isMulticolor } from "$lib/main";
   import { getRandomHexColor } from "$lib/utils";
 
+  const MAX_TILE_WIDTH = 100;
+  const MIN_TILE_WIDTH = 10;
+
   // prettier-ignore
   function onclick(): void { isChangeHashAllowed.v = false; }
   // prettier-ignore
   function onchange(): void { isChangeHashAllowed.reset(); }
+
+  function onwheel(e: WheelEvent) {
+    e.preventDefault();
+    if (e.deltaY < 0 && tileWidth.v < MAX_TILE_WIDTH) tileWidth.v += 5; 
+    else if (e.deltaY > 0 && tileWidth.v > MIN_TILE_WIDTH) tileWidth.v -= 5;
+  }
 
   $effect(() => {
     document.body.style.backgroundColor = bgColor.v;
@@ -51,8 +60,10 @@
     style:accent-color={colors.v[1]}
     bind:value={borderOn.v}
   />
-  <input type="range" min="10" max="100" style:accent-color={colors.v[1]} bind:value={tileWidth.v} />
+  <input type="range" min={MIN_TILE_WIDTH} max={MAX_TILE_WIDTH} style:accent-color={colors.v[1]} bind:value={tileWidth.v} />
 </div>
+
+<svelte:window on:wheel|nonpassive={onwheel} />
 
 <style lang="scss">
   div {
