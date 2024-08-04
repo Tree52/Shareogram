@@ -110,7 +110,7 @@
                 style:display="flex"
                 style:justify-content="center"
                 style:align-items="center"
-                style:width={tileWidth.v + "px"}
+                style:min-width={tileWidth.v + "px"}
                 style:height={tileWidth.v + "px"}
                 style:font-size={tileWidth.v / 1.5 + "px"}
                 style:color={colors.v[letterToDec(rowHint.color)]}
@@ -128,7 +128,7 @@
             onmouseenter={(): void => { handleMouseEnter(i, j); }}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             style:color={colors.v[1]}
-            style:width={tileWidth.v + "px"}
+            style:min-width={tileWidth.v + "px"}
             style:height={tileWidth.v + "px"}
             style:font-size={tileWidth.v / 1.5 + "px"}
             style:text-align="center"

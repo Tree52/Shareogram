@@ -87,10 +87,12 @@
 
 <style lang="scss">
   main {
-    align-items: center;
+    align-items: safe center;
     display: flex;
     flex: 1;
-    justify-content: center;
+    justify-content: safe center;
     margin: 10px;
+    padding: 20px;
+    overflow: scroll;
   }
 </style>
