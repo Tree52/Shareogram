@@ -89,3 +89,6 @@ export const numTilesEntered: Ref<number> = ref<number>(0);
 export const borderOn: Ref<number> = ref<number>(1);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(true);
 export const tileWidth: Ref<number> = ref<number>(50);
+export const win: Ref<boolean> = ref<boolean>(false);
+export const sidebarOn: Ref<boolean> = ref<boolean>(false);
+export const isXSelected: Ref<boolean> = ref<boolean>(false);

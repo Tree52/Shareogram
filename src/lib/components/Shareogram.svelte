@@ -15,6 +15,7 @@
     type Tile,
     bgColor,
     tileWidth,
+    isXSelected,
   } from "$lib/refs.svelte";
   import { getAdjacentDirection, letterToDec } from "$lib/utils";
   import { isActive } from "$lib/main.svelte";
@@ -30,10 +31,12 @@
 
   function handleMouseDown(e: MouseEvent, i: number, j: number): void {
     if (isGame.v) {
-      if (e.button === 0 && !isXed(tiles.v[i][j])) {
+      if (e.button === 0 && isXSelected.v && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
+      else if (e.button === 0 && !isXSelected.v && !isXed(tiles.v[i][j])) {
         if (isSelectedColor(tiles.v[i][j])) changeColor(tiles.v[i][j], 0);
         else changeColor(tiles.v[i][j], colorsIndexer.v);
-      } else if (e.button === 2 && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
+      }
+      else if (e.button === 2 && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
     } else {
       if (e.button === 0 && !isSelectedColor(tiles.v[i][j])) changeColor(tiles.v[i][j], colorsIndexer.v);
       else deactivate(tiles.v[i][j]);
@@ -51,30 +54,29 @@
 
     if (numTilesEntered.v === 1) direction.v = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
 
+    const clickedTileCurrent: Tile = tiles.v[clickedTile.v.row][clickedTile.v.column];
     if (isGame.v) {
       if (direction.v === "above" || direction.v === "below") {
         const startIndex: number = Math.min(clickedTile.v.row, i);
         const endIndex: number = Math.max(clickedTile.v.row, i);
         for (let l: number = startIndex; l < endIndex + 1; l++) {
-          if (isLeftHeld.v && !isXed(tiles.v[l][clickedTile.v.column])) {
-            changeColor(tiles.v[l][clickedTile.v.column], tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex);
-          } else if (isRightHeld.v && !isActive(tiles.v[l][clickedTile.v.column])) {
-            tiles.v[l][clickedTile.v.column].Xed = tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
-          }
+          const columnTile: Tile = tiles.v[l][clickedTile.v.column];
+          if (isLeftHeld.v && isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
+          else if (isLeftHeld.v && !isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
+          else if (isRightHeld.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
         }
       } else {
         const startIndex: number = Math.min(clickedTile.v.column, j);
         const endIndex: number = Math.max(clickedTile.v.column, j);
         for (let m: number = startIndex; m < endIndex + 1; m++) {
-          if (isLeftHeld.v && !isXed(tiles.v[clickedTile.v.row][m])) {
-            changeColor(tiles.v[clickedTile.v.row][m], tiles.v[clickedTile.v.row][clickedTile.v.column].colorIndex);
-          } else if (isRightHeld.v && !isActive(tiles.v[clickedTile.v.row][m])) {
-            tiles.v[clickedTile.v.row][m].Xed = tiles.v[clickedTile.v.row][clickedTile.v.column].Xed;
-          }
+          const rowTile: Tile = tiles.v[clickedTile.v.row][m];
+          if (isLeftHeld.v && isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
+          else if (isLeftHeld.v && !isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
+          else if (isRightHeld.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
         }
       }
     } else {
-      if (isActive(tiles.v[clickedTile.v.row][clickedTile.v.column])) changeColor(tiles.v[i][j], colorsIndexer.v);
+      if (isActive(clickedTileCurrent)) changeColor(tiles.v[i][j], colorsIndexer.v);
       else deactivate(tiles.v[i][j]);
     }
   }

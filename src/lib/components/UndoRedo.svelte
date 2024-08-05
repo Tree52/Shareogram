@@ -35,11 +35,8 @@
 </div>
 
 <style lang="scss">
-  div {
-    display: flex;
-
-    button {
-      width: 6rem;
-    }
+  button {
+    height: 2rem;
+    padding: 0 10px;
   }
 </style>
