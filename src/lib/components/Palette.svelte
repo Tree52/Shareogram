@@ -1,11 +1,20 @@
 <script lang="ts">
-  import { colors, colorsIndexer, isChangeHashAllowed, isGame } from "$lib/refs.svelte";
+  import { colors, colorsIndexer, isChangeHashAllowed, isGame, bgColor } from "$lib/refs.svelte";
   import { checkTileColors, isMulticolor } from "$lib/main.svelte";
   import { getRandomHexColor } from "$lib/utils";
 </script>
 
 <div>
   <div>
+    <div>
+       <!-- prettier-ignore -->
+       <input
+         type="color"
+         onclick={(): void => { isChangeHashAllowed.v = false; }}
+         onchange={(): void => { isChangeHashAllowed.reset(); }}
+         bind:value={bgColor.v}
+       />
+     </div>
     <!-- eslint-disable-next-line -->
     {#each colors.v as unused, i}
       <div>
@@ -44,6 +53,7 @@
 
       div {
         flex-direction: column;
+        flex-wrap: wrap;
 
         input[type="color"],
         button {
