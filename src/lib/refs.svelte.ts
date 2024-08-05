@@ -1,4 +1,4 @@
-import { initializeTiles, encodeTiles, calculateRowHints, calculateColumnHints } from "$lib/main";
+import { initializeTiles, encodeTiles, calculateRowHints, calculateColumnHints } from "$lib/main.svelte";
 import { extractPropertyFrom2DArray } from "$lib/utils";
 
 export type Tile = {
@@ -6,7 +6,7 @@ export type Tile = {
   Xed: boolean;
 };
 
-type TilePosition = {
+export type TilePosition = {
   row: number;
   column: number;
 };

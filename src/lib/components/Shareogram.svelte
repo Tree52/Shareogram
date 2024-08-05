@@ -17,7 +17,7 @@
     tileWidth,
   } from "$lib/refs.svelte";
   import { getAdjacentDirection, letterToDec } from "$lib/utils";
-  import { isActive } from "$lib/main";
+  import { isActive } from "$lib/main.svelte";
 
   const isXed = (tile: Tile): boolean => tile.Xed;
   const isSelectedColor = (tile: Tile): boolean => tile.colorIndex === colorsIndexer.v;

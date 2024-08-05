@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tilesHistory, tilesHistoryIndexer, tiles } from "$lib/refs.svelte";
-  import { checkTileColors } from "$lib/main";
+  import { checkTileColors } from "$lib/main.svelte";
 
   function onkeydown(e: KeyboardEvent): void {
     if (e.key === "z") undo();

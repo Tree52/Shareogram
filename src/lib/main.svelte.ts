@@ -1,4 +1,4 @@
-import { type Tile, tiles, colors, type Hint, editorWidth, editorHeight } from "$lib/refs.svelte";
+import { type Tile, tiles, colors, type Hint, editorWidth, editorHeight, tilesHistory, tilesHistoryIndexer } from "$lib/refs.svelte";
 import { decToLetter, splitString, letterToDec } from "$lib/utils";
 
 export const isActive = (tile: Tile): boolean => tile.colorIndex !== 0;
@@ -112,4 +112,10 @@ export function decodeTiles(encodedTiles: string): Tile[][] {
   }
 
   return tiles;
+}
+
+export function saveTiles(): void {
+  if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1) tilesHistory.v.splice(tilesHistoryIndexer.v + 1);
+  tilesHistoryIndexer.v++;
+  tilesHistory.v.push($state.snapshot(tiles.v));
 }

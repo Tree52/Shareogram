@@ -14,7 +14,7 @@
     isChangeHashAllowed,
     tilesSolution,
   } from "$lib/refs.svelte";
-  import { decodeTiles } from "$lib/main";
+  import { decodeTiles, saveTiles } from "$lib/main.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
@@ -29,9 +29,7 @@
     if (e.button === 0) isLeftHeld.reset();
     else if (e.button === 2) isRightHeld.reset();
     if (clickedTile.v.row !== -1) {
-      if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1) tilesHistory.v.splice(tilesHistoryIndexer.v + 1);
-      tilesHistoryIndexer.v++;
-      tilesHistory.v.push($state.snapshot(tiles.v));
+      saveTiles();
     }
     clickedTile.reset();
     isChangeHashAllowed.reset();
@@ -92,7 +90,7 @@
     flex: 1;
     justify-content: safe center;
     margin: 10px;
-    padding: 20px;
     overflow: scroll;
+    padding: 20px;
   }
 </style>

@@ -10,7 +10,7 @@
     editorHeight,
     tileWidth,
   } from "$lib/refs.svelte";
-  import { checkTileColors, isMulticolor } from "$lib/main";
+  import { checkTileColors, isMulticolor } from "$lib/main.svelte";
   import { getRandomHexColor } from "$lib/utils";
 
   const MAX_TILE_WIDTH = 100;
@@ -23,7 +23,7 @@
 
   function onwheel(e: WheelEvent) {
     e.preventDefault();
-    if (e.deltaY < 0 && tileWidth.v < MAX_TILE_WIDTH) tileWidth.v += 5; 
+    if (e.deltaY < 0 && tileWidth.v < MAX_TILE_WIDTH) tileWidth.v += 5;
     else if (e.deltaY > 0 && tileWidth.v > MIN_TILE_WIDTH) tileWidth.v -= 5;
   }
 
