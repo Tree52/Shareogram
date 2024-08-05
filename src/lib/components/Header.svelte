@@ -3,7 +3,7 @@
   import { compare2DArrays } from "$lib/utils";
   import { initializeTiles } from "$lib/main";
 
-  const sanitizeNumberInput = (n: number): number => Math.max(0, Math.min(Number(String(n).replace(/[^0-9]/g, "")), 50));
+  const sanitizeNumberInput = (n: number): number => Math.max(0, Math.min(Number(String(n).replace(/[^0-9]/g, "")), 100));
 
   const win: boolean = $derived(compare2DArrays(tilesSolution.colorIndices, tiles.colorIndices));
 
