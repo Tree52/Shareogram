@@ -7,7 +7,6 @@ https://tree52.github.io/Shareogram/
 # Shortcuts
 
 - 1-9: Select color
-- x: Select x
 - y: Redo
 - z: Undo
 

@@ -5,9 +5,6 @@
     if (/^[1-9]$/.test(e.key) && Number(e.key) <= colors.v.length) {
       isXSelected.reset();
       colorsIndexer.v = Number(e.key) - 1;
-    } else if (e.key === "x" && isGame.v) {
-      isXSelected.v = true;
-      colorsIndexer.v = -1;
     }
   }
 </script>
