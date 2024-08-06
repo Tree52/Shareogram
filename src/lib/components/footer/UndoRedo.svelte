@@ -30,8 +30,8 @@
 <svelte:window {onkeydown} />
 
 <div>
-  <button onclick={undo}>Undo (z)</button>
-  <button onclick={redo}>Redo (y)</button>
+  <button onclick={undo}>Undo</button>
+  <button onclick={redo}>Redo</button>
 </div>
 
 <style lang="scss">
