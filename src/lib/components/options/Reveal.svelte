@@ -38,10 +38,4 @@
   }
 </script>
 
-<button onclick={revealATile}>Reveal A Tile</button>
-
-<style lang="scss">
-  button {
-    height: 80px;
-  }
-</style>
+<button onclick={revealATile}>Reveal Tile</button>

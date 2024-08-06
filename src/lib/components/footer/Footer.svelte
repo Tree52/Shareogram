@@ -15,16 +15,4 @@
     display: flex;
     justify-content: center;
   }
-
-  footer:global {
-    div {
-      div {
-        display: flex;
-
-        button {
-          flex: 1;
-        }
-      }
-    }
-  }
 </style>

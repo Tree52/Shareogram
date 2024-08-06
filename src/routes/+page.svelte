@@ -97,7 +97,7 @@
     flex: 1;
     justify-content: safe center;
     margin: 10px;
-    overflow: scroll;
+    overflow: auto;
     padding: 20px;
   }
 </style>

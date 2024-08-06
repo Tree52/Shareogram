@@ -6,6 +6,16 @@
 
 <div>
   <div>
+    {#if !isGame.v && isMulticolor()}
+      <!-- prettier-ignore -->
+      <button onclick={(): void => { colors.v.pop(); if(colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors() }}>-</button>
+    {/if}
+    {#if !isGame.v && colors.v.length < 16}
+      <!-- prettier-ignore -->
+      <button onclick={(): void => { colors.v.push(getRandomHexColor()); }}>+</button>
+    {/if}
+  </div>
+  <div>
     <!-- prettier-ignore -->
     <input
       type="color"
@@ -24,16 +34,6 @@
       />
     {/each}
   </div>
-  <div>
-    {#if !isGame.v && isMulticolor()}
-      <!-- prettier-ignore -->
-      <button onclick={(): void => { colors.v.pop(); if(colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors() }}>-</button>
-    {/if}
-    {#if !isGame.v && colors.v.length < 16}
-      <!-- prettier-ignore -->
-      <button onclick={(): void => { colors.v.push(getRandomHexColor()); }}>+</button>
-    {/if}
-  </div>
 </div>
 
 <style lang="scss">
@@ -42,10 +42,13 @@
       display: flex;
       flex-wrap: wrap;
 
-      input[type="color"],
-      button {
+      button,
+      input[type="color"] {
         flex: 1;
-        height: 3rem;
+      }
+
+      input[type="color"] {
+        height: 2rem;
         min-width: 3rem;
       }
     }

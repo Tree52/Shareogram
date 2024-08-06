@@ -33,7 +33,7 @@
     clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, row: i, column: j };
     isChangeHashAllowed.v = false;
     numTilesEntered.reset();
-    
+
     // prettier-ignore
     if (isGame.v) {
       if (e.button === 0 && isXSelected.v && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);

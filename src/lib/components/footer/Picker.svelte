@@ -13,6 +13,7 @@
 </script>
 
 <div>
+  <!-- eslint-disable-next-line -->
   {#each colors.v as unused, i}
     <!-- prettier-ignore -->
     <button
@@ -27,7 +28,7 @@
     <!-- prettier-ignore -->
     <button
       onclick={(): void => { isXSelected.v = true; colorsIndexer.v = -1 }}
-      style:border={isXSelected.v ? "solid 2px black" : "solid 2px white"}
+      style:border={isXSelected.v ? `solid 2px ${colors.v[1]}` : "solid 2px ButtonFace"}
       style:--max-h={colors.v.length > 4 ? "2rem" : "6rem"}
     >X</button>
   {/if}
@@ -37,12 +38,15 @@
 
 <style lang="scss">
   div {
+    display: flex;
     flex-wrap: wrap;
 
     button {
       aspect-ratio: 1/1;
+      flex: 1;
       max-height: var(--max-h);
       min-height: 2rem;
+      padding: 0;
     }
   }
 </style>

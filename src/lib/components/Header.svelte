@@ -1,12 +1,18 @@
 <script lang="ts">
-  import { isGame, win, sidebarOn } from "$lib/refs.svelte";
+  import { isGame, win, sidebarOn, tiles, tilesSolution } from "$lib/refs.svelte";
+  import { newEditor } from "$lib/main.svelte";
+  import Reveal from "$lib/components/options/Reveal.svelte";
 </script>
 
-<header>
+<header style:justify-content={isGame.v ? "space-between" : "center"}>
   <!-- prettier-ignore -->
-  <button onclick={(): void => { sidebarOn.v = !sidebarOn.v; }}>Options</button>
+  <button style:margin-right="4px" onclick={(): void => { sidebarOn.v = !sidebarOn.v; }}>Options</button>
   {#if isGame.v}
-    <span>{win.v ? "You win" : "Keep trying"}</span>
+    <span>{win.v ? "You win!" : "Keep trying"}</span>
+    <Reveal />
+  {:else}
+    <!-- prettier-ignore -->
+    <button onclick={(): void => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(); }}>Start Game</button>
   {/if}
 </header>
 
@@ -14,27 +20,5 @@
   header {
     align-items: center;
     display: flex;
-    justify-content: center;
-
-    button,
-    input[type="text"] {
-      height: 3rem;
-      padding: 0 16px;
-    }
-  }
-
-  span {
-    font-size: 1.25rem;
-    margin-left: 0.5rem;
-  }
-
-  input[type="text"] {
-    padding: 0;
-    text-align: center;
-    width: 2rem;
-
-    &:focus {
-      outline: none;
-    }
   }
 </style>
