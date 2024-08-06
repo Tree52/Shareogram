@@ -7,25 +7,22 @@
   import Start from "$lib/components/options/Start.svelte";
 </script>
 
-{#if sidebarOn.v}
-  <div>
-    <!-- prettier-ignore -->
-    <button style:height="5rem" onclick={(): void => { sidebarOn.reset() }}>Close Options</button>
-    <Start />
-    <Border />
-    <Scale />
-    <Palette />
-    {#if isGame.v}
-      <Reveal />
-    {/if}
-  </div>
-{/if}
+<div style:display={sidebarOn.v ? "flex" : "none"}>
+  <!-- prettier-ignore -->
+  <button style:height="5rem" onclick={(): void => { sidebarOn.reset() }}>Close Options</button>
+  <Start />
+  <Border />
+  <Scale />
+  <Palette />
+  {#if isGame.v}
+    <Reveal />
+  {/if}
+</div>
 
 <style lang="scss">
   div {
     background-color: white;
     bottom: 0;
-    display: flex;
     flex-direction: column;
     position: absolute;
     right: 0;
