@@ -36,7 +36,7 @@
 
 <style lang="scss">
   button {
-    height: 2rem;
+    height: 3rem;
     padding: 0 10px;
   }
 </style>

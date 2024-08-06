@@ -18,8 +18,8 @@
 
     button,
     input[type="text"] {
-      height: 2rem;
-      padding: 0 10px;
+      height: 3rem;
+      padding: 0 16px;
     }
   }
 

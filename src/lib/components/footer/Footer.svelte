@@ -1,6 +1,6 @@
 <script lang="ts">
-  import UndoRedo from "$lib/components/UndoRedo.svelte";
-  import Picker from "$lib/components/Picker.svelte";
+  import UndoRedo from "$lib/components/footer/UndoRedo.svelte";
+  import Picker from "$lib/components/footer/Picker.svelte";
 </script>
 
 <footer>

@@ -15,8 +15,8 @@
   } from "$lib/refs.svelte";
   import { decodeTiles, saveTiles } from "$lib/main.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
-  import Options from "$lib/components/Options.svelte";
-  import Footer from "$lib/components/Footer.svelte";
+  import Options from "$lib/components/options/Options.svelte";
+  import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
   import "$lib/../global.scss";
 
@@ -67,6 +67,11 @@
 
   // prettier-ignore
   $effect(() => { if (isChangeHashAllowed.v) window.location.hash = hash; });
+
+  $effect(() => {
+    document.body.style.backgroundColor = bgColor.v;
+    document.body.style.color = colors.v[0];
+  });
 </script>
 
 <svelte:head>
