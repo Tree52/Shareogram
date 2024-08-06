@@ -6,6 +6,8 @@ https://tree52.github.io/Shareogram/
 
 # Shortcuts
 
+- Right Click: Deletes or Xes
+- Scroll: Zoom in/out
 - 1-9: Select color
 - y: Redo
 - z: Undo
