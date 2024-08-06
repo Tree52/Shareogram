@@ -30,20 +30,23 @@
   function negateXed(tile: Tile): void { tile.Xed = !tile.Xed; }
 
   function handleMouseDown(e: MouseEvent, i: number, j: number): void {
+    clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, row: i, column: j };
+    isChangeHashAllowed.v = false;
+    numTilesEntered.reset();
+    
+    // prettier-ignore
     if (isGame.v) {
       if (e.button === 0 && isXSelected.v && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
       else if (e.button === 0 && !isXSelected.v && !isXed(tiles.v[i][j])) {
         if (isSelectedColor(tiles.v[i][j])) changeColor(tiles.v[i][j], 0);
         else changeColor(tiles.v[i][j], colorsIndexer.v);
-      } else if (e.button === 2 && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
+      }
+      else if (e.button === 2 && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
+      else if (e.button === 2 && isActive(tiles.v[i][j])) deactivate(tiles.v[i][j]);
     } else {
       if (e.button === 0 && !isSelectedColor(tiles.v[i][j])) changeColor(tiles.v[i][j], colorsIndexer.v);
       else deactivate(tiles.v[i][j]);
     }
-
-    isChangeHashAllowed.v = false;
-    clickedTile.v = { row: i, column: j };
-    numTilesEntered.reset();
   }
 
   function handleMouseEnter(i: number, j: number): void {
@@ -60,9 +63,12 @@
         const endIndex: number = Math.max(clickedTile.v.row, i);
         for (let l: number = startIndex; l < endIndex + 1; l++) {
           const columnTile: Tile = tiles.v[l][clickedTile.v.column];
+          // Testing hash: #1-9-2-476fb8-f8fafc-020617-1e52fa-1c1a1x1c1a1x1c1a1x3c3a3x-18a
           if (isLeftHeld.v && isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
           else if (isLeftHeld.v && !isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
-          else if (isRightHeld.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
+          else if (isRightHeld.v && clickedTile.v.Xed && !isActive(columnTile)) columnTile.Xed = false;
+          else if (isRightHeld.v && clickedTile.v.colorIndex === 0 && !isActive(columnTile)) columnTile.Xed = true;
+          else if (isRightHeld.v && clickedTile.v.colorIndex !== 0 && !isXed(columnTile)) deactivate(columnTile);
         }
       } else {
         const startIndex: number = Math.min(clickedTile.v.column, j);
@@ -71,7 +77,9 @@
           const rowTile: Tile = tiles.v[clickedTile.v.row][m];
           if (isLeftHeld.v && isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
           else if (isLeftHeld.v && !isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
-          else if (isRightHeld.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
+          else if (isRightHeld.v && clickedTile.v.Xed && !isActive(rowTile)) rowTile.Xed = false;
+          else if (isRightHeld.v && clickedTile.v.colorIndex === 0 && !isActive(rowTile)) rowTile.Xed = true;
+          else if (isRightHeld.v && clickedTile.v.colorIndex !== 0 && !isXed(rowTile)) deactivate(rowTile);
         }
       }
     } else {

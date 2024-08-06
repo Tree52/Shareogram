@@ -11,6 +11,8 @@ export type TilePosition = {
   column: number;
 };
 
+type ClickedTile = Tile & TilePosition;
+
 type Ref<T> = {
   v: T;
   reset: () => void;
@@ -83,7 +85,7 @@ export const tilesHistoryIndexer: Ref<number> = ref<number>(0);
 export const isLeftHeld: Ref<boolean> = ref<boolean>(false);
 export const isRightHeld: Ref<boolean> = ref<boolean>(false);
 export const isGame: Ref<boolean> = ref<boolean>(false);
-export const clickedTile: Ref<TilePosition> = ref<TilePosition>({ row: -1, column: -1 });
+export const clickedTile: Ref<ClickedTile> = ref<ClickedTile>({ colorIndex: -1, Xed: false, row: -1, column: -1 });
 export const direction: Ref<string> = ref<string>("");
 export const numTilesEntered: Ref<number> = ref<number>(0);
 export const borderOn: Ref<number> = ref<number>(1);
