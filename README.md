@@ -4,6 +4,13 @@ A Nonogram/Picross/Paint-by-Numbers-like editor/player website with shareable UR
 
 https://tree52.github.io/Shareogram/
 
+# Shortcuts
+
+- 1-9: Select color
+- x: Select x
+- y: Redo
+- z: Undo
+
 # Viewing Dev Build (possibly broken)
 
 ```
