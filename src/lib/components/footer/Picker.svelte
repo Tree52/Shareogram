@@ -26,7 +26,7 @@
   {#if isGame.v}
     <!-- prettier-ignore -->
     <button
-      onclick={(): void => { isXSelected.v = true }}
+      onclick={(): void => { isXSelected.v = true; colorsIndexer.v = -1 }}
       style:border={isXSelected.v ? "solid 2px black" : "solid 2px white"}
       style:--max-h={colors.v.length > 4 ? "2rem" : "6rem"}
     >X</button>
