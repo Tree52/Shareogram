@@ -143,6 +143,7 @@
             style:text-align="center"
             style:border-top={borderOn.v === 0 ? "0" : (i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `solid 4px ${colors.v[1]}` : `solid 2px ${bgColor.v}`)}
             style:border-left={borderOn.v === 0 ? "0" : (j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `solid 4px ${colors.v[1]}` : `solid 2px ${bgColor.v}`)}
+            style:transition="background-color .5s"
           >{isXed(tiles.v[i][j]) ? "X" : ""}</td>
         {/each}
       </tr>
