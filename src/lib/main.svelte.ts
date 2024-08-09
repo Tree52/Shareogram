@@ -9,7 +9,7 @@ import {
   tilesHistoryIndexer,
   isXSelected,
 } from "$lib/refs.svelte";
-import { decToLetter, splitString, letterToDec } from "$lib/utils";
+import { decToLetter, splitString, letterToDec, isValidHexColor } from "$lib/utils";
 
 export const isActive = (tile: Tile): boolean => tile.colorIndex !== 0;
 
@@ -137,4 +137,42 @@ export function newEditor(): void {
   tilesHistory.v[0] = $state.snapshot(tiles.v);
   tilesHistoryIndexer.reset();
   isXSelected.reset();
+}
+
+function isValidEncode(hash: string): boolean {
+  // Regular expression to match the valid pattern (number followed by letter)
+  const regex = /(\d{1,5}[a-ox])/g; // Allow numbers with up to 5 digits (to include 10000)
+  const matches = hash.match(regex);
+
+  // If the whole string doesn't match the pattern, return false
+  if (!matches || matches.join("") !== hash) return false;
+
+  // Verify the numeric parts are within the range 1-10000
+  for (let i = 0; i < matches.length; i++) {
+    const match = matches[i];
+    const numberPart = parseInt(match.slice(0, -1));
+    if (numberPart < 1 || numberPart > 10000) return false;
+  }
+
+  return true;
+}
+
+export function isValidHash(hash: string[]): boolean {
+  if (hash.length < 7 || hash.length > 22) return false;
+  if (hash[0] !== "0" && hash[0] !== "1") return false;
+
+  const isGame: boolean = Boolean(Number(hash[0]));
+  const editorWidth: number = Number(hash[1]);
+  const editorHeight: number = Number(hash[2]);
+
+  if (editorWidth < 1 || editorWidth > 100 || editorHeight < 1 || editorHeight > 100) return false;
+  if (!isValidHexColor(hash[3])) return false;
+
+  const scrapedColors: string[] = isGame ? hash.slice(4, -2) : hash.slice(4, -1);
+  for (let i: number = 0; i < scrapedColors.length; i++) if (!isValidHexColor(scrapedColors[i])) return false;
+
+  if (!isValidEncode(hash[isGame ? hash.length - 2 : hash.length - 1])) return false;
+  if (isGame && !isValidEncode(hash[hash.length - 1])) return false;
+
+  return true;
 }
