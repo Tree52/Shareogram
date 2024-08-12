@@ -9,6 +9,7 @@ https://tree52.github.io/Shareogram/
 - Right Click: Deletes or Xes
 - Scroll: Zoom in/out
 - 1-9: Select color
+- x: Select X
 - y: Redo
 - z: Undo
 
