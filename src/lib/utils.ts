@@ -55,12 +55,9 @@ export function isValidHexColor(color: string): boolean {
   return hexRegex.test(color);
 }
 
-function hexToRGB(hex: string): [number, number, number] | null {
-  const bigint = parseInt(hex.slice(1), 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-  return [r, g, b];
+function hexToRGB(hex: string): [number, number, number] {
+  const bigint = parseInt(hex.replace("#", ""), 16);
+  return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
 }
 
 export function generatePNG(array: number[][], colorMap: string[], callback: (dataUrl: string) => void): void {
@@ -103,11 +100,6 @@ export function importPNG(file: File, callback: (array: number[][], colorMap: st
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      if (img.width > 100 || img.height > 100) {
-        alert("Error: Image dimensions must be at most 100x100 pixels.");
-        return;
-      }
-
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       if (ctx) {
@@ -118,6 +110,7 @@ export function importPNG(file: File, callback: (array: number[][], colorMap: st
         const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
         const colorMap: string[] = [];
         const array: number[][] = [];
+        const tolerance = 10; // Define your tolerance level for color similarity
 
         for (let y = 0; y < img.height; y++) {
           const row: number[] = [];
@@ -126,18 +119,9 @@ export function importPNG(file: File, callback: (array: number[][], colorMap: st
             const r = imageData[index];
             const g = imageData[index + 1];
             const b = imageData[index + 2];
-            const a = imageData[index + 3];
-            const hexColor = rgbaToHex(r, g, b, a);
+            const hexColor = rgbToHex(r, g, b);
 
-            let colorIndex = colorMap.indexOf(hexColor);
-            if (colorIndex === -1) {
-              if (colorMap.length >= 16) {
-                alert("Error: Image must not contain more than 16 unique colors.");
-                return;
-              }
-              colorMap.push(hexColor);
-              colorIndex = colorMap.length - 1;
-            }
+            const colorIndex = addColorToMap(hexColor, colorMap, tolerance);
             row.push(colorIndex);
           }
           array.push(row);
@@ -151,12 +135,25 @@ export function importPNG(file: File, callback: (array: number[][], colorMap: st
   reader.readAsDataURL(file);
 }
 
-function rgbaToHex(r: number, g: number, b: number, a: number): string {
-  return (
-    "#" +
-    [r, g, b, a]
-      .map((x) => x.toString(16).padStart(2, "0"))
-      .join("")
-      .slice(0, 6)
-  );
+function colorsAreSimilar(color1: [number, number, number], color2: [number, number, number], tolerance: number): boolean {
+  const [r1, g1, b1] = color1;
+  const [r2, g2, b2] = color2;
+
+  const distance = Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2);
+
+  return distance <= tolerance;
+}
+
+function rgbToHex(r: number, g: number, b: number): string {
+  return "#" + [r, g, b].map((x) => Math.round(x).toString(16).padStart(2, "0")).join("");
+}
+
+function addColorToMap(hexColor: string, colorMap: string[], tolerance: number): number {
+  const color = hexToRGB(hexColor);
+  for (let i = 0; i < colorMap.length; i++) {
+    const existingColor = hexToRGB(colorMap[i]);
+    if (colorsAreSimilar(color, existingColor, tolerance)) return i;
+  }
+  colorMap.push(hexColor);
+  return colorMap.length - 1;
 }
