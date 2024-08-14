@@ -17,7 +17,7 @@
     tileWidth,
     isXSelected,
   } from "$lib/refs.svelte";
-  import { getAdjacentDirection, letterToDec } from "$lib/utils";
+  import { getAdjacentDirection, lettersToNum } from "$lib/utils";
   import { isActive } from "$lib/main.svelte";
 
   const isXed = (tile: Tile): boolean => tile.Xed;
@@ -98,7 +98,7 @@
         {#each { length: tiles.numColumns } as unused, i}
           <th>
             {#each tilesSolution.columnHints[i] as columnHint}
-              <div style:font-size={tileWidth.v / 1.5 + "px"} style:color={colors.v[letterToDec(columnHint.color)]}>
+              <div style:font-size={tileWidth.v / 1.5 + "px"} style:color={colors.v[lettersToNum(columnHint.color)]}>
                 {columnHint.count}
               </div>
             {/each}
@@ -122,7 +122,7 @@
                 style:min-width={tileWidth.v + "px"}
                 style:height={tileWidth.v + "px"}
                 style:font-size={tileWidth.v / 1.5 + "px"}
-                style:color={colors.v[letterToDec(rowHint.color)]}
+                style:color={colors.v[lettersToNum(rowHint.color)]}
               >
                 {rowHint.count}
               </div>

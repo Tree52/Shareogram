@@ -6,11 +6,11 @@
 
 <div>
   <div>
-    {#if !isGame.v && isMulticolor()}
-      <!-- prettier-ignore -->
-      <button onclick={(): void => { colors.v.pop(); if(colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors() }}>-</button>
-    {/if}
-    {#if !isGame.v && colors.v.length < 16}
+    {#if !isGame.v}
+      {#if isMulticolor()}
+        <!-- prettier-ignore -->
+        <button onclick={(): void => { colors.v.pop(); if(colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors() }}>-</button>
+      {/if}
       <!-- prettier-ignore -->
       <button onclick={(): void => { colors.v.push(getRandomHexColor()); }}>+</button>
     {/if}

@@ -23,12 +23,32 @@ export function extractPropertyFrom2DArray<T, K extends keyof T>(items: T[][], p
   return items.map((innerArray) => innerArray.map((item) => item[property]));
 }
 
-export const decToLetter = (dec: number): string => String.fromCharCode(97 + dec);
+export function numToLetters(num: number): string {
+  if (num < 0) throw new Error("Input must be a non-negative integer");
 
-export const letterToDec = (l: string): number => l.charCodeAt(0) - 97;
+  let letters = "";
+  do {
+    letters = String.fromCharCode(97 + (num % 26)) + letters;
+    num = Math.floor(num / 26) - 1;
+  } while (num >= 0);
+
+  return letters;
+}
+
+export function lettersToNum(letters: string): number {
+  if (!/^[a-z]+$/.test(letters)) throw new Error("Input must only contain lowercase letters");
+
+  let num = 0;
+  for (let i = 0; i < letters.length; i++) {
+    const charCode = letters.charCodeAt(i) - 97;
+    num = num * 26 + charCode + 1;
+  }
+
+  return num - 1;
+}
 
 export function splitString(input: string): { numbers: number[]; letters: string[] } {
-  const splitString: RegExpMatchArray | null = input.match(/(\d+|[a-z])/g);
+  const splitString: RegExpMatchArray | null = input.match(/(\d+|[a-zX]+)/g);
   const numbers: number[] = [];
   const letters: string[] = [];
 

@@ -2,7 +2,7 @@
   import { editorWidth, editorHeight, isGame } from "$lib/refs.svelte";
   import { newEditor } from "$lib/main.svelte";
 
-  const sanitizeNumberInput = (n: number): number => Math.max(0, Math.min(Number(String(n).replace(/[^0-9]/g, "")), 100));
+  const sanitizeNumberInput = (n: number): number => Math.max(0, Number(String(n).replace(/[^0-9]/g, "")));
 </script>
 
 <div>

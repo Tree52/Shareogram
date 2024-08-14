@@ -9,7 +9,7 @@ import {
   tilesHistoryIndexer,
   isXSelected,
 } from "$lib/refs.svelte";
-import { decToLetter, splitString, letterToDec, isValidHexColor } from "$lib/utils";
+import { numToLetters, splitString, lettersToNum, isValidHexColor } from "$lib/utils";
 
 export const isActive = (tile: Tile): boolean => tile.colorIndex !== 0;
 
@@ -45,7 +45,7 @@ export function calculateRowHints(tiles: Tile[][]): Hint[][] {
       if (isActive(tiles[row][column])) {
         const previousColorIndex: number | null = column === 0 ? null : tiles[row][column - 1].colorIndex;
         const currentColorIndex: number = tiles[row][column].colorIndex;
-        if (previousColorIndex !== currentColorIndex) rowHints[row].push({ count: 1, color: decToLetter(currentColorIndex) });
+        if (previousColorIndex !== currentColorIndex) rowHints[row].push({ count: 1, color: numToLetters(currentColorIndex) });
         else rowHints[row][rowHints[row].length - 1].count++;
       }
     }
@@ -66,7 +66,7 @@ export function calculateColumnHints(tiles: Tile[][]): Hint[][] {
       if (isActive(tiles[row][column])) {
         const previousColorIndex: number | null = row === 0 ? null : tiles[row - 1][column].colorIndex;
         const currentColorIndex: number = tiles[row][column].colorIndex;
-        if (previousColorIndex !== currentColorIndex) columnHints[column].push({ count: 1, color: decToLetter(currentColorIndex) });
+        if (previousColorIndex !== currentColorIndex) columnHints[column].push({ count: 1, color: numToLetters(currentColorIndex) });
         else columnHints[column][columnHints[column].length - 1].count++;
       }
     }
@@ -89,7 +89,7 @@ export function encodeTiles(tiles: Tile[][]): string {
         const prevTile: Tile = j === 0 ? tiles[i - 1][numColumns - 1] : tiles[i][j - 1];
         if (prevTile.colorIndex === tiles[i][j].colorIndex && prevTile.Xed === tiles[i][j].Xed) count++;
         else {
-          encoded += count + (prevTile.Xed ? "x" : decToLetter(prevTile.colorIndex));
+          encoded += count + (prevTile.Xed ? "X" : numToLetters(prevTile.colorIndex));
           count = 1;
         }
       }
@@ -97,7 +97,7 @@ export function encodeTiles(tiles: Tile[][]): string {
   }
 
   const lastTile: Tile = tiles[numRows - 1][numColumns - 1];
-  encoded += count + (lastTile.Xed ? "x" : decToLetter(lastTile.colorIndex));
+  encoded += count + (lastTile.Xed ? "X" : numToLetters(lastTile.colorIndex));
   return encoded;
 }
 
@@ -111,8 +111,8 @@ export function decodeTiles(encodedTiles: string): Tile[][] {
 
   for (let i: number = 0; i < split.numbers.length; i++) {
     for (let j: number = 0; j < split.numbers[i]; j++) {
-      if (split.letters[i] === "x") tiles[row][column++] = { colorIndex: 0, Xed: true };
-      else tiles[row][column++] = { colorIndex: letterToDec(split.letters[i]), Xed: false };
+      if (split.letters[i] === "X") tiles[row][column++] = { colorIndex: 0, Xed: true };
+      else tiles[row][column++] = { colorIndex: lettersToNum(split.letters[i]), Xed: false };
 
       if (column > editorWidth.v - 1) {
         row++;
@@ -140,32 +140,31 @@ export function newEditor(): void {
 }
 
 function isValidEncode(hash: string): boolean {
-  // Regular expression to match the valid pattern (number followed by letter)
-  const regex = /(\d{1,5}[a-ox])/g; // Allow numbers with up to 5 digits (to include 10000)
+  // Regular expression to match the valid pattern
+  const regex = /(\d+[a-z]+)/g;
   const matches = hash.match(regex);
 
   // If the whole string doesn't match the pattern, return false
   if (!matches || matches.join("") !== hash) return false;
 
-  // Verify the numeric parts are within the range 1-10000
+  // Verify the numeric parts are greater than 0.
   for (let i = 0; i < matches.length; i++) {
     const match = matches[i];
     const numberPart = parseInt(match.slice(0, -1));
-    if (numberPart < 1 || numberPart > 10000) return false;
+    if (numberPart < 1) return false;
   }
 
   return true;
 }
 
 export function isValidHash(hash: string[]): boolean {
-  if (hash.length < 7 || hash.length > 22) return false;
   if (hash[0] !== "0" && hash[0] !== "1") return false;
 
   const isGame: boolean = Boolean(Number(hash[0]));
   const editorWidth: number = Number(hash[1]);
   const editorHeight: number = Number(hash[2]);
 
-  if (editorWidth < 1 || editorWidth > 100 || editorHeight < 1 || editorHeight > 100) return false;
+  if (editorWidth < 1 || editorHeight < 1) return false;
   if (!isValidHexColor(hash[3])) return false;
 
   const scrapedColors: string[] = isGame ? hash.slice(4, -2) : hash.slice(4, -1);

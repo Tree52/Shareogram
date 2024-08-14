@@ -22,7 +22,7 @@
 			style:border={i === colorsIndexer.v ? (i === 0 ? `solid 2px ${colors.v[1]}` : `solid 2px ${colors.v[0]}`) : `solid 2px ${colors.v[i]}`}
 			style:--max-h={colors.v.length > 4 ? "2rem" : "6rem"}
 			onclick={(): void => { colorsIndexer.v = i; isXSelected.reset() }}
-		>{i < 9 ? i + 1 : ""}</button>
+		>{i + 1}</button>
   {/each}
   {#if isGame.v}
     <!-- prettier-ignore -->
