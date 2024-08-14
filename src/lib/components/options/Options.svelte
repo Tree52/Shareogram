@@ -1,12 +1,16 @@
 <script lang="ts">
-  import { sidebarOn } from "$lib/refs.svelte";
+  import { isGame, sidebarOn } from "$lib/refs.svelte";
   import Palette from "$lib/components/options/Palette.svelte";
   import Border from "$lib/components/options/Border.svelte";
   import Scale from "$lib/components/options/Scale.svelte";
   import GameSettings from "$lib/components/options/GameSettings.svelte";
+  import ExportPNG from "$lib/components/options/ExportPNG.svelte";
 </script>
 
 <div style:display={sidebarOn.v ? "flex" : "none"}>
+  {#if !isGame.v}
+    <ExportPNG />
+  {/if}
   <GameSettings />
   <Palette />
   <Border />

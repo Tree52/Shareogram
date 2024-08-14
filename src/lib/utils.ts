@@ -54,3 +54,46 @@ export function isValidHexColor(color: string): boolean {
   const hexRegex = /^#?([a-fA-F0-9]{6})$/;
   return hexRegex.test(color);
 }
+
+function hexToRGB(hex: string): [number, number, number] | null {
+  const bigint = parseInt(hex.slice(1), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return [r, g, b];
+}
+
+export function generatePNG(array: number[][], colorMap: string[], callback: (dataUrl: string) => void): void {
+  const width = array[0].length;
+  const height = array.length;
+
+  // Create an off-screen canvas
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    const imageData = ctx.createImageData(width, height);
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const hexColor = colorMap[array[y][x]];
+        const rgb = hexToRGB(hexColor);
+        if (rgb) {
+          const [r, g, b] = rgb;
+          const index = (y * width + x) * 4;
+          imageData.data[index] = r;
+          imageData.data[index + 1] = g;
+          imageData.data[index + 2] = b;
+          imageData.data[index + 3] = 255; // Full opacity
+        }
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+    // Export as a data URL (base64)
+    const dataUrl = canvas.toDataURL("image/png");
+    callback(dataUrl);
+  }
+}
