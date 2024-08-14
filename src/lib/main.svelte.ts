@@ -141,7 +141,7 @@ export function newEditor(): void {
 
 function isValidEncode(hash: string): boolean {
   // Regular expression to match the valid pattern
-  const regex = /(\d+[a-z]+)/g;
+  const regex = /(\d+[a-zX]+)/g;
   const matches = hash.match(regex);
 
   // If the whole string doesn't match the pattern, return false
