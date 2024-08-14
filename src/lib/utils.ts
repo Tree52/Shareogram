@@ -97,3 +97,66 @@ export function generatePNG(array: number[][], colorMap: string[], callback: (da
     callback(dataUrl);
   }
 }
+
+export function importPNG(file: File, callback: (array: number[][], colorMap: string[]) => void): void {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      if (img.width > 100 || img.height > 100) {
+        alert("Error: Image dimensions must be at most 100x100 pixels.");
+        return;
+      }
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
+        const colorMap: string[] = [];
+        const array: number[][] = [];
+
+        for (let y = 0; y < img.height; y++) {
+          const row: number[] = [];
+          for (let x = 0; x < img.width; x++) {
+            const index = (y * img.width + x) * 4;
+            const r = imageData[index];
+            const g = imageData[index + 1];
+            const b = imageData[index + 2];
+            const a = imageData[index + 3];
+            const hexColor = rgbaToHex(r, g, b, a);
+
+            let colorIndex = colorMap.indexOf(hexColor);
+            if (colorIndex === -1) {
+              if (colorMap.length >= 16) {
+                alert("Error: Image must not contain more than 16 unique colors.");
+                return;
+              }
+              colorMap.push(hexColor);
+              colorIndex = colorMap.length - 1;
+            }
+            row.push(colorIndex);
+          }
+          array.push(row);
+        }
+
+        callback(array, colorMap);
+      }
+    };
+    img.src = e.target?.result as string;
+  };
+  reader.readAsDataURL(file);
+}
+
+function rgbaToHex(r: number, g: number, b: number, a: number): string {
+  return (
+    "#" +
+    [r, g, b, a]
+      .map((x) => x.toString(16).padStart(2, "0"))
+      .join("")
+      .slice(0, 6)
+  );
+}

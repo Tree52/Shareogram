@@ -4,11 +4,13 @@
   import Border from "$lib/components/options/Border.svelte";
   import Scale from "$lib/components/options/Scale.svelte";
   import GameSettings from "$lib/components/options/GameSettings.svelte";
+  import ImportPNG from "$lib/components/options/ImportPNG.svelte";
   import ExportPNG from "$lib/components/options/ExportPNG.svelte";
 </script>
 
 <div style:display={sidebarOn.v ? "flex" : "none"}>
   {#if !isGame.v}
+    <ImportPNG />
     <ExportPNG />
   {/if}
   <GameSettings />
