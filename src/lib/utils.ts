@@ -115,7 +115,7 @@ export function generatePNG(array: number[][], colorMap: string[], callback: (da
   }
 }
 
-export function importPNG(file: File, callback: (array: number[][], colorMap: string[]) => void): void {
+export function importPNG(file: File, tolerance: number, callback: (array: number[][], colorMap: string[]) => void): void {
   const reader = new FileReader();
   reader.onload = (e) => {
     const img = new Image();
@@ -130,7 +130,6 @@ export function importPNG(file: File, callback: (array: number[][], colorMap: st
         const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
         const colorMap: string[] = [];
         const array: number[][] = [];
-        const tolerance = 10; // Define your tolerance level for color similarity
 
         for (let y = 0; y < img.height; y++) {
           const row: number[] = [];

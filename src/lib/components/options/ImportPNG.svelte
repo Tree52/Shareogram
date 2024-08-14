@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { tiles, colors, editorWidth, editorHeight, tilesHistory, colorsIndexer } from "$lib/refs.svelte";
+  import { tiles, colors, editorWidth, editorHeight, tilesHistory, colorsIndexer, tolerance } from "$lib/refs.svelte";
   import { initializeTiles } from "$lib/main.svelte";
   import { importPNG } from "$lib/utils";
 
-  function onchange(e: Event) {
-    const input = e.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      importPNG(input.files[0], (array, colorMap) => {
+  let files: FileList | undefined = $state();
+
+  $effect(() => {
+    if (files) {
+      importPNG(files[0], tolerance.v, (array, colorMap) => {
         editorWidth.v = array[0].length;
         editorHeight.v = array.length;
         tiles.v = initializeTiles();
@@ -18,11 +19,14 @@
         colorsIndexer.v = 0;
       });
     }
-  }
+  });
 </script>
 
 <label for="file-upload">Upload PNG</label>
-<input type="file" id="file-upload" accept="image/png" {onchange} />
+<input type="file" id="file-upload" accept="image/png" bind:files />
+{#if files}
+  <input type="range" bind:value={tolerance.v} min="10" max="442" />
+{/if}
 
 <style lang="scss">
   input[type="file"] {
