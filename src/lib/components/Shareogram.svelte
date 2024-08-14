@@ -45,7 +45,7 @@
       else if (e.button === 2 && isActive(tiles.v[i][j])) deactivate(tiles.v[i][j]);
     } else {
       if (e.button === 0 && !isSelectedColor(tiles.v[i][j])) changeColor(tiles.v[i][j], colorsIndexer.v);
-      else deactivate(tiles.v[i][j]);
+      else if (e.button === 2) deactivate(tiles.v[i][j]);
     }
   }
 
