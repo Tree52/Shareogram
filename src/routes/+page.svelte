@@ -2,7 +2,6 @@
   import {
     isLeftHeld,
     isRightHeld,
-    clickedTile,
     tiles,
     tilesHistory,
     editorWidth,
@@ -13,26 +12,21 @@
     isChangeHashAllowed,
     tilesSolution,
   } from "$lib/refs.svelte";
-  import { decodeTiles, saveTiles, isValidHash } from "$lib/main.svelte";
+  import { decodeTiles, isValidHash } from "$lib/main.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
   import Options from "$lib/components/options/Options.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
   import "$lib/../global.css";
 
-  function onmousedown(e: MouseEvent) {
+  function onmousedown(e: MouseEvent): void {
     if (e.button === 0) isLeftHeld.v = true;
     else if (e.button === 2) isRightHeld.v = true;
   }
 
-  function onmouseup(e: MouseEvent) {
+  function onmouseup(e: MouseEvent): void {
     if (e.button === 0) isLeftHeld.reset();
     else if (e.button === 2) isRightHeld.reset();
-    if (clickedTile.v.row !== -1) {
-      saveTiles();
-    }
-    clickedTile.reset();
-    isChangeHashAllowed.reset();
   }
 
   let importFlag: boolean = true;

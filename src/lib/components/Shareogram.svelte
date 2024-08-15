@@ -49,6 +49,10 @@
     }
   }
 
+  function onmouseup(): void {
+    isChangeHashAllowed.reset();
+  }
+
   function handleMouseEnter(i: number, j: number): void {
     if ((!isLeftHeld.v && !isRightHeld.v) || (isLeftHeld.v && isRightHeld.v) || clickedTile.v.row === -1) return;
 
@@ -147,6 +151,8 @@
     {/each}
   </tbody>
 </table>
+
+<svelte:window {onmouseup} />
 
 <style>
   th {

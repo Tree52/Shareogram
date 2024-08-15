@@ -1,6 +1,11 @@
 <script lang="ts">
-  import { tilesHistory, tilesHistoryIndexer, tiles } from "$lib/refs.svelte";
-  import { checkTileColors } from "$lib/main.svelte";
+  import { tilesHistory, tilesHistoryIndexer, tiles, clickedTile } from "$lib/refs.svelte";
+  import { checkTileColors, saveTiles } from "$lib/main.svelte";
+
+  function onmouseup(): void {
+    if (clickedTile.v.row !== -1) saveTiles();
+    clickedTile.reset();
+  }
 
   function onkeydown(e: KeyboardEvent): void {
     if (e.key === "z") undo();
@@ -27,7 +32,7 @@
   }
 </script>
 
-<svelte:window {onkeydown} />
+<svelte:window {onkeydown} {onmouseup} />
 
 <div>
   <button onclick={undo}>Undo</button>
