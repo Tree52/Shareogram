@@ -12,7 +12,7 @@
     isChangeHashAllowed,
     tilesSolution,
   } from "$lib/refs.svelte";
-  import { decodeTiles, isValidHash } from "$lib/main.svelte";
+  import { decodeTiles } from "$lib/main.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
   import Options from "$lib/components/options/Options.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
@@ -32,9 +32,9 @@
   let importFlag: boolean = true;
   $effect.pre(() => {
     if (window.location.hash && importFlag) {
-      const scrapedHash: string[] = window.location.hash.slice(1).split("-");
+      try {
+        const scrapedHash: string[] = window.location.hash.slice(1).split("-");
 
-      if (isValidHash(scrapedHash)) {
         isGame.v = Boolean(Number(scrapedHash[0]));
         editorWidth.v = Number(scrapedHash[1]);
         editorHeight.v = Number(scrapedHash[2]);
@@ -47,7 +47,9 @@
         tilesHistory.v[0] = $state.snapshot(tiles.v);
 
         if (isGame.v) tilesSolution.v = decodeTiles(scrapedHash[scrapedHash.length - 1]);
-      } else alert("Couldn't load the code from the URL. Make sure you copied the link correctly.");
+      } catch (error) {
+        alert("Couldn't load the code from the URL. Make sure you copied the link correctly.");
+      }
     }
 
     importFlag = false;
