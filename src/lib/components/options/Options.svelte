@@ -21,7 +21,7 @@
   <button onclick={(): void => { sidebarOn.reset() }}>Close Options</button>
 </div>
 
-<style lang="scss">
+<style>
   div {
     background-color: white;
     bottom: 0;

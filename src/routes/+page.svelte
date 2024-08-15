@@ -18,7 +18,7 @@
   import Options from "$lib/components/options/Options.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
-  import "$lib/../global.scss";
+  import "$lib/../global.css";
 
   function onmousedown(e: MouseEvent) {
     if (e.button === 0) isLeftHeld.v = true;
@@ -92,7 +92,7 @@
 
 <Options />
 
-<style lang="scss">
+<style>
   main {
     align-items: safe center;
     display: flex;

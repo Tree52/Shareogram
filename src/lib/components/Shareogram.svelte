@@ -151,7 +151,7 @@
   </tbody>
 </table>
 
-<style lang="scss">
+<style>
   th {
     font-weight: normal;
     vertical-align: bottom;

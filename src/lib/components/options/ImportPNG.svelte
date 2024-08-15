@@ -28,7 +28,7 @@
   <input type="range" bind:value={tolerance.v} min="10" max="442" />
 {/if}
 
-<style lang="scss">
+<style>
   input[type="file"] {
     display: none;
   }

@@ -16,7 +16,7 @@
   {/if}
 </header>
 
-<style lang="scss">
+<style>
   header {
     align-items: center;
     display: flex;

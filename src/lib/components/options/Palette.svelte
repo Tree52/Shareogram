@@ -36,7 +36,7 @@
   </div>
 </div>
 
-<style lang="scss">
+<style>
   div {
     div {
       display: flex;

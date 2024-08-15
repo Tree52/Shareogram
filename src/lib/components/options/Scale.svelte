@@ -15,9 +15,9 @@
 
 <svelte:window on:wheel|nonpassive={onwheel} />
 
-<style lang="scss">
+<style>
   input[type="range"] {
-    appearance: none; // Chrome
+    appearance: none; /* Chrome */
     direction: rtl;
     height: 100%;
     writing-mode: vertical-lr;

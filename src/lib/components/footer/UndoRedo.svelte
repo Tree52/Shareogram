@@ -34,7 +34,7 @@
   <button onclick={redo}>Redo</button>
 </div>
 
-<style lang="scss">
+<style>
   div {
     display: flex;
 

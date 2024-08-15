@@ -36,7 +36,7 @@
 
 <svelte:window {onkeydown} />
 
-<style lang="scss">
+<style>
   div {
     display: flex;
     flex-wrap: wrap;

@@ -10,7 +10,7 @@
   {/if}
 </div>
 
-<style lang="scss">
+<style>
   div {
     border-bottom: 2px solid black;
     display: flex;
