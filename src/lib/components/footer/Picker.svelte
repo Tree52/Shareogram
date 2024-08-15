@@ -13,8 +13,7 @@
 </script>
 
 <div>
-  <!-- eslint-disable-next-line -->
-  {#each colors.v as unused, i}
+  {#each colors.v as _, i}
     <!-- prettier-ignore -->
     <button
 			style:background-color={colors.v[i]}

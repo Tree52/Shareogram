@@ -94,8 +94,7 @@
     <thead>
       <tr>
         <th></th>
-        <!-- eslint-disable-next-line -->
-        {#each { length: tiles.numColumns } as unused, i}
+        {#each { length: tiles.numColumns } as _, i}
           <th>
             {#each tilesSolution.columnHints[i] as columnHint}
               <div style:font-size={tileWidth.v / 1.5 + "px"} style:color={colors.v[lettersToNum(columnHint.color)]}>
@@ -109,8 +108,7 @@
   {/if}
 
   <tbody>
-    <!-- eslint-disable-next-line -->
-    {#each { length: tiles.numRows } as ununsed, i}
+    {#each { length: tiles.numRows } as _, i}
       <tr>
         {#if isGame.v}
           <td style:display="flex" style:justify-content="right">
@@ -129,8 +127,7 @@
             {/each}
           </td>
         {/if}
-        <!-- eslint-disable-next-line -->
-        {#each { length: tiles.numColumns } as unused, j}
+        {#each { length: tiles.numColumns } as _, j}
           <!-- prettier-ignore -->
           <td
             onmousedown={(e: MouseEvent): void => { handleMouseDown(e, i, j); }}

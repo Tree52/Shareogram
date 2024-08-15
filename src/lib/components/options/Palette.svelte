@@ -23,8 +23,7 @@
       onchange={(): void => { isChangeHashAllowed.reset(); }}
       bind:value={bgColor.v}
     />
-    <!-- eslint-disable-next-line -->
-    {#each colors.v as unused, i}
+    {#each colors.v as _, i}
       <!-- prettier-ignore -->
       <input
         type="color"
