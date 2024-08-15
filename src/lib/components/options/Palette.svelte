@@ -8,27 +8,41 @@
   <div>
     {#if !isGame.v}
       {#if isMulticolor()}
-        <!-- prettier-ignore -->
-        <button onclick={(): void => { colors.v.pop(); if(colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors() }}>-</button>
+        <button
+          onclick={(): void => {
+            colors.v.pop();
+            if (colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--;
+            checkTileColors();
+          }}>-</button
+        >
       {/if}
-      <!-- prettier-ignore -->
-      <button onclick={(): void => { colors.v.push(getRandomHexColor()); }}>+</button>
+      <button
+        onclick={(): void => {
+          colors.v.push(getRandomHexColor());
+        }}>+</button
+      >
     {/if}
   </div>
   <div>
-    <!-- prettier-ignore -->
     <input
       type="color"
-      onclick={(): void => { isChangeHashAllowed.v = false; }}
-      onchange={(): void => { isChangeHashAllowed.reset(); }}
+      onclick={(): void => {
+        isChangeHashAllowed.v = false;
+      }}
+      onchange={(): void => {
+        isChangeHashAllowed.reset();
+      }}
       bind:value={bgColor.v}
     />
     {#each colors.v as _, i}
-      <!-- prettier-ignore -->
       <input
         type="color"
-        onclick={(): void => { isChangeHashAllowed.v = false }}
-        onchange={(): void => { isChangeHashAllowed.reset(); }}
+        onclick={(): void => {
+          isChangeHashAllowed.v = false;
+        }}
+        onchange={(): void => {
+          isChangeHashAllowed.reset();
+        }}
         bind:value={colors.v[i]}
       />
     {/each}

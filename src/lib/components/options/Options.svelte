@@ -17,8 +17,11 @@
   <Palette />
   <Border />
   <Scale />
-  <!-- prettier-ignore -->
-  <button onclick={(): void => { sidebarOn.reset() }}>Close Options</button>
+  <button
+    onclick={(): void => {
+      sidebarOn.reset();
+    }}>Close Options</button
+  >
 </div>
 
 <style>

@@ -61,8 +61,9 @@
     return hashElements.join("-");
   });
 
-  // prettier-ignore
-  $effect(() => { if (isChangeHashAllowed.v) window.location.hash = hash; });
+  $effect(() => {
+    if (isChangeHashAllowed.v) window.location.hash = hash;
+  });
 
   $effect(() => {
     document.body.style.backgroundColor = bgColor.v;

@@ -7,21 +7,29 @@
 
 <div>
   {#if isGame.v}
-    <!-- prettier-ignore -->
-    <button onclick={(): void => { isGame.reset(); newEditor(); }}>New Editor</button>
+    <button
+      onclick={(): void => {
+        isGame.reset();
+        newEditor();
+      }}>New Editor</button
+    >
   {:else}
     <div>
-      <!-- prettier-ignore -->
       <input
         type="text"
         bind:value={editorWidth.v}
-        oninput={(): void => { editorWidth.v = sanitizeNumberInput(editorWidth.v); newEditor(); }}
+        oninput={(): void => {
+          editorWidth.v = sanitizeNumberInput(editorWidth.v);
+          newEditor();
+        }}
       />
-      <!-- prettier-ignore -->
       <input
-        type="text"  
+        type="text"
         bind:value={editorHeight.v}
-        oninput={(): void => { editorHeight.v = sanitizeNumberInput(editorHeight.v); newEditor(); }}
+        oninput={(): void => {
+          editorHeight.v = sanitizeNumberInput(editorHeight.v);
+          newEditor();
+        }}
       />
     </div>
   {/if}

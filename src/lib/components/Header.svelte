@@ -5,14 +5,23 @@
 </script>
 
 <header style:justify-content={isGame.v ? "space-between" : "center"}>
-  <!-- prettier-ignore -->
-  <button style:margin-right="4px" onclick={(): void => { sidebarOn.v = !sidebarOn.v; }}>Options</button>
+  <button
+    style:margin-right="4px"
+    onclick={(): void => {
+      sidebarOn.v = !sidebarOn.v;
+    }}>Options</button
+  >
   {#if isGame.v}
     <span>{win.v ? "You win!" : "Keep trying"}</span>
     <Reveal />
   {:else}
-    <!-- prettier-ignore -->
-    <button onclick={(): void => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(); }}>Start Game</button>
+    <button
+      onclick={(): void => {
+        isGame.v = true;
+        tilesSolution.v = tiles.v;
+        newEditor();
+      }}>Start Game</button
+    >
   {/if}
 </header>
 

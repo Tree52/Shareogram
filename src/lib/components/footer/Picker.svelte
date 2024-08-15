@@ -14,22 +14,26 @@
 
 <div>
   {#each colors.v as _, i}
-    <!-- prettier-ignore -->
     <button
-			style:background-color={colors.v[i]}
-			style:color={i === 0 ? colors.v[1] : colors.v[0]}
-			style:border={i === colorsIndexer.v ? (i === 0 ? `solid 2px ${colors.v[1]}` : `solid 2px ${colors.v[0]}`) : `solid 2px ${colors.v[i]}`}
-			style:--max-h={colors.v.length > 4 ? "2rem" : "6rem"}
-			onclick={(): void => { colorsIndexer.v = i; isXSelected.reset() }}
-		>{i + 1}</button>
+      style:background-color={colors.v[i]}
+      style:color={i === 0 ? colors.v[1] : colors.v[0]}
+      style:border={`solid 2px ${i === colorsIndexer.v ? (i === 0 ? colors.v[1] : colors.v[0]) : colors.v[i]}`}
+      style:--max-h={(colors.v.length > 4 ? "2" : "6") + "rem"}
+      onclick={(): void => {
+        colorsIndexer.v = i;
+        isXSelected.reset();
+      }}>{i + 1}</button
+    >
   {/each}
   {#if isGame.v}
-    <!-- prettier-ignore -->
     <button
-      onclick={(): void => { isXSelected.v = true; colorsIndexer.v = -1 }}
-      style:border={isXSelected.v ? `solid 2px ${colors.v[1]}` : "solid 2px ButtonFace"}
-      style:--max-h={colors.v.length > 4 ? "2rem" : "6rem"}
-    >X</button>
+      onclick={(): void => {
+        isXSelected.v = true;
+        colorsIndexer.v = -1;
+      }}
+      style:border={`solid 2px ${isXSelected.v ? colors.v[1] : "ButtonFace"}`}
+      style:--max-h={(colors.v.length > 4 ? "2" : "6") + "rem"}>X</button
+    >
   {/if}
 </div>
 

@@ -24,8 +24,9 @@
     };
   });
 
-  // prettier-ignore
-  $effect(() => { win.v = allSame; });
+  $effect(() => {
+    win.v = allSame;
+  });
 
   function revealATile(): void {
     if (!win.v) {

@@ -22,12 +22,15 @@
 
   const isXed = (tile: Tile): boolean => tile.Xed;
   const isSelectedColor = (tile: Tile): boolean => tile.colorIndex === colorsIndexer.v;
-  // prettier-ignore
-  function changeColor(tile: Tile, colorIndex: number): void { tile.colorIndex = colorIndex; }
-  // prettier-ignore
-  function deactivate(tile: Tile): void { tile.colorIndex = 0; }
-  // prettier-ignore
-  function negateXed(tile: Tile): void { tile.Xed = !tile.Xed; }
+  function changeColor(tile: Tile, colorIndex: number): void {
+    tile.colorIndex = colorIndex;
+  }
+  function deactivate(tile: Tile): void {
+    tile.colorIndex = 0;
+  }
+  function negateXed(tile: Tile): void {
+    tile.Xed = !tile.Xed;
+  }
 
   function handleMouseDown(e: MouseEvent, i: number, j: number): void {
     clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, row: i, column: j };
@@ -132,20 +135,23 @@
           </td>
         {/if}
         {#each { length: tiles.numColumns } as _, j}
-          <!-- prettier-ignore -->
           <td
-            onmousedown={(e: MouseEvent): void => { handleMouseDown(e, i, j); }}
-            onmouseenter={(): void => { handleMouseEnter(i, j); }}
+            onmousedown={(e: MouseEvent): void => {
+              handleMouseDown(e, i, j);
+            }}
+            onmouseenter={(): void => {
+              handleMouseEnter(i, j);
+            }}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             style:color={colors.v[1]}
             style:min-width={tileWidth.v + "px"}
             style:height={tileWidth.v + "px"}
             style:font-size={tileWidth.v / 1.5 + "px"}
             style:text-align="center"
-            style:border-top={borderOn.v === 0 ? "0" : (i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `solid 4px ${colors.v[1]}` : `solid 2px ${bgColor.v}`)}
-            style:border-left={borderOn.v === 0 ? "0" : (j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `solid 4px ${colors.v[1]}` : `solid 2px ${bgColor.v}`)}
-            style:transition="background-color .5s"
-          >{isXed(tiles.v[i][j]) ? "X" : ""}</td>
+            style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
+            style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
+            style:transition="background-color .5s">{isXed(tiles.v[i][j]) ? "X" : ""}</td
+          >
         {/each}
       </tr>
     {/each}
