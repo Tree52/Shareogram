@@ -43,7 +43,7 @@ function ref<T>(initial: T): Ref<T> {
   return {
     get v(): T { return v; },
     set v(value: T) { v = value; },
-    reset
+    reset,
   };
 }
 
