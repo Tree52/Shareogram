@@ -71,7 +71,7 @@
         const endIndex: number = Math.max(clickedTile.v.row, i);
         for (let l: number = startIndex; l < endIndex + 1; l++) {
           const columnTile: Tile = tiles.v[l][clickedTile.v.column];
-          // Testing hash: #1-9-2-476fb8-f8fafc-020617-1e52fa-1c1a1x1c1a1x1c1a1x3c3a3x-18a
+          // Testing hash: #1-16-2-476fb8-f8fafc-020617-1e52fa-1a1b1c1X1a1b1c1X1a1b1c1X1a1b1c1X4a4b4c4X-32a
           if (isLeftHeld.v && isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
           else if (isLeftHeld.v && !isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
           else if (isRightHeld.v && clickedTile.v.Xed && !isActive(columnTile)) columnTile.Xed = false;
