@@ -1,22 +1,22 @@
 <script lang="ts">
   import {
-    isLeftHeld,
-    isRightHeld,
-    tiles,
-    tilesHistory,
-    editorWidth,
-    editorHeight,
-    isGame,
-    bgColor,
-    colors,
     isChangeHashAllowed,
     tilesSolution,
+    editorHeight,
+    tilesHistory,
+    editorWidth,
+    isRightHeld,
+    isLeftHeld,
+    bgColor,
+    colors,
+    isGame,
+    tiles,
   } from "$lib/refs.svelte";
-  import { decodeTiles } from "$lib/main.svelte";
-  import Shareogram from "$lib/components/Shareogram.svelte";
   import Options from "$lib/components/options/Options.svelte";
+  import Shareogram from "$lib/components/Shareogram.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
+  import { decodeTiles } from "$lib/main.svelte";
   import "$lib/../global.css";
 
   function onmousedown(e: MouseEvent): void {
@@ -74,7 +74,7 @@
   <title>Shareogram</title>
 </svelte:head>
 
-<svelte:window {onload} {onmousedown} {onmouseup} oncontextmenu={(e: MouseEvent): void => e.preventDefault()} />
+<svelte:window oncontextmenu={(e: MouseEvent): void => e.preventDefault()} {onmousedown} {onmouseup} {onload} />
 
 <Header />
 

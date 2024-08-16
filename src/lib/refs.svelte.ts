@@ -1,4 +1,4 @@
-import { initializeTiles, encodeTiles, calculateRowHints, calculateColumnHints } from "$lib/main.svelte";
+import { calculateColumnHints, calculateRowHints, initializeTiles, encodeTiles } from "$lib/main.svelte";
 import { extractPropertyFrom2DArray } from "$lib/utils";
 
 export type Tile = {
@@ -7,29 +7,29 @@ export type Tile = {
 };
 
 export type TilePosition = {
-  row: number;
   column: number;
+  row: number;
 };
 
-type ClickedTile = Tile & TilePosition;
+type ClickedTile = TilePosition & Tile;
 
 type Ref<T> = {
-  v: T;
   reset: () => void;
+  v: T;
 };
 
-type RefTiles = Ref<Tile[][]> & {
-  numRows: number;
-  numColumns: number;
+type RefTiles = {
   colorIndices: number[][];
-  encoded: string;
-  rowHints: Hint[][];
   columnHints: Hint[][];
-};
+  numColumns: number;
+  rowHints: Hint[][];
+  encoded: string;
+  numRows: number;
+} & Ref<Tile[][]>;
 
 export type Hint = {
-  count: number;
   color: string;
+  count: number;
 };
 
 const deepCopy = (obj: object): object => JSON.parse(JSON.stringify(obj));
@@ -41,8 +41,8 @@ function ref<T>(initial: T): Ref<T> {
 
   // prettier-ignore
   return {
-    get v(): T { return v; },
     set v(value: T) { v = value; },
+    get v(): T { return v; },
     reset,
   };
 }
@@ -58,15 +58,15 @@ function refTiles(): RefTiles {
 
   // prettier-ignore
   return {
-    get v(): Tile[][] { return baseRef.v; },
-    set v(value: Tile[][]) { baseRef.v = value; },
-    reset: baseRef.reset,
-    get numRows(): number { return numRows; },
-    get numColumns(): number { return numColumns; },
     get colorIndices(): number[][] { return colorIndices; },
-    get encoded(): string { return encoded; },
-    get rowHints(): Hint[][] { return rowHints; },
     get columnHints(): Hint[][] { return columnHints; },
+    get numColumns(): number { return numColumns; },
+    get rowHints(): Hint[][] { return rowHints; },
+    set v(value: Tile[][]) { baseRef.v = value; },
+    get encoded(): string { return encoded; },
+    get numRows(): number { return numRows; },
+    get v(): Tile[][] { return baseRef.v; },
+    reset: baseRef.reset,
   };
 }
 
@@ -85,7 +85,7 @@ export const tilesHistoryIndexer: Ref<number> = ref<number>(0);
 export const isLeftHeld: Ref<boolean> = ref<boolean>(false);
 export const isRightHeld: Ref<boolean> = ref<boolean>(false);
 export const isGame: Ref<boolean> = ref<boolean>(false);
-export const clickedTile: Ref<ClickedTile> = ref<ClickedTile>({ colorIndex: -1, Xed: false, row: -1, column: -1 });
+export const clickedTile: Ref<ClickedTile> = ref<ClickedTile>({ colorIndex: -1, column: -1, Xed: false, row: -1 });
 export const direction: Ref<string> = ref<string>("");
 export const numTilesEntered: Ref<number> = ref<number>(0);
 export const borderOn: Ref<number> = ref<number>(1);

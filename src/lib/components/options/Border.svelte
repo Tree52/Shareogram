@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { editorWidth, editorHeight, borderOn } from "$lib/refs.svelte";
+  import { editorHeight, editorWidth, borderOn } from "$lib/refs.svelte";
 </script>
 
 <div>
-  <input type="radio" name="border" value={0} bind:group={borderOn.v} />
-  <input type="radio" name="border" value={1} bind:group={borderOn.v} />
+  <input bind:group={borderOn.v} name="border" type="radio" value={0} />
+  <input bind:group={borderOn.v} name="border" type="radio" value={1} />
   {#if editorWidth.v > 5 || editorHeight.v > 5}
-    <input type="radio" name="border" value={2} bind:group={borderOn.v} />
+    <input bind:group={borderOn.v} name="border" type="radio" value={2} />
   {/if}
 </div>
 

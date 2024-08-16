@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tilesHistory, tilesHistoryIndexer, tiles, clickedTile } from "$lib/refs.svelte";
+  import { tilesHistoryIndexer, tilesHistory, clickedTile, tiles } from "$lib/refs.svelte";
   import { checkTileColors, saveTiles } from "$lib/main.svelte";
 
   function onmouseup(): void {

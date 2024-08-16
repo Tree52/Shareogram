@@ -1,5 +1,5 @@
-import { type Tile, tiles, colors, type Hint, editorWidth, editorHeight, tilesHistory, tilesHistoryIndexer, isXSelected } from "$lib/refs.svelte";
-import { numToLetters, splitString, lettersToNum } from "$lib/utils";
+import { tilesHistoryIndexer, editorHeight, tilesHistory, editorWidth, isXSelected, type Hint, type Tile, colors, tiles } from "$lib/refs.svelte";
+import { lettersToNum, numToLetters, splitString } from "$lib/utils";
 
 export const isActive = (tile: Tile): boolean => tile.colorIndex !== 0;
 
@@ -30,12 +30,12 @@ export function calculateRowHints(tiles: Tile[][]): Hint[][] {
   const numColumns: number = tiles[0].length;
 
   for (let row: number = 0; row < numRows; row++) {
-    rowHints[row] = [{ count: 0, color: "" }];
+    rowHints[row] = [{ color: "", count: 0 }];
     for (let column: number = 0; column < numColumns; column++) {
       if (isActive(tiles[row][column])) {
         const previousColorIndex: number | null = column === 0 ? null : tiles[row][column - 1].colorIndex;
         const currentColorIndex: number = tiles[row][column].colorIndex;
-        if (previousColorIndex !== currentColorIndex) rowHints[row].push({ count: 1, color: numToLetters(currentColorIndex) });
+        if (previousColorIndex !== currentColorIndex) rowHints[row].push({ color: numToLetters(currentColorIndex), count: 1 });
         else rowHints[row][rowHints[row].length - 1].count++;
       }
     }
@@ -51,12 +51,12 @@ export function calculateColumnHints(tiles: Tile[][]): Hint[][] {
   const numColumns: number = tiles[0].length;
 
   for (let column: number = 0; column < numColumns; column++) {
-    columnHints[column] = [{ count: 0, color: "" }];
+    columnHints[column] = [{ color: "", count: 0 }];
     for (let row: number = 0; row < numRows; row++) {
       if (isActive(tiles[row][column])) {
         const previousColorIndex: number | null = row === 0 ? null : tiles[row - 1][column].colorIndex;
         const currentColorIndex: number = tiles[row][column].colorIndex;
-        if (previousColorIndex !== currentColorIndex) columnHints[column].push({ count: 1, color: numToLetters(currentColorIndex) });
+        if (previousColorIndex !== currentColorIndex) columnHints[column].push({ color: numToLetters(currentColorIndex), count: 1 });
         else columnHints[column][columnHints[column].length - 1].count++;
       }
     }
@@ -92,7 +92,7 @@ export function encodeTiles(tiles: Tile[][]): string {
 }
 
 export function decodeTiles(encodedTiles: string): Tile[][] {
-  const split: { numbers: number[]; letters: string[] } = splitString(encodedTiles);
+  const split: { letters: string[]; numbers: number[] } = splitString(encodedTiles);
   const tiles: Tile[][] = [];
   let row: number = 0;
   let column: number = 0;

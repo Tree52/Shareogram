@@ -1,4 +1,4 @@
-type Position = "above" | "below" | "left" | "right" | "not adjacent";
+type Position = "not adjacent" | "above" | "below" | "right" | "left";
 export function getAdjacentDirection(r1: number, c1: number, r2: number, c2: number): Position {
   const dr: number = Math.abs(r1 - r2);
   const dc: number = Math.abs(c1 - c2);
@@ -41,7 +41,7 @@ export function lettersToNum(letters: string): number {
   return num - 1;
 }
 
-export function splitString(input: string): { numbers: number[]; letters: string[] } {
+export function splitString(input: string): { letters: string[]; numbers: number[] } {
   const splitString: RegExpMatchArray | null = input.match(/(\d+|[a-zX]+)/g);
   const numbers: number[] = [];
   const letters: string[] = [];
@@ -56,7 +56,7 @@ export function splitString(input: string): { numbers: number[]; letters: string
 
   if (numbers.length !== letters.length) throw new Error("Error: different number of counts and letters.");
 
-  return { numbers, letters };
+  return { letters, numbers };
 }
 
 export function getRandomNumber(min: number, max: number): number {

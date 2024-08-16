@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { isGame, win, sidebarOn, tiles, tilesSolution } from "$lib/refs.svelte";
-  import { newEditor } from "$lib/main.svelte";
+  import { tilesSolution, sidebarOn, isGame, tiles, win } from "$lib/refs.svelte";
   import Reveal from "$lib/components/options/Reveal.svelte";
+  import { newEditor } from "$lib/main.svelte";
 </script>
 
 <header style:justify-content={isGame.v ? "space-between" : "center"}>
   <button
-    style:margin-right="4px"
     onclick={(): void => {
       sidebarOn.v = !sidebarOn.v;
-    }}>Options</button
+    }}
+    style:margin-right="4px">Options</button
   >
   {#if isGame.v}
     <span>{win.v ? "You win!" : "Keep trying"}</span>

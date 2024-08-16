@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { editorWidth, editorHeight, isGame } from "$lib/refs.svelte";
+  import { editorHeight, editorWidth, isGame } from "$lib/refs.svelte";
   import { newEditor } from "$lib/main.svelte";
 
   const sanitizeNumberInput = (n: number): number => Math.max(0, Number(String(n).replace(/[^0-9]/g, "")));
@@ -16,20 +16,20 @@
   {:else}
     <div>
       <input
-        type="text"
-        bind:value={editorWidth.v}
         oninput={(): void => {
           editorWidth.v = sanitizeNumberInput(editorWidth.v);
           newEditor();
         }}
+        bind:value={editorWidth.v}
+        type="text"
       />
       <input
-        type="text"
-        bind:value={editorHeight.v}
         oninput={(): void => {
           editorHeight.v = sanitizeNumberInput(editorHeight.v);
           newEditor();
         }}
+        bind:value={editorHeight.v}
+        type="text"
       />
     </div>
   {/if}

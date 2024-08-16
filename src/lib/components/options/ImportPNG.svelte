@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { tiles, colors, editorWidth, editorHeight, tilesHistory, colorsIndexer, tolerance } from "$lib/refs.svelte";
+  import { colorsIndexer, editorHeight, tilesHistory, editorWidth, tolerance, colors, tiles } from "$lib/refs.svelte";
   import { initializeTiles } from "$lib/main.svelte";
   import { importPNG } from "$lib/utils";
 
-  let files: FileList | undefined = $state();
+  let files: undefined | FileList = $state();
 
   $effect(() => {
     if (files) {
@@ -23,9 +23,9 @@
 </script>
 
 <label for="file-upload">Upload PNG</label>
-<input type="file" id="file-upload" accept="image/png" bind:files />
+<input accept="image/png" id="file-upload" type="file" bind:files />
 {#if files}
-  <input type="range" bind:value={tolerance.v} min="10" max="442" />
+  <input bind:value={tolerance.v} type="range" max="442" min="10" />
 {/if}
 
 <style>

@@ -11,7 +11,7 @@
   }
 </script>
 
-<input type="range" min={MIN_TILE_WIDTH} max={MAX_TILE_WIDTH} bind:value={tileWidth.v} />
+<input bind:value={tileWidth.v} max={MAX_TILE_WIDTH} min={MIN_TILE_WIDTH} type="range" />
 
 <svelte:window on:wheel|nonpassive={onwheel} />
 

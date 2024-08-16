@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tiles, colors } from "$lib/refs.svelte";
+  import { colors, tiles } from "$lib/refs.svelte";
   import { generatePNG } from "$lib/utils";
 
   function onclick() {

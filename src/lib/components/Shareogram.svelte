@@ -1,21 +1,21 @@
 <script lang="ts">
   import {
-    borderOn,
-    tilesSolution,
-    isLeftHeld,
-    isRightHeld,
-    tiles,
-    clickedTile,
-    direction,
-    numTilesEntered,
-    isGame,
-    colors,
-    colorsIndexer,
     isChangeHashAllowed,
-    type Tile,
-    bgColor,
-    tileWidth,
+    numTilesEntered,
+    colorsIndexer,
+    tilesSolution,
+    clickedTile,
+    isRightHeld,
     isXSelected,
+    isLeftHeld,
+    direction,
+    type Tile,
+    tileWidth,
+    borderOn,
+    bgColor,
+    colors,
+    isGame,
+    tiles,
   } from "$lib/refs.svelte";
   import { getAdjacentDirection, lettersToNum } from "$lib/utils";
   import { isActive } from "$lib/main.svelte";
@@ -33,7 +33,7 @@
   }
 
   function handleMouseDown(e: MouseEvent, i: number, j: number): void {
-    clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, row: i, column: j };
+    clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, column: j, row: i };
     isChangeHashAllowed.v = false;
     numTilesEntered.reset();
 
@@ -109,7 +109,7 @@
         {#each { length: tiles.numColumns } as _, i}
           <th>
             {#each tilesSolution.columnHints[i] as columnHint}
-              <div style:font-size={tileWidth.v / 1.5 + "px"} style:color={colors.v[lettersToNum(columnHint.color)]}>
+              <div style:color={colors.v[lettersToNum(columnHint.color)]} style:font-size={tileWidth.v / 1.5 + "px"}>
                 {columnHint.count}
               </div>
             {/each}
@@ -123,16 +123,16 @@
     {#each { length: tiles.numRows } as _, i}
       <tr>
         {#if isGame.v}
-          <td style:display="flex" style:justify-content="right">
+          <td style:justify-content="right" style:display="flex">
             {#each tilesSolution.rowHints[i] as rowHint}
               <div
-                style:display="flex"
-                style:justify-content="center"
-                style:align-items="center"
+                style:color={colors.v[lettersToNum(rowHint.color)]}
+                style:font-size={tileWidth.v / 1.5 + "px"}
                 style:min-width={tileWidth.v + "px"}
                 style:height={tileWidth.v + "px"}
-                style:font-size={tileWidth.v / 1.5 + "px"}
-                style:color={colors.v[lettersToNum(rowHint.color)]}
+                style:justify-content="center"
+                style:align-items="center"
+                style:display="flex"
               >
                 {rowHint.count}
               </div>
@@ -141,6 +141,8 @@
         {/if}
         {#each { length: tiles.numColumns } as _, j}
           <td
+            style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
+            style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             onmousedown={(e: MouseEvent): void => {
               handleMouseDown(e, i, j);
             }}
@@ -148,14 +150,12 @@
               handleMouseEnter(i, j);
             }}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
-            style:color={colors.v[1]}
+            style:font-size={tileWidth.v / 1.5 + "px"}
+            style:transition="background-color .5s"
             style:min-width={tileWidth.v + "px"}
             style:height={tileWidth.v + "px"}
-            style:font-size={tileWidth.v / 1.5 + "px"}
-            style:text-align="center"
-            style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
-            style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
-            style:transition="background-color .5s">{isXed(tiles.v[i][j]) ? "X" : ""}</td
+            style:color={colors.v[1]}
+            style:text-align="center">{isXed(tiles.v[i][j]) ? "X" : ""}</td
           >
         {/each}
       </tr>

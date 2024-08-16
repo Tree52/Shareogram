@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { win, tilesSolution, tiles, type TilePosition } from "$lib/refs.svelte";
-  import { getRandomNumber } from "$lib/utils";
+  import { type TilePosition, tilesSolution, tiles, win } from "$lib/refs.svelte";
   import { saveTiles } from "$lib/main.svelte";
+  import { getRandomNumber } from "$lib/utils";
 
   const { isDifferent, allSame } = $derived.by(() => {
     const isDifferent: TilePosition[] = [];
@@ -12,7 +12,7 @@
     for (let i: number = 0; i < numRows; i++) {
       for (let j: number = 0; j < numColumns; j++) {
         if (tilesSolution.v[i][j].colorIndex !== tiles.v[i][j].colorIndex) {
-          isDifferent.push({ row: i, column: j });
+          isDifferent.push({ column: j, row: i });
           allSame = false;
         }
       }
