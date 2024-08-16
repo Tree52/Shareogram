@@ -2,7 +2,7 @@
   import { colorsIndexer, colors, isXSelected, isGame } from "$lib/refs.svelte";
 
   function onkeydown(e: KeyboardEvent): void {
-    if (/^[1-9]$/.test(e.key) && Number(e.key) <= colors.v.length) {
+    if (/[1-9]/.test(e.key) && Number(e.key) <= colors.v.length) {
       isXSelected.v = false;
       colorsIndexer.v = Number(e.key) - 1;
     } else if (e.key === "x" && isGame.v) {
