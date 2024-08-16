@@ -29,9 +29,8 @@
     else if (e.button === 2) isRightHeld.v = false;
   }
 
-  let importFlag: boolean = true;
-  $effect.pre(() => {
-    if (window.location.hash && importFlag) {
+  function onload(): void {
+    if (window.location.hash) {
       try {
         const scrapedHash: string[] = window.location.hash.slice(1).split("-");
 
@@ -47,24 +46,22 @@
         tilesHistory.v[0] = $state.snapshot(tiles.v);
 
         if (isGame.v) tilesSolution.v = decodeTiles(scrapedHash[scrapedHash.length - 1]);
-      } catch (error) {
+      } catch {
         alert("Couldn't load the code from the URL. Make sure you copied the link correctly.");
       }
+
+      isChangeHashAllowed.v = true;
     }
-
-    importFlag = false;
-  });
-
-  const hash: string = $derived.by(() => {
-    const hashElements: (number | string)[] = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
-    for (let i: number = 0; i < colors.v.length; i++) hashElements.push(colors.v[i].slice(1));
-    hashElements.push(tiles.encoded);
-    if (isGame.v) hashElements.push(tilesSolution.encoded);
-    return hashElements.join("-");
-  });
+  }
 
   $effect(() => {
-    if (isChangeHashAllowed.v) window.location.hash = hash;
+    if (isChangeHashAllowed.v) {
+      const hash: (number | string)[] = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
+      for (let i: number = 0; i < colors.v.length; i++) hash.push(colors.v[i].slice(1));
+      hash.push(tiles.encoded);
+      if (isGame.v) hash.push(tilesSolution.encoded);
+      window.location.hash = hash.join("-");
+    }
   });
 
   $effect(() => {
@@ -77,7 +74,7 @@
   <title>Shareogram</title>
 </svelte:head>
 
-<svelte:window {onmousedown} {onmouseup} oncontextmenu={(e: MouseEvent): void => e.preventDefault()} />
+<svelte:window {onload} {onmousedown} {onmouseup} oncontextmenu={(e: MouseEvent): void => e.preventDefault()} />
 
 <Header />
 
