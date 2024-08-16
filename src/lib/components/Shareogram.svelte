@@ -37,18 +37,17 @@
     isChangeHashAllowed.v = false;
     numTilesEntered.reset();
 
-    // prettier-ignore
     if (isGame.v) {
-      if (e.button === 0 && isXSelected.v && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
-      else if (e.button === 0 && !isXSelected.v && !isXed(tiles.v[i][j])) {
-        if (isSelectedColor(tiles.v[i][j])) changeColor(tiles.v[i][j], 0);
-        else changeColor(tiles.v[i][j], colorsIndexer.v);
+      if (e.button === 0) {
+        if (isXSelected.v && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
+        else if (!isXSelected.v && !isXed(tiles.v[i][j])) {
+          isSelectedColor(tiles.v[i][j]) ? deactivate(tiles.v[i][j]) : changeColor(tiles.v[i][j], colorsIndexer.v);
+        }
+      } else if (e.button === 2) {
+        isActive(tiles.v[i][j]) ? deactivate(tiles.v[i][j]) : negateXed(tiles.v[i][j]);
       }
-      else if (e.button === 2 && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
-      else if (e.button === 2 && isActive(tiles.v[i][j])) deactivate(tiles.v[i][j]);
-    }
-    else {
-      if (e.button === 0 && !isSelectedColor(tiles.v[i][j])) changeColor(tiles.v[i][j], colorsIndexer.v);
+    } else {
+      if (e.button === 0) changeColor(tiles.v[i][j], colorsIndexer.v);
       else if (e.button === 2) deactivate(tiles.v[i][j]);
     }
   }
@@ -72,27 +71,32 @@
         for (let l: number = startIndex; l < endIndex + 1; l++) {
           const columnTile: Tile = tiles.v[l][clickedTile.v.column];
           // Testing hash: #1-16-2-476fb8-f8fafc-020617-1e52fa-1a1b1c1X1a1b1c1X1a1b1c1X1a1b1c1X4a4b4c4X-32a
-          if (isLeftHeld.v && isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
-          else if (isLeftHeld.v && !isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
-          else if (isRightHeld.v && clickedTile.v.Xed && !isActive(columnTile)) columnTile.Xed = false;
-          else if (isRightHeld.v && clickedTile.v.colorIndex === 0 && !isActive(columnTile)) columnTile.Xed = true;
-          else if (isRightHeld.v && clickedTile.v.colorIndex !== 0 && !isXed(columnTile)) deactivate(columnTile);
+          if (isLeftHeld.v) {
+            if (isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
+            else if (!isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
+          } else {
+            if (clickedTile.v.Xed && !isActive(columnTile)) columnTile.Xed = false;
+            else if (clickedTile.v.colorIndex === 0 && !isActive(columnTile)) columnTile.Xed = true;
+            else if (clickedTile.v.colorIndex !== 0 && !isXed(columnTile)) deactivate(columnTile);
+          }
         }
       } else {
         const startIndex: number = Math.min(clickedTile.v.column, j);
         const endIndex: number = Math.max(clickedTile.v.column, j);
         for (let m: number = startIndex; m < endIndex + 1; m++) {
           const rowTile: Tile = tiles.v[clickedTile.v.row][m];
-          if (isLeftHeld.v && isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
-          else if (isLeftHeld.v && !isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
-          else if (isRightHeld.v && clickedTile.v.Xed && !isActive(rowTile)) rowTile.Xed = false;
-          else if (isRightHeld.v && clickedTile.v.colorIndex === 0 && !isActive(rowTile)) rowTile.Xed = true;
-          else if (isRightHeld.v && clickedTile.v.colorIndex !== 0 && !isXed(rowTile)) deactivate(rowTile);
+          if (isLeftHeld.v) {
+            if (isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
+            else if (!isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
+          } else {
+            if (clickedTile.v.Xed && !isActive(rowTile)) rowTile.Xed = false;
+            else if (clickedTile.v.colorIndex === 0 && !isActive(rowTile)) rowTile.Xed = true;
+            else if (clickedTile.v.colorIndex !== 0 && !isXed(rowTile)) deactivate(rowTile);
+          }
         }
       }
     } else {
-      if (isActive(clickedTileCurrent)) changeColor(tiles.v[i][j], colorsIndexer.v);
-      else deactivate(tiles.v[i][j]);
+      isLeftHeld.v ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
     }
   }
 </script>

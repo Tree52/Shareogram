@@ -38,6 +38,12 @@ export default [
           argsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowTernary: true,
+        },
+      ],
     },
   },
 ];
