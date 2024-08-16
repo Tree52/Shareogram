@@ -1,5 +1,5 @@
 import { type Tile, tiles, colors, type Hint, editorWidth, editorHeight, tilesHistory, tilesHistoryIndexer, isXSelected } from "$lib/refs.svelte";
-import { numToLetters, splitString, lettersToNum, isValidHexColor } from "$lib/utils";
+import { numToLetters, splitString, lettersToNum } from "$lib/utils";
 
 export const isActive = (tile: Tile): boolean => tile.colorIndex !== 0;
 
