@@ -3,7 +3,7 @@
 
   function onkeydown(e: KeyboardEvent): void {
     if (/^[1-9]$/.test(e.key) && Number(e.key) <= colors.v.length) {
-      isXSelected.reset();
+      isXSelected.v = false;
       colorsIndexer.v = Number(e.key) - 1;
     } else if (e.key === "x" && isGame.v) {
       isXSelected.v = true;
@@ -21,7 +21,7 @@
       style:--max-h={(colors.v.length > 4 ? "2" : "6") + "rem"}
       onclick={(): void => {
         colorsIndexer.v = i;
-        isXSelected.reset();
+        isXSelected.v = false;
       }}>{i + 1}</button
     >
   {/each}

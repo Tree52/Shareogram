@@ -30,7 +30,7 @@
         isChangeHashAllowed.v = false;
       }}
       onchange={(): void => {
-        isChangeHashAllowed.reset();
+        isChangeHashAllowed.v = true;
       }}
       bind:value={bgColor.v}
     />
@@ -41,7 +41,7 @@
           isChangeHashAllowed.v = false;
         }}
         onchange={(): void => {
-          isChangeHashAllowed.reset();
+          isChangeHashAllowed.v = true;
         }}
         bind:value={colors.v[i]}
       />

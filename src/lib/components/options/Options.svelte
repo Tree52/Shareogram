@@ -19,7 +19,7 @@
   <Scale />
   <button
     onclick={(): void => {
-      sidebarOn.reset();
+      sidebarOn.v = false;
     }}>Close Options</button
   >
 </div>

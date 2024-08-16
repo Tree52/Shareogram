@@ -126,5 +126,5 @@ export function newEditor(): void {
   tilesHistory.reset();
   tilesHistory.v[0] = $state.snapshot(tiles.v);
   tilesHistoryIndexer.reset();
-  isXSelected.reset();
+  isXSelected.v = false;
 }

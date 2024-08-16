@@ -25,8 +25,8 @@
   }
 
   function onmouseup(e: MouseEvent): void {
-    if (e.button === 0) isLeftHeld.reset();
-    else if (e.button === 2) isRightHeld.reset();
+    if (e.button === 0) isLeftHeld.v = false;
+    else if (e.button === 2) isRightHeld.v = false;
   }
 
   let importFlag: boolean = true;

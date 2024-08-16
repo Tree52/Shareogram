@@ -9,7 +9,7 @@
   {#if isGame.v}
     <button
       onclick={(): void => {
-        isGame.reset();
+        isGame.v = false;
         newEditor();
       }}>New Editor</button
     >

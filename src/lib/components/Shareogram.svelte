@@ -54,7 +54,7 @@
   }
 
   function onmouseup(): void {
-    isChangeHashAllowed.reset();
+    isChangeHashAllowed.v = true;
   }
 
   function handleMouseEnter(i: number, j: number): void {
