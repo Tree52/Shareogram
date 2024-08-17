@@ -63,12 +63,6 @@ export function getRandomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export function isValidHexColor(color: string): boolean {
-  // Regular expression to match 6-digit hex color codes, with optional leading '#'
-  const hexRegex = /^#?([a-fA-F0-9]{6})$/;
-  return hexRegex.test(color);
-}
-
 function hexToRGB(hex: string): [number, number, number] {
   const bigint = parseInt(hex.replace("#", ""), 16);
   return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
