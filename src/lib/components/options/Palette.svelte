@@ -1,7 +1,18 @@
 <script lang="ts">
   import { isChangeHashAllowed, colorsIndexer, bgColor, colors, isGame } from "$lib/refs.svelte";
-  import { checkTileColors, isMulticolor } from "$lib/main.svelte";
-  import { getRandomHexColor } from "$lib/utils";
+  import { checkTileColors } from "$lib/main.svelte";
+
+  function getRandomHexColor(): string {
+    const characters: string = "0123456789abcdef";
+    let result: string = "#";
+    for (let i: number = 0; i < 6; i++) {
+      const randomIndex: number = Math.floor(Math.random() * characters.length);
+      result += characters[randomIndex];
+    }
+    return result;
+  }
+
+  const isMulticolor = (): boolean => colors.v.length > 2;
 </script>
 
 <div>

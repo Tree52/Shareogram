@@ -1,5 +1,4 @@
-import { calculateColumnHints, calculateRowHints, initializeTiles, encodeTiles } from "$lib/main.svelte";
-import { extractPropertyFrom2DArray } from "$lib/utils";
+import { initializeTiles, isActive } from "$lib/main.svelte";
 
 export type Tile = {
   colorIndex: number;
@@ -27,10 +26,19 @@ type RefTiles = {
   numRows: number;
 } & Ref<Tile[][]>;
 
-export type Hint = {
+type Hint = {
   color: string;
   count: number;
 };
+
+function numToLetters(num: number): string {
+  let letters = "";
+  while (num >= 0) {
+    letters = String.fromCharCode((num % 26) + 97) + letters;
+    num = Math.floor(num / 26) - 1;
+  }
+  return letters;
+}
 
 const deepCopy = (obj: object): object => JSON.parse(JSON.stringify(obj));
 
@@ -51,10 +59,70 @@ function refTiles(): RefTiles {
   const baseRef: Ref<Tile[][]> = ref<Tile[][]>(initialTiles);
   const numRows: number = $derived(baseRef.v.length);
   const numColumns: number = $derived(baseRef.v[0].length);
-  const colorIndices: number[][] = $derived(extractPropertyFrom2DArray(baseRef.v, "colorIndex"));
-  const encoded: string = $derived(encodeTiles(baseRef.v));
-  const rowHints: Hint[][] = $derived(calculateRowHints(baseRef.v));
-  const columnHints: Hint[][] = $derived(calculateColumnHints(baseRef.v));
+  const colorIndices: number[][] = $derived.by(() => baseRef.v.map((innerArray) => innerArray.map((item) => item["colorIndex"])));
+
+  const rowHints: Hint[][] = $derived.by(() => {
+    const rowHints: Hint[][] = [[]];
+    const numRows: number = baseRef.v.length;
+    const numColumns: number = baseRef.v[0].length;
+
+    for (let row: number = 0; row < numRows; row++) {
+      rowHints[row] = [{ color: "", count: 0 }];
+      for (let column: number = 0; column < numColumns; column++) {
+        if (isActive(baseRef.v[row][column])) {
+          const previousColorIndex: number | null = column === 0 ? null : baseRef.v[row][column - 1].colorIndex;
+          const currentColorIndex: number = baseRef.v[row][column].colorIndex;
+          if (previousColorIndex !== currentColorIndex) rowHints[row].push({ color: numToLetters(currentColorIndex), count: 1 });
+          else rowHints[row][rowHints[row].length - 1].count++;
+        }
+      }
+      if (rowHints[row].length > 1 && rowHints[row][0].count === 0) rowHints[row].shift();
+    }
+
+    return rowHints;
+  });
+
+  const columnHints: Hint[][] = $derived.by(() => {
+    const columnHints: Hint[][] = [[]];
+
+    for (let column: number = 0; column < numColumns; column++) {
+      columnHints[column] = [{ color: "", count: 0 }];
+      for (let row: number = 0; row < numRows; row++) {
+        if (isActive(baseRef.v[row][column])) {
+          const previousColorIndex: number | null = row === 0 ? null : baseRef.v[row - 1][column].colorIndex;
+          const currentColorIndex: number = baseRef.v[row][column].colorIndex;
+          if (previousColorIndex !== currentColorIndex) columnHints[column].push({ color: numToLetters(currentColorIndex), count: 1 });
+          else columnHints[column][columnHints[column].length - 1].count++;
+        }
+      }
+      if (columnHints[column].length > 1 && columnHints[column][0].count === 0) columnHints[column].shift();
+    }
+
+    return columnHints;
+  });
+
+  const encoded: string = $derived.by((): string => {
+    let encoded: string = "";
+    let count: number = 1;
+
+    for (let i: number = 0; i < numRows; i++) {
+      for (let j: number = 0; j < numColumns; j++) {
+        if (i === 0 && j === 0) continue;
+        else {
+          const prevTile: Tile = j === 0 ? baseRef.v[i - 1][numColumns - 1] : baseRef.v[i][j - 1];
+          if (prevTile.colorIndex === baseRef.v[i][j].colorIndex && prevTile.Xed === baseRef.v[i][j].Xed) count++;
+          else {
+            encoded += count + (prevTile.Xed ? "X" : numToLetters(prevTile.colorIndex));
+            count = 1;
+          }
+        }
+      }
+    }
+
+    const lastTile: Tile = baseRef.v[numRows - 1][numColumns - 1];
+    encoded += count + (lastTile.Xed ? "X" : numToLetters(lastTile.colorIndex));
+    return encoded;
+  });
 
   // prettier-ignore
   return {
@@ -82,16 +150,11 @@ export const tilesSolution: RefTiles = refTiles();
 export const tilesHistory: Ref<Tile[][][]> = ref<Tile[][][]>([initialTiles]);
 export const tilesHistoryIndexer: Ref<number> = ref<number>(0);
 
-export const isLeftHeld: Ref<boolean> = ref<boolean>(false);
-export const isRightHeld: Ref<boolean> = ref<boolean>(false);
 export const isGame: Ref<boolean> = ref<boolean>(false);
 export const clickedTile: Ref<ClickedTile> = ref<ClickedTile>({ colorIndex: -1, column: -1, Xed: false, row: -1 });
-export const direction: Ref<string> = ref<string>("");
-export const numTilesEntered: Ref<number> = ref<number>(0);
 export const borderOn: Ref<number> = ref<number>(1);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(false);
 export const tileWidth: Ref<number> = ref<number>(50);
 export const win: Ref<boolean> = ref<boolean>(false);
 export const sidebarOn: Ref<boolean> = ref<boolean>(false);
 export const isXSelected: Ref<boolean> = ref<boolean>(false);
-export const tolerance: Ref<number> = ref<number>(10);

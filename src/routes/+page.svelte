@@ -1,32 +1,51 @@
 <script lang="ts">
-  import {
-    isChangeHashAllowed,
-    tilesSolution,
-    editorHeight,
-    tilesHistory,
-    editorWidth,
-    isRightHeld,
-    isLeftHeld,
-    bgColor,
-    colors,
-    isGame,
-    tiles,
-  } from "$lib/refs.svelte";
+  import { isChangeHashAllowed, tilesSolution, editorHeight, tilesHistory, editorWidth, type Tile, bgColor, colors, isGame, tiles } from "$lib/refs.svelte";
   import Options from "$lib/components/options/Options.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
-  import { decodeTiles } from "$lib/main.svelte";
+  import { lettersToNum } from "$lib/main.svelte";
   import "$lib/../global.css";
 
-  function onmousedown(e: MouseEvent): void {
-    if (e.button === 0) isLeftHeld.v = true;
-    else if (e.button === 2) isRightHeld.v = true;
+  function splitString(input: string): { letters: string[]; numbers: number[] } {
+    const splitString: RegExpMatchArray | null = input.match(/(\d+|[a-zX]+)/g);
+    const numbers: number[] = [];
+    const letters: string[] = [];
+
+    if (splitString) {
+      for (let i = 0; i < splitString.length; i++) {
+        const match: string = splitString[i];
+        if (isNaN(Number(match))) letters.push(match);
+        else numbers.push(Number(match));
+      }
+    }
+
+    if (numbers.length !== letters.length) throw new Error("Error: different number of counts and letters.");
+
+    return { letters, numbers };
   }
 
-  function onmouseup(e: MouseEvent): void {
-    if (e.button === 0) isLeftHeld.v = false;
-    else if (e.button === 2) isRightHeld.v = false;
+  function decodeTiles(encodedTiles: string): Tile[][] {
+    const split: { letters: string[]; numbers: number[] } = splitString(encodedTiles);
+    const tiles: Tile[][] = [];
+    let row: number = 0;
+    let column: number = 0;
+
+    for (let i: number = 0; i < editorHeight.v; i++) tiles[i] = [];
+
+    for (let i: number = 0; i < split.numbers.length; i++) {
+      for (let j: number = 0; j < split.numbers[i]; j++) {
+        if (split.letters[i] === "X") tiles[row][column++] = { colorIndex: 0, Xed: true };
+        else tiles[row][column++] = { colorIndex: lettersToNum(split.letters[i]), Xed: false };
+
+        if (column > editorWidth.v - 1) {
+          row++;
+          column = 0;
+        }
+      }
+    }
+
+    return tiles;
   }
 
   function onload(): void {
@@ -74,7 +93,7 @@
   <title>Shareogram</title>
 </svelte:head>
 
-<svelte:window oncontextmenu={(e: MouseEvent): void => e.preventDefault()} {onmousedown} {onmouseup} {onload} />
+<svelte:window oncontextmenu={(e: MouseEvent): void => e.preventDefault()} {onload} />
 
 <Header />
 

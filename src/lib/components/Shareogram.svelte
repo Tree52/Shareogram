@@ -1,14 +1,10 @@
 <script lang="ts">
   import {
     isChangeHashAllowed,
-    numTilesEntered,
     colorsIndexer,
     tilesSolution,
     clickedTile,
-    isRightHeld,
     isXSelected,
-    isLeftHeld,
-    direction,
     type Tile,
     tileWidth,
     borderOn,
@@ -17,8 +13,24 @@
     isGame,
     tiles,
   } from "$lib/refs.svelte";
-  import { getAdjacentDirection, lettersToNum } from "$lib/utils";
+  import { lettersToNum } from "$lib/main.svelte";
   import { isActive } from "$lib/main.svelte";
+
+  let isLeftHeld: boolean = $state(false);
+  let isRightHeld: boolean = $state(false);
+  let direction: string = $state("");
+  let numTilesEntered: number = $state(0);
+
+  type Position = "not adjacent" | "above" | "below" | "right" | "left";
+  function getAdjacentDirection(r1: number, c1: number, r2: number, c2: number): Position {
+    const dr: number = Math.abs(r1 - r2);
+    const dc: number = Math.abs(c1 - c2);
+
+    // Note: (0, 0) is top left, not bottom left.
+    if (dr === 0 && dc === 1) return c2 > c1 ? "right" : "left";
+    else if (dr === 1 && dc === 0) return r2 > r1 ? "below" : "above";
+    else return "not adjacent";
+  }
 
   const isXed = (tile: Tile): boolean => tile.Xed;
   const isSelectedColor = (tile: Tile): boolean => tile.colorIndex === colorsIndexer.v;
@@ -35,7 +47,7 @@
   function handleMouseDown(e: MouseEvent, i: number, j: number): void {
     clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, column: j, row: i };
     isChangeHashAllowed.v = false;
-    numTilesEntered.reset();
+    numTilesEntered = 0;
 
     if (isGame.v) {
       if (e.button === 0) {
@@ -52,26 +64,33 @@
     }
   }
 
-  function onmouseup(): void {
+  function onmousedown(e: MouseEvent): void {
+    if (e.button === 0) isLeftHeld = true;
+    else if (e.button === 2) isRightHeld = true;
+  }
+
+  function onmouseup(e: MouseEvent): void {
+    if (e.button === 0) isLeftHeld = false;
+    else if (e.button === 2) isRightHeld = false;
     isChangeHashAllowed.v = true;
   }
 
   function handleMouseEnter(i: number, j: number): void {
-    if ((!isLeftHeld.v && !isRightHeld.v) || (isLeftHeld.v && isRightHeld.v) || clickedTile.v.row === -1) return;
+    if ((!isLeftHeld && !isRightHeld) || (isLeftHeld && isRightHeld) || clickedTile.v.row === -1) return;
 
-    numTilesEntered.v++;
+    numTilesEntered++;
 
-    if (numTilesEntered.v === 1) direction.v = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
+    if (numTilesEntered === 1) direction = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
 
     const clickedTileCurrent: Tile = tiles.v[clickedTile.v.row][clickedTile.v.column];
     if (isGame.v) {
-      if (direction.v === "above" || direction.v === "below") {
+      if (direction === "above" || direction === "below") {
         const startIndex: number = Math.min(clickedTile.v.row, i);
         const endIndex: number = Math.max(clickedTile.v.row, i);
         for (let l: number = startIndex; l < endIndex + 1; l++) {
           const columnTile: Tile = tiles.v[l][clickedTile.v.column];
           // Testing hash: #1-16-2-476fb8-f8fafc-020617-1e52fa-1a1b1c1X1a1b1c1X1a1b1c1X1a1b1c1X4a4b4c4X-32a
-          if (isLeftHeld.v) {
+          if (isLeftHeld) {
             if (isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
             else if (!isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
           } else {
@@ -85,7 +104,7 @@
         const endIndex: number = Math.max(clickedTile.v.column, j);
         for (let m: number = startIndex; m < endIndex + 1; m++) {
           const rowTile: Tile = tiles.v[clickedTile.v.row][m];
-          if (isLeftHeld.v) {
+          if (isLeftHeld) {
             if (isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
             else if (!isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
           } else {
@@ -96,7 +115,7 @@
         }
       }
     } else {
-      isLeftHeld.v ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
+      isLeftHeld ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
     }
   }
 </script>
@@ -163,7 +182,7 @@
   </tbody>
 </table>
 
-<svelte:window {onmouseup} />
+<svelte:window {onmousedown} {onmouseup} />
 
 <style>
   th {
