@@ -2,7 +2,7 @@
   import { isChangeHashAllowed, colorsIndexer, bgColor, colors, isGame } from "$lib/refs.svelte";
   import { checkTileColors } from "$lib/main.svelte";
 
-  function getRandomHexColor(): string {
+  const getRandomHexColor = (): string => {
     const characters: string = "0123456789abcdef";
     let result: string = "#";
     for (let i: number = 0; i < 6; i++) {
@@ -10,7 +10,7 @@
       result += characters[randomIndex];
     }
     return result;
-  }
+  };
 
   const isMulticolor = (): boolean => colors.v.length > 2;
 </script>
@@ -19,40 +19,22 @@
   <div>
     {#if !isGame.v}
       {#if isMulticolor()}
-        <button
-          onclick={(): void => {
-            colors.v.pop();
-            if (colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--;
-            checkTileColors();
-          }}>-</button
-        >
+        <button onclick={(): void => { colors.v.pop(); if (colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors(); }}>-</button>
       {/if}
-      <button
-        onclick={(): void => {
-          colors.v.push(getRandomHexColor());
-        }}>+</button
-      >
+      <button onclick={(): void => { colors.v.push(getRandomHexColor()); }}>+</button>
     {/if}
   </div>
   <div>
     <input
-      onchange={(): void => {
-        isChangeHashAllowed.v = true;
-      }}
-      onclick={(): void => {
-        isChangeHashAllowed.v = false;
-      }}
+      onchange={(): void => { isChangeHashAllowed.v = true; }}
+      onclick={(): void => { isChangeHashAllowed.v = false; }}
       bind:value={bgColor.v}
       type="color"
     />
     {#each colors.v as _, i}
       <input
-        onchange={(): void => {
-          isChangeHashAllowed.v = true;
-        }}
-        onclick={(): void => {
-          isChangeHashAllowed.v = false;
-        }}
+        onchange={(): void => { isChangeHashAllowed.v = true; }}
+        onclick={(): void => { isChangeHashAllowed.v = false; }}
         bind:value={colors.v[i]}
         type="color"
       />

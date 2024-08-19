@@ -2,9 +2,9 @@
   import { type TilePosition, tilesSolution, tiles, win } from "$lib/refs.svelte";
   import { saveTiles } from "$lib/main.svelte";
 
-  function getRandomNumber(min: number, max: number): number {
+  const getRandomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+  };
 
   const { isDifferent, allSame } = $derived.by(() => {
     const isDifferent: TilePosition[] = [];
@@ -21,17 +21,12 @@
       }
     }
 
-    return {
-      isDifferent,
-      allSame,
-    };
+    return { isDifferent, allSame };
   });
 
-  $effect(() => {
-    win.v = allSame;
-  });
+  $effect(() => { win.v = allSame; });
 
-  function revealATile(): void {
+  const revealATile = (): void => {
     if (!win.v) {
       const randomIndex: number = getRandomNumber(0, isDifferent.length - 1);
       const row: number = isDifferent[randomIndex].row;
@@ -39,7 +34,7 @@
       tiles.v[row][column] = { colorIndex: tilesSolution.v[row][column].colorIndex, Xed: false };
       saveTiles();
     }
-  }
+  };
 </script>
 
 <button onclick={revealATile}>Reveal Tile</button>

@@ -7,7 +7,7 @@
   import { lettersToNum } from "$lib/main.svelte";
   import "$lib/../global.css";
 
-  function splitString(input: string): { letters: string[]; numbers: number[] } {
+  const splitString = (input: string): { letters: string[]; numbers: number[] } => {
     const splitString: RegExpMatchArray | null = input.match(/(\d+|[a-zX]+)/g);
     const numbers: number[] = [];
     const letters: string[] = [];
@@ -23,9 +23,9 @@
     if (numbers.length !== letters.length) throw new Error("Error: different number of counts and letters.");
 
     return { letters, numbers };
-  }
+  };
 
-  function decodeTiles(encodedTiles: string): Tile[][] {
+  const decodeTiles = (encodedTiles: string): Tile[][] => {
     const split: { letters: string[]; numbers: number[] } = splitString(encodedTiles);
     const tiles: Tile[][] = [];
     let row: number = 0;
@@ -46,9 +46,9 @@
     }
 
     return tiles;
-  }
+  };
 
-  function onload(): void {
+  const onload = (): void => {
     if (window.location.hash) {
       try {
         const scrapedHash: string[] = window.location.hash.slice(1).split("-");
@@ -65,13 +65,14 @@
         tilesHistory.v[0] = $state.snapshot(tiles.v);
 
         if (isGame.v) tilesSolution.v = decodeTiles(scrapedHash[scrapedHash.length - 1]);
-      } catch {
+      }
+      catch {
         alert("Couldn't load the code from the URL. Make sure you copied the link correctly.");
       }
 
       isChangeHashAllowed.v = true;
     }
-  }
+  };
 
   $effect(() => {
     if (isChangeHashAllowed.v) {

@@ -31,35 +31,34 @@ type Hint = {
   count: number;
 };
 
-function numToLetters(num: number): string {
+const numToLetters = (num: number): string => {
   let letters = "";
   while (num >= 0) {
     letters = String.fromCharCode((num % 26) + 97) + letters;
     num = Math.floor(num / 26) - 1;
   }
   return letters;
-}
+};
 
 const deepCopy = (obj: object): object => JSON.parse(JSON.stringify(obj));
 
-function ref<T>(initial: T): Ref<T> {
+const ref = <T>(initial: T): Ref<T> => {
   const isObj: boolean = typeof initial === "object" ? true : false;
   let v: T = $state(isObj ? (deepCopy(initial!) as T) : initial);
   const reset = (): T => (v = isObj ? (deepCopy(initial!) as T) : initial);
 
-  // prettier-ignore
   return {
     set v(value: T) { v = value; },
     get v(): T { return v; },
     reset,
   };
-}
+};
 
-function refTiles(): RefTiles {
+const refTiles = (): RefTiles => {
   const baseRef: Ref<Tile[][]> = ref<Tile[][]>(initialTiles);
   const numRows: number = $derived(baseRef.v.length);
   const numColumns: number = $derived(baseRef.v[0].length);
-  const colorIndices: number[][] = $derived.by(() => baseRef.v.map((innerArray) => innerArray.map((item) => item["colorIndex"])));
+  const colorIndices: number[][] = $derived.by((): number[][] => baseRef.v.map(innerArray => innerArray.map(item => item["colorIndex"])));
 
   const rowHints: Hint[][] = $derived.by(() => {
     const rowHints: Hint[][] = [[]];
@@ -124,7 +123,6 @@ function refTiles(): RefTiles {
     return encoded;
   });
 
-  // prettier-ignore
   return {
     get colorIndices(): number[][] { return colorIndices; },
     get columnHints(): Hint[][] { return columnHints; },
@@ -136,7 +134,7 @@ function refTiles(): RefTiles {
     get v(): Tile[][] { return baseRef.v; },
     reset: baseRef.reset,
   };
-}
+};
 
 export const bgColor: Ref<string> = ref<string>("#476fb8");
 export const colors: Ref<string[]> = ref<string[]>(["#f8fafc", "#020617"]);

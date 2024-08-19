@@ -2,34 +2,34 @@
   import { tilesHistoryIndexer, tilesHistory, clickedTile, tiles } from "$lib/refs.svelte";
   import { checkTileColors, saveTiles } from "$lib/main.svelte";
 
-  function onmouseup(): void {
+  const onmouseup = (): void => {
     if (clickedTile.v.row !== -1) saveTiles();
     clickedTile.reset();
-  }
+  };
 
-  function onkeydown(e: KeyboardEvent): void {
+  const onkeydown = (e: KeyboardEvent): void => {
     if (e.key === "z") undo();
     else if (e.key === "y") redo();
-  }
+  };
 
-  function browseHistory(): void {
+  const browseHistory = (): void => {
     tiles.v = $state.snapshot(tilesHistory.v[tilesHistoryIndexer.v]);
     checkTileColors();
-  }
+  };
 
-  function undo(): void {
+  const undo = (): void => {
     if (tilesHistoryIndexer.v !== 0) {
       tilesHistoryIndexer.v--;
       browseHistory();
     }
-  }
+  };
 
-  function redo(): void {
+  const redo = (): void => {
     if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1) {
       tilesHistoryIndexer.v++;
       browseHistory();
     }
-  }
+  };
 </script>
 
 <svelte:window {onkeydown} {onmouseup} />

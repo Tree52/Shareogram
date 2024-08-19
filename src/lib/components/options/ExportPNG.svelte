@@ -2,7 +2,7 @@
   import { colors, tiles } from "$lib/refs.svelte";
   import { hexToRGB } from "$lib/main.svelte";
 
-  function generatePNG(array: number[][], colorMap: string[], callback: (dataUrl: string) => void): void {
+  const generatePNG = (array: number[][], colorMap: string[], callback: (dataUrl: string) => void): void => {
     const width = array[0].length;
     const height = array.length;
 
@@ -35,16 +35,16 @@
       const dataUrl = canvas.toDataURL("image/png");
       callback(dataUrl);
     }
-  }
+  };
 
-  function onclick() {
+  const onclick = () => {
     generatePNG(tiles.colorIndices, colors.v, (dataUrl) => {
       const link = document.createElement("a");
       link.download = "shareogram.png";
       link.href = dataUrl;
       link.click();
     });
-  }
+  };
 </script>
 
 <button {onclick}>Export as PNG</button>

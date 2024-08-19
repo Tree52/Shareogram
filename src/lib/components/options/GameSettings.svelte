@@ -7,27 +7,16 @@
 
 <div>
   {#if isGame.v}
-    <button
-      onclick={(): void => {
-        isGame.v = false;
-        newEditor();
-      }}>New Editor</button
-    >
+    <button onclick={(): void => { isGame.v = false; newEditor(); }}>New Editor</button>
   {:else}
     <div>
       <input
-        oninput={(): void => {
-          editorWidth.v = sanitizeNumberInput(editorWidth.v);
-          newEditor();
-        }}
+        oninput={(): void => { editorWidth.v = sanitizeNumberInput(editorWidth.v); newEditor(); }}
         bind:value={editorWidth.v}
         type="text"
       />
       <input
-        oninput={(): void => {
-          editorHeight.v = sanitizeNumberInput(editorHeight.v);
-          newEditor();
-        }}
+        oninput={(): void => { editorHeight.v = sanitizeNumberInput(editorHeight.v); newEditor(); }}
         bind:value={editorHeight.v}
         type="text"
       />

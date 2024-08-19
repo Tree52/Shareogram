@@ -17,11 +17,7 @@
   <Palette />
   <Border />
   <Scale />
-  <button
-    onclick={(): void => {
-      sidebarOn.v = false;
-    }}>Close Options</button
-  >
+  <button onclick={(): void => { sidebarOn.v = false; }}>Close Options</button>
 </div>
 
 <style>

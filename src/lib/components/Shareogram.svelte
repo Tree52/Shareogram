@@ -22,7 +22,7 @@
   let numTilesEntered: number = $state(0);
 
   type Position = "not adjacent" | "above" | "below" | "right" | "left";
-  function getAdjacentDirection(r1: number, c1: number, r2: number, c2: number): Position {
+  const getAdjacentDirection = (r1: number, c1: number, r2: number, c2: number): Position => {
     const dr: number = Math.abs(r1 - r2);
     const dc: number = Math.abs(c1 - c2);
 
@@ -30,21 +30,15 @@
     if (dr === 0 && dc === 1) return c2 > c1 ? "right" : "left";
     else if (dr === 1 && dc === 0) return r2 > r1 ? "below" : "above";
     else return "not adjacent";
-  }
+  };
 
   const isXed = (tile: Tile): boolean => tile.Xed;
   const isSelectedColor = (tile: Tile): boolean => tile.colorIndex === colorsIndexer.v;
-  function changeColor(tile: Tile, colorIndex: number): void {
-    tile.colorIndex = colorIndex;
-  }
-  function deactivate(tile: Tile): void {
-    tile.colorIndex = 0;
-  }
-  function negateXed(tile: Tile): void {
-    tile.Xed = !tile.Xed;
-  }
+  const changeColor = (tile: Tile, colorIndex: number): void => { tile.colorIndex = colorIndex; };
+  const deactivate = (tile: Tile): void => { tile.colorIndex = 0; };
+  const negateXed = (tile: Tile): void => { tile.Xed = !tile.Xed; };
 
-  function handleMouseDown(e: MouseEvent, i: number, j: number): void {
+  const handleMouseDown = (e: MouseEvent, i: number, j: number): void => {
     clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, column: j, row: i };
     isChangeHashAllowed.v = false;
     numTilesEntered = 0;
@@ -55,27 +49,29 @@
         else if (!isXSelected.v && !isXed(tiles.v[i][j])) {
           isSelectedColor(tiles.v[i][j]) ? deactivate(tiles.v[i][j]) : changeColor(tiles.v[i][j], colorsIndexer.v);
         }
-      } else if (e.button === 2) {
+      }
+      else if (e.button === 2) {
         isActive(tiles.v[i][j]) ? deactivate(tiles.v[i][j]) : negateXed(tiles.v[i][j]);
       }
-    } else {
+    }
+    else {
       if (e.button === 0) changeColor(tiles.v[i][j], colorsIndexer.v);
       else if (e.button === 2) deactivate(tiles.v[i][j]);
     }
-  }
+  };
 
-  function onmousedown(e: MouseEvent): void {
+  const onmousedown = (e: MouseEvent): void => {
     if (e.button === 0) isLeftHeld = true;
     else if (e.button === 2) isRightHeld = true;
-  }
+  };
 
-  function onmouseup(e: MouseEvent): void {
+  const onmouseup = (e: MouseEvent): void => {
     if (e.button === 0) isLeftHeld = false;
     else if (e.button === 2) isRightHeld = false;
     isChangeHashAllowed.v = true;
-  }
+  };
 
-  function handleMouseEnter(i: number, j: number): void {
+  const handleMouseEnter = (i: number, j: number): void => {
     if ((!isLeftHeld && !isRightHeld) || (isLeftHeld && isRightHeld) || clickedTile.v.row === -1) return;
 
     numTilesEntered++;
@@ -93,13 +89,15 @@
           if (isLeftHeld) {
             if (isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
             else if (!isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
-          } else {
+          }
+          else {
             if (clickedTile.v.Xed && !isActive(columnTile)) columnTile.Xed = false;
             else if (clickedTile.v.colorIndex === 0 && !isActive(columnTile)) columnTile.Xed = true;
             else if (clickedTile.v.colorIndex !== 0 && !isXed(columnTile)) deactivate(columnTile);
           }
         }
-      } else {
+      }
+      else {
         const startIndex: number = Math.min(clickedTile.v.column, j);
         const endIndex: number = Math.max(clickedTile.v.column, j);
         for (let m: number = startIndex; m < endIndex + 1; m++) {
@@ -107,17 +105,19 @@
           if (isLeftHeld) {
             if (isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
             else if (!isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
-          } else {
+          }
+          else {
             if (clickedTile.v.Xed && !isActive(rowTile)) rowTile.Xed = false;
             else if (clickedTile.v.colorIndex === 0 && !isActive(rowTile)) rowTile.Xed = true;
             else if (clickedTile.v.colorIndex !== 0 && !isXed(rowTile)) deactivate(rowTile);
           }
         }
       }
-    } else {
+    }
+    else {
       isLeftHeld ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
     }
-  }
+  };
 </script>
 
 <table>
@@ -162,20 +162,16 @@
           <td
             style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
-            onmousedown={(e: MouseEvent): void => {
-              handleMouseDown(e, i, j);
-            }}
-            onmouseenter={(): void => {
-              handleMouseEnter(i, j);
-            }}
+            onmousedown={(e: MouseEvent): void => { handleMouseDown(e, i, j); }}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
+            onmouseenter={(): void => { handleMouseEnter(i, j); }}
             style:font-size={tileWidth.v / 1.5 + "px"}
             style:transition="background-color .5s"
             style:min-width={tileWidth.v + "px"}
             style:height={tileWidth.v + "px"}
             style:color={colors.v[1]}
-            style:text-align="center">{isXed(tiles.v[i][j]) ? "X" : ""}</td
-          >
+            style:text-align="center"
+          >{isXed(tiles.v[i][j]) ? "X" : ""}</td>
         {/each}
       </tr>
     {/each}
