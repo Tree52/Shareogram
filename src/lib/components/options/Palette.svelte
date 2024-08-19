@@ -1,6 +1,6 @@
 <script lang="ts">
   import { isChangeHashAllowed, colorsIndexer, bgColor, colors, isGame } from "$lib/refs.svelte";
-  import { checkTileColors } from "$lib/main.svelte";
+  import { checkTileColors } from "$lib/shared.svelte";
 
   const getRandomHexColor = (): string => {
     const characters: string = "0123456789abcdef";

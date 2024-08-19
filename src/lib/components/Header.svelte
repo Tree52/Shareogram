@@ -1,7 +1,7 @@
 <script lang="ts">
   import { tilesSolution, sidebarOn, isGame, tiles, win } from "$lib/refs.svelte";
   import Reveal from "$lib/components/options/Reveal.svelte";
-  import { newEditor } from "$lib/main.svelte";
+  import { newEditor } from "$lib/shared.svelte";
 </script>
 
 <header style:justify-content={isGame.v ? "space-between" : "center"}>

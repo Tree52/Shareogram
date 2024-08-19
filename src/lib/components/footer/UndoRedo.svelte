@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tilesHistoryIndexer, tilesHistory, clickedTile, tiles } from "$lib/refs.svelte";
-  import { checkTileColors, saveTiles } from "$lib/main.svelte";
+  import { checkTileColors, saveTiles } from "$lib/shared.svelte";
 
   const onmouseup = (): void => {
     if (clickedTile.v.row !== -1) saveTiles();

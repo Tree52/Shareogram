@@ -4,7 +4,7 @@
   import Shareogram from "$lib/components/Shareogram.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
-  import { lettersToNum } from "$lib/main.svelte";
+  import { lettersToNum } from "$lib/shared.svelte";
   import "$lib/../global.css";
 
   const splitString = (input: string): { letters: string[]; numbers: number[] } => {

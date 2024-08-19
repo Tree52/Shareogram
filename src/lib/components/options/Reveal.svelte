@@ -1,6 +1,6 @@
 <script lang="ts">
   import { type TilePosition, tilesSolution, tiles, win } from "$lib/refs.svelte";
-  import { saveTiles } from "$lib/main.svelte";
+  import { saveTiles } from "$lib/shared.svelte";
 
   const getRandomNumber = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min);

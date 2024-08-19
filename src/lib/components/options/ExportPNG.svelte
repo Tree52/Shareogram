@@ -1,6 +1,6 @@
 <script lang="ts">
   import { colors, tiles } from "$lib/refs.svelte";
-  import { hexToRGB } from "$lib/main.svelte";
+  import { hexToRGB } from "$lib/shared.svelte";
 
   const generatePNG = (array: number[][], colorMap: string[], callback: (dataUrl: string) => void): void => {
     const width = array[0].length;

@@ -13,8 +13,8 @@
     isGame,
     tiles,
   } from "$lib/refs.svelte";
-  import { lettersToNum } from "$lib/main.svelte";
-  import { isActive } from "$lib/main.svelte";
+  import { lettersToNum } from "$lib/shared.svelte";
+  import { isActive } from "$lib/shared.svelte";
 
   let isLeftHeld: boolean = $state(false);
   let isRightHeld: boolean = $state(false);

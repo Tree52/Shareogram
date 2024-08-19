@@ -1,6 +1,6 @@
 <script lang="ts">
   import { editorHeight, editorWidth, isGame } from "$lib/refs.svelte";
-  import { newEditor } from "$lib/main.svelte";
+  import { newEditor } from "$lib/shared.svelte";
 
   const sanitizeNumberInput = (n: number): number => Math.max(0, Number(String(n).replace(/[^0-9]/g, "")));
 </script>

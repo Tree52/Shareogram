@@ -1,4 +1,4 @@
-import { initializeTiles, isActive } from "$lib/main.svelte";
+import { initializeTiles, isActive } from "$lib/shared.svelte";
 
 export type Tile = {
   colorIndex: number;
