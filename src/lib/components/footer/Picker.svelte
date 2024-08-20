@@ -1,7 +1,7 @@
 <script lang="ts">
   import { colorsIndexer, isXSelected, colors, isGame } from "$lib/refs.svelte";
 
-  const onkeydown = (e: KeyboardEvent): void => {
+  const onkeydown = (e: KeyboardEvent) => {
     if (/[1-9]/.test(e.key) && Number(e.key) <= colors.v.length) {
       isXSelected.v = false;
       colorsIndexer.v = Number(e.key) - 1;
@@ -17,7 +17,7 @@
   {#each colors.v as _, i}
     <button
       style:border={`solid 2px ${i === colorsIndexer.v ? (i === 0 ? colors.v[1] : colors.v[0]) : colors.v[i]}`}
-      onclick={(): void => { colorsIndexer.v = i; isXSelected.v = false; }}
+      onclick={() => { colorsIndexer.v = i; isXSelected.v = false; }}
       style:--max-h={(colors.v.length > 4 ? "2" : "6") + "rem"}
       style:color={i === 0 ? colors.v[1] : colors.v[0]}
       style:background-color={colors.v[i]}
@@ -26,7 +26,7 @@
   {#if isGame.v}
     <button
       style:border={`solid 2px ${isXSelected.v ? colors.v[1] : "ButtonFace"}`}
-      onclick={(): void => { isXSelected.v = true; colorsIndexer.v = -1; }}
+      onclick={() => { isXSelected.v = true; colorsIndexer.v = -1; }}
       style:--max-h={(colors.v.length > 4 ? "2" : "6") + "rem"}
     >X</button>
   {/if}

@@ -7,14 +7,14 @@
   import { lettersToNum } from "$lib/shared.svelte";
   import "$lib/../global.css";
 
-  const splitString = (input: string): { letters: string[]; numbers: number[] } => {
-    const splitString: RegExpMatchArray | null = input.match(/(\d+|[a-zX]+)/g);
+  const splitString = (input: string) => {
+    const splitString = input.match(/(\d+|[a-zX]+)/g);
     const numbers: number[] = [];
     const letters: string[] = [];
 
     if (splitString) {
       for (let i = 0; i < splitString.length; i++) {
-        const match: string = splitString[i];
+        const match = splitString[i];
         if (isNaN(Number(match))) letters.push(match);
         else numbers.push(Number(match));
       }
@@ -25,16 +25,16 @@
     return { letters, numbers };
   };
 
-  const decodeTiles = (encodedTiles: string): Tile[][] => {
-    const split: { letters: string[]; numbers: number[] } = splitString(encodedTiles);
+  const decodeTiles = (encodedTiles: string) => {
+    const split = splitString(encodedTiles);
     const tiles: Tile[][] = [];
-    let row: number = 0;
-    let column: number = 0;
+    let row = 0;
+    let column = 0;
 
-    for (let i: number = 0; i < editorHeight.v; i++) tiles[i] = [];
+    for (let i = 0; i < editorHeight.v; i++) tiles[i] = [];
 
-    for (let i: number = 0; i < split.numbers.length; i++) {
-      for (let j: number = 0; j < split.numbers[i]; j++) {
+    for (let i = 0; i < split.numbers.length; i++) {
+      for (let j = 0; j < split.numbers[i]; j++) {
         if (split.letters[i] === "X") tiles[row][column++] = { colorIndex: 0, Xed: true };
         else tiles[row][column++] = { colorIndex: lettersToNum(split.letters[i]), Xed: false };
 
@@ -48,18 +48,18 @@
     return tiles;
   };
 
-  const onload = (): void => {
+  const onload = () => {
     if (window.location.hash) {
       try {
-        const scrapedHash: string[] = window.location.hash.slice(1).split("-");
+        const scrapedHash = window.location.hash.slice(1).split("-");
 
         isGame.v = Boolean(Number(scrapedHash[0]));
         editorWidth.v = Number(scrapedHash[1]);
         editorHeight.v = Number(scrapedHash[2]);
         bgColor.v = "#" + scrapedHash[3];
 
-        const scrapedColors: string[] = isGame.v ? scrapedHash.slice(4, -2) : scrapedHash.slice(4, -1);
-        for (let i: number = 0; i < scrapedColors.length; i++) colors.v[i] = "#" + scrapedColors[i];
+        const scrapedColors = isGame.v ? scrapedHash.slice(4, -2) : scrapedHash.slice(4, -1);
+        for (let i = 0; i < scrapedColors.length; i++) colors.v[i] = "#" + scrapedColors[i];
 
         tiles.v = decodeTiles(scrapedHash[isGame.v ? scrapedHash.length - 2 : scrapedHash.length - 1]);
         tilesHistory.v[0] = $state.snapshot(tiles.v);
@@ -76,8 +76,8 @@
 
   $effect(() => {
     if (isChangeHashAllowed.v) {
-      const hash: (number | string)[] = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
-      for (let i: number = 0; i < colors.v.length; i++) hash.push(colors.v[i].slice(1));
+      const hash = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
+      for (let i = 0; i < colors.v.length; i++) hash.push(colors.v[i].slice(1));
       hash.push(tiles.encoded);
       if (isGame.v) hash.push(tilesSolution.encoded);
       window.location.hash = hash.join("-");
@@ -94,7 +94,7 @@
   <title>Shareogram</title>
 </svelte:head>
 
-<svelte:window oncontextmenu={(e: MouseEvent): void => e.preventDefault()} {onload} />
+<svelte:window oncontextmenu={e => e.preventDefault()} {onload} />
 
 <Header />
 

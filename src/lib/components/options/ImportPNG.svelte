@@ -2,10 +2,10 @@
   import { colorsIndexer, editorHeight, tilesHistory, editorWidth, colors, tiles } from "$lib/refs.svelte";
   import { initializeTiles, hexToRGB } from "$lib/shared.svelte";
 
-  let tolerance: number = $state(10);
+  let tolerance = $state(10);
   let files: undefined | FileList = $state();
 
-  const colorsAreSimilar = (color1: [number, number, number], color2: [number, number, number], tolerance: number): boolean => {
+  const colorsAreSimilar = (color1: [number, number, number], color2: [number, number, number], tolerance: number) => {
     const [r1, g1, b1] = color1;
     const [r2, g2, b2] = color2;
 
@@ -14,11 +14,11 @@
     return distance <= tolerance;
   };
 
-  const rgbToHex = (r: number, g: number, b: number): string => {
+  const rgbToHex = (r: number, g: number, b: number) => {
     return "#" + [r, g, b].map(x => Math.round(x).toString(16).padStart(2, "0")).join("");
   };
 
-  const addColorToMap = (hexColor: string, colorMap: string[], tolerance: number): number => {
+  const addColorToMap = (hexColor: string, colorMap: string[], tolerance: number) => {
     const color = hexToRGB(hexColor);
     for (let i = 0; i < colorMap.length; i++) {
       const existingColor = hexToRGB(colorMap[i]);
@@ -28,7 +28,7 @@
     return colorMap.length - 1;
   };
 
-  const importPNG = (file: File, tolerance: number, callback: (array: number[][], colorMap: string[]) => void): void => {
+  const importPNG = (file: File, tolerance: number, callback: (array: number[][], colorMap: string[]) => void) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -74,8 +74,8 @@
         editorHeight.v = array.length;
         tiles.v = initializeTiles();
         tilesHistory.v[0] = $state.snapshot(tiles.v);
-        for (let i: number = 0; i < tiles.numRows; i++) {
-          for (let j: number = 0; j < tiles.numColumns; j++) tiles.v[i][j].colorIndex = array[i][j];
+        for (let i = 0; i < tiles.numRows; i++) {
+          for (let j = 0; j < tiles.numColumns; j++) tiles.v[i][j].colorIndex = array[i][j];
         }
         colors.v = colorMap;
         colorsIndexer.v = 0;

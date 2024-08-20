@@ -40,7 +40,7 @@ const numToLetters = (num: number): string => {
   return letters;
 };
 
-const deepCopy = (obj: object): object => JSON.parse(JSON.stringify(obj));
+const deepCopy = (obj: object): object => JSON.parse(JSON.stringify(obj)) as object;
 
 const ref = <T>(initial: T): Ref<T> => {
   const isObj: boolean = typeof initial === "object" ? true : false;

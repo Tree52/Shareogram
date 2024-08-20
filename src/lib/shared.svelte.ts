@@ -1,33 +1,33 @@
 import { tilesHistoryIndexer, editorHeight, tilesHistory, editorWidth, isXSelected, type Tile, colors, tiles } from "$lib/refs.svelte";
 
-export const isActive = (tile: Tile): boolean => tile.colorIndex !== 0;
+export const isActive = (tile: Tile) => tile.colorIndex !== 0;
 
-export const initializeTiles = (): Tile[][] => {
+export const initializeTiles = () => {
   const tiles: Tile[][] = [[]];
 
-  for (let i: number = 0; i < editorHeight.v; i++) {
+  for (let i = 0; i < editorHeight.v; i++) {
     tiles[i] = [];
-    for (let j: number = 0; j < editorWidth.v; j++) tiles[i][j] = { colorIndex: 0, Xed: false };
+    for (let j = 0; j < editorWidth.v; j++) tiles[i][j] = { colorIndex: 0, Xed: false };
   }
 
   return tiles;
 };
 
-export const checkTileColors = (): void => {
-  for (let i: number = 0; i < tiles.numRows; i++) {
-    for (let j: number = 0; j < tiles.numColumns; j++) {
+export const checkTileColors = () => {
+  for (let i = 0; i < tiles.numRows; i++) {
+    for (let j = 0; j < tiles.numColumns; j++) {
       if (tiles.v[i][j].colorIndex > colors.v.length - 1) tiles.v[i][j].colorIndex = 0;
     }
   }
 };
 
-export const saveTiles = (): void => {
+export const saveTiles = () => {
   if (tilesHistoryIndexer.v !== tilesHistory.v.length - 1) tilesHistory.v.splice(tilesHistoryIndexer.v + 1);
   tilesHistoryIndexer.v++;
   tilesHistory.v.push($state.snapshot(tiles.v));
 };
 
-export const newEditor = (): void => {
+export const newEditor = () => {
   if (editorWidth.v < 1 || editorHeight.v < 1) return;
   tiles.v = initializeTiles();
   tilesHistory.reset();
@@ -36,7 +36,7 @@ export const newEditor = (): void => {
   isXSelected.v = false;
 };
 
-export const lettersToNum = (letters: string): number => {
+export const lettersToNum = (letters: string) => {
   let num = 0;
   for (let i = 0; i < letters.length; i++) {
     num *= 26;
