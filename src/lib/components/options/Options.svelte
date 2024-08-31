@@ -8,7 +8,7 @@
   import { sidebarOn, isGame } from "$lib/refs.svelte";
 </script>
 
-<div style:display={sidebarOn.v ? "flex" : "none"}>
+<div class="absolute inset-0 left-auto w-52 flex-col bg-white" style:display={sidebarOn.v ? "flex" : "none"}>
   {#if !isGame.v}
     <ImportPNG />
     <ExportPNG />
@@ -19,15 +19,3 @@
   <Scale />
   <button onclick={() => { sidebarOn.v = false; }}>Close Options</button>
 </div>
-
-<style>
-  div {
-    background-color: white;
-    bottom: 0;
-    flex-direction: column;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 200px;
-  }
-</style>

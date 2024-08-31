@@ -4,7 +4,7 @@
   import { newEditor } from "$lib/shared.svelte";
 </script>
 
-<header style:justify-content={isGame.v ? "space-between" : "center"}>
+<header style:justify-content={isGame.v ? "space-between" : "center"} class="flex items-center text-2xl">
   <button
     onclick={() => { sidebarOn.v = !sidebarOn.v; }}
     style:margin-right="4px"
@@ -16,10 +16,3 @@
     <button onclick={() => { isGame.v = true; tilesSolution.v = tiles.v; newEditor(); }}>Start Game</button>
   {/if}
 </header>
-
-<style>
-  header {
-    align-items: center;
-    display: flex;
-  }
-</style>

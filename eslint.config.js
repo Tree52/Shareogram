@@ -28,7 +28,7 @@ export default [
   },
 
   { ignores: ["build/", ".svelte-kit/"] },
-  
+
   {
     rules: {
       ...tailwind.configs.error.rules,

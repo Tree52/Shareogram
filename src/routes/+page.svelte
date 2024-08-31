@@ -98,7 +98,7 @@
 
 <Header />
 
-<main>
+<main class="m-2.5 flex flex-1 overflow-auto p-5">
   <Shareogram />
 </main>
 
@@ -109,11 +109,6 @@
 <style>
   main {
     align-items: safe center;
-    display: flex;
-    flex: 1;
     justify-content: safe center;
-    margin: 10px;
-    overflow: auto;
-    padding: 20px;
   }
 </style>

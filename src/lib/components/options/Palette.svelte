@@ -16,18 +16,19 @@
 </script>
 
 <div>
-  <div>
+  <div class="flex flex-wrap">
     {#if !isGame.v}
       {#if isMulticolor()}
-        <button onclick={() => { colors.v.pop(); if (colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors(); }}>-</button>
+        <button onclick={() => { colors.v.pop(); if (colorsIndexer.v > colors.v.length - 1) colorsIndexer.v--; checkTileColors(); }} class="flex-1">-</button>
       {/if}
-      <button onclick={() => { colors.v.push(getRandomHexColor()); }}>+</button>
+      <button onclick={() => { colors.v.push(getRandomHexColor()); }} class="flex-1">+</button>
     {/if}
   </div>
-  <div>
+  <div class="flex flex-wrap">
     <input
       onchange={() => { isChangeHashAllowed.v = true; }}
       onclick={() => { isChangeHashAllowed.v = false; }}
+      class="h-8 min-w-12 flex-1"
       bind:value={bgColor.v}
       type="color"
     />
@@ -35,28 +36,10 @@
       <input
         onchange={() => { isChangeHashAllowed.v = true; }}
         onclick={() => { isChangeHashAllowed.v = false; }}
+        class="h-8 min-w-12 flex-1"
         bind:value={colors.v[i]}
         type="color"
       />
     {/each}
   </div>
 </div>
-
-<style>
-  div {
-    div {
-      display: flex;
-      flex-wrap: wrap;
-
-      button,
-      input[type="color"] {
-        flex: 1;
-      }
-
-      input[type="color"] {
-        height: 2rem;
-        min-width: 3rem;
-      }
-    }
-  }
-</style>

@@ -3,16 +3,9 @@
   import Picker from "$lib/components/footer/Picker.svelte";
 </script>
 
-<footer>
+<footer class="flex justify-center">
   <div>
     <Picker />
     <UndoRedo />
   </div>
 </footer>
-
-<style>
-  footer {
-    display: flex;
-    justify-content: center;
-  }
-</style>

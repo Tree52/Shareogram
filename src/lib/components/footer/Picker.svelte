@@ -13,13 +13,14 @@
   };
 </script>
 
-<div>
+<div class="flex flex-wrap">
   {#each colors.v as _, i}
     <button
       style:border={`solid 2px ${i === colorsIndexer.v ? (i === 0 ? colors.v[1] : colors.v[0]) : colors.v[i]}`}
       onclick={() => { colorsIndexer.v = i; isXSelected.v = false; }}
-      style:--max-h={(colors.v.length > 4 ? "2" : "6") + "rem"}
+      style:max-height={(colors.v.length > 4 ? "2" : "6") + "rem"}
       style:color={i === 0 ? colors.v[1] : colors.v[0]}
+      class="aspect-square min-h-8 flex-1"
       style:background-color={colors.v[i]}
     >{i + 1}</button>
   {/each}
@@ -27,24 +28,10 @@
     <button
       style:border={`solid 2px ${isXSelected.v ? colors.v[1] : "ButtonFace"}`}
       onclick={() => { isXSelected.v = true; colorsIndexer.v = -1; }}
-      style:--max-h={(colors.v.length > 4 ? "2" : "6") + "rem"}
+      style:max-height={(colors.v.length > 4 ? "2" : "6") + "rem"}
+      class="aspect-square min-h-8 flex-1"
     >X</button>
   {/if}
 </div>
 
 <svelte:window {onkeydown} />
-
-<style>
-  div {
-    display: flex;
-    flex-wrap: wrap;
-
-    button {
-      aspect-ratio: 1/1;
-      flex: 1;
-      max-height: var(--max-h);
-      min-height: 2rem;
-      padding: 0;
-    }
-  }
-</style>

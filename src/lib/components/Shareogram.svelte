@@ -117,13 +117,13 @@
   };
 </script>
 
-<table>
+<table class="border-collapse">
   {#if isGame.v}
     <thead>
       <tr>
         <th></th>
         {#each { length: tiles.numColumns } as _, i}
-          <th>
+          <th class="align-bottom">
             {#each tilesSolution.columnHints[i] as columnHint}
               <div style:color={colors.v[lettersToNum(columnHint.color)]} style:font-size={tileWidth.v / 1.5 + "px"}>
                 {columnHint.count}
@@ -174,15 +174,3 @@
 </table>
 
 <svelte:window {onmousedown} {onmouseup} />
-
-<style>
-  th {
-    font-weight: normal;
-    vertical-align: bottom;
-  }
-
-  table {
-    border-collapse: collapse;
-    font-size: 1.5rem;
-  }
-</style>
