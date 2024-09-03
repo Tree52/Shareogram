@@ -5,6 +5,7 @@
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
   import { lettersToNum } from "$lib/shared.svelte";
+  import { dragscroll } from "$lib/dragscroll";
   import "$lib/../global.css";
 
   const splitString = (input: string) => {
@@ -98,7 +99,7 @@
 
 <Header />
 
-<main>
+<main use:dragscroll>
   <Shareogram />
 </main>
 

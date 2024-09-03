@@ -40,7 +40,6 @@ const numToLetters = (num: number): string => {
   return letters;
 };
 
-
 const ref = <T>(initial: T): Ref<T> => {
   let v: T = $state(initial);
   const reset = (): T => (v = initial);
