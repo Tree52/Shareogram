@@ -34,7 +34,7 @@
 
 <svelte:window {onkeydown} {onmouseup} />
 
-<div class="flex">
-  <button class="flex-1" onclick={undo}>Undo</button>
-  <button class="flex-1" onclick={redo}>Redo</button>
+<div class="flex lg:text-3xl">
+  <button class="flex-1 px-2 py-1" onclick={undo}>Undo</button>
+  <button class="flex-1 px-2 py-1" onclick={redo}>Redo</button>
 </div>

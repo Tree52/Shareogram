@@ -142,6 +142,7 @@
           <td style:justify-content="right" style:display="flex">
             {#each tilesSolution.rowHints[i] as rowHint}
               <div
+                class="box-content"
                 style:color={colors.v[lettersToNum(rowHint.color)]}
                 style:font-size={tileWidth.v / 1.5 + "px"}
                 style:min-width={tileWidth.v + "px"}
@@ -155,6 +156,7 @@
         {/if}
         {#each { length: tiles.numColumns } as _, j}
           <td
+            class="box-content"
             style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}

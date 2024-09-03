@@ -84,7 +84,7 @@
   });
 </script>
 
-<label class="flex items-center justify-center text-black hover:bg-[ButtonFace]" for="file-upload">Upload PNG</label>
+<label class="flex items-center justify-center p-2" for="file-upload">Upload PNG</label>
 <input accept="image/png" id="file-upload" class="hidden" type="file" bind:files />
 {#if files}
   <input bind:value={tolerance} type="range" max="442" min="10" />

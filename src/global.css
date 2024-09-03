@@ -11,5 +11,6 @@ html {
     font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
     height: 100%;
     user-select: none;
+    color: var(--color);
   }
 }

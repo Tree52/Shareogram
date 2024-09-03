@@ -98,7 +98,7 @@
 
 <Header />
 
-<main class="m-2.5 flex flex-1 overflow-auto p-5">
+<main class="m-2 mt-0 flex flex-1 overflow-auto p-5">
   <Shareogram />
 </main>
 

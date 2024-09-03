@@ -1,27 +1,25 @@
 <script lang="ts">
-  import { editorHeight, editorWidth, isGame } from "$lib/refs.svelte";
+  import { editorHeight, editorWidth, isGame, colors } from "$lib/refs.svelte";
   import { newEditor } from "$lib/shared.svelte";
 
   const sanitizeNumberInput = (n: number) => Math.max(0, Number(String(n).replace(/[^0-9]/g, "")));
 </script>
 
-<div class="flex flex-col">
+<div class="flex justify-center">
   {#if isGame.v}
-    <button onclick={() => { isGame.v = false; newEditor(); }}>New Editor</button>
+    <button class="p-2" onclick={() => { isGame.v = false; newEditor(); }}>New Editor</button>
   {:else}
-    <div class="flex-row">
-      <input
-        oninput={() => { editorWidth.v = sanitizeNumberInput(editorWidth.v); newEditor(); }}
-        class="min-w-0 flex-1 text-center"
-        bind:value={editorWidth.v}
-        type="text"
-      />
-      <input
-        oninput={() => { editorHeight.v = sanitizeNumberInput(editorHeight.v); newEditor(); }}
-        class="min-w-0 flex-1 text-center"
-        bind:value={editorHeight.v}
-        type="text"
-      />
-    </div>
+    <input
+      oninput={() => { editorWidth.v = sanitizeNumberInput(editorWidth.v); newEditor(); }}
+      class="min-w-0 flex-1 text-center bg-inherit"
+      bind:value={editorWidth.v}
+      type="text"
+    />
+    <input
+      oninput={() => { editorHeight.v = sanitizeNumberInput(editorHeight.v); newEditor(); }}
+      class="min-w-0 flex-1 text-center bg-inherit"
+      bind:value={editorHeight.v}
+      type="text"
+    />
   {/if}
 </div>
