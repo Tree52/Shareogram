@@ -1,6 +1,6 @@
 <script lang="ts">
   import { colorsIndexer, editorHeight, tilesHistory, editorWidth, colors, tiles } from "$lib/refs.svelte";
-  import { initializeTiles, hexToRGB } from "$lib/shared.svelte";
+  import { initializeTiles, hexToRGB, saveTiles } from "$lib/shared.svelte";
 
   let tolerance = $state(10);
   let files: undefined | FileList = $state();
@@ -72,13 +72,13 @@
       importPNG(files[0], tolerance, (array, colorMap) => {
         editorWidth.v = array[0].length;
         editorHeight.v = array.length;
+        colors.v = colorMap;
+        colorsIndexer.v = 0;
         tiles.v = initializeTiles();
-        tilesHistory.v[0] = $state.snapshot(tiles.v);
         for (let i = 0; i < tiles.numRows; i++) {
           for (let j = 0; j < tiles.numColumns; j++) tiles.v[i][j].colorIndex = array[i][j];
         }
-        colors.v = colorMap;
-        colorsIndexer.v = 0;
+        saveTiles();
       });
     }
   });
