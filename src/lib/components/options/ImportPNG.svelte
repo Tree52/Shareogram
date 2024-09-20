@@ -84,25 +84,15 @@
   });
 </script>
 
-<label for="file-upload">Upload PNG</label>
 <input accept="image/png" id="file-upload" type="file" bind:files />
 {#if files}
   <input bind:value={tolerance} type="range" max="442" min="10" />
 {/if}
 
 <style>
-  input[type="file"] {
-    display: none;
-  }
-
-  label {
-    align-items: center;
-    color: black;
-    display: flex;
-    justify-content: center;
-
-    &:hover {
-      background-color: ButtonFace;
-    }
+  input[type="file"]::file-selector-button {
+    border: 0;
+    padding: 10px;
+    width: 100%;
   }
 </style>

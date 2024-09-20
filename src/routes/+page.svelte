@@ -103,9 +103,9 @@
   <Shareogram />
 </main>
 
-<Footer />
-
 <Options />
+
+<Footer />
 
 <style>
   main {
