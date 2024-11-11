@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { colorsIndexer, editorHeight, tilesHistory, editorWidth, colors, tiles } from "$lib/refs.svelte";
-  import { initializeTiles, hexToRGB, saveTiles } from "$lib/shared.svelte";
+  import { colorsIndexer, editorHeight, editorWidth, colors, tiles } from "$lib/refs.svelte";
+  import { initializeTiles, saveTiles, hexToRGB } from "$lib/shared.svelte";
 
   let tolerance = $state(10);
   let files: undefined | FileList = $state();
