@@ -6,7 +6,7 @@
   import Header from "$lib/components/Header.svelte";
   import { lettersToNum } from "$lib/shared.svelte";
   import { dragscroll } from "$lib/dragscroll";
-  import "$lib/../global.css";
+  import "$lib/../app.css";
 
   const splitString = (input: string) => {
     const splitString = input.match(/(\d+|[a-zX]+)/g);
@@ -86,7 +86,6 @@
   });
 
   $effect(() => {
-    document.body.style.backgroundColor = bgColor.v;
     document.body.style.color = colors.v[0];
   });
 </script>
@@ -96,6 +95,44 @@
 </svelte:head>
 
 <svelte:window oncontextmenu={e => e.preventDefault()} {onload} />
+
+<ul style:background-color={bgColor.v} class="background">
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+  <li></li>
+</ul>
 
 <Header />
 
@@ -107,7 +144,9 @@
 
 <Footer />
 
-<style>
+<style lang="scss">
+  @use "sass:math";
+
   main {
     align-items: safe center;
     display: flex;
@@ -116,5 +155,44 @@
     margin: 10px;
     overflow: auto;
     padding: 20px;
+  }
+
+  @keyframes myAnimation {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(-1000px) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  .background {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    z-index: -1;
+
+    li {
+      position: absolute;
+      display: block;
+      background: rgba(255, 255, 255, 0.2);
+      animation: myAnimation 60s linear infinite;
+
+      @for $i from 0 through 34 {
+        &:nth-child(#{$i}) {
+          $width: math.random(200);
+          left: #{math.random(100)} + "%";
+          width: #{$width} + "px";
+          aspect-ratio: 1/1;
+          bottom: -#{$width} + "px";
+          animation-delay: #{math.random(100)} + "s";
+        }
+      }
+    }
   }
 </style>
