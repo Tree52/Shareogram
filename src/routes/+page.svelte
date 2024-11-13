@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isChangeHashAllowed, tilesSolution, editorHeight, tilesHistory, editorWidth, type Tile, bgColor, colors, isGame, tiles } from "$lib/refs.svelte";
+  import { isChangeHashAllowed, tilesSolution, editorHeight, tilesHistory, editorWidth, type Tile, sidebarOn, bgColor, colors, isGame, tiles } from "$lib/refs.svelte";
   import Options from "$lib/components/options/Options.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
@@ -136,7 +136,9 @@
 
 <Header />
 
-<main use:dragscroll>
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<main onclick={ () => { sidebarOn.v = false; } } use:dragscroll>
   <Shareogram />
 </main>
 
