@@ -13,6 +13,7 @@ https://tree52.github.io/Shareogram/
 - x: Select X
 - y: Redo
 - z: Undo
+- o: Open/close options
 
 # Viewing Dev Build (possibly broken)
 

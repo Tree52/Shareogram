@@ -142,9 +142,9 @@
   <Shareogram />
 </main>
 
-<Options />
-
 <Footer />
+
+<Options />
 
 <style lang="scss">
   @use "sass:math";
@@ -193,6 +193,7 @@
           aspect-ratio: 1/1;
           bottom: -#{$width} + "px";
           animation-delay: #{math.random(100)} + "s";
+          border-radius: 10%;
         }
       }
     }

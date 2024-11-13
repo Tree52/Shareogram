@@ -12,10 +12,10 @@
 
 <style>
   div {
-    border-bottom: 2px solid black;
     display: flex;
     justify-content: space-between;
     padding: 20px;
+    accent-color: black;
 
     input[type="radio"] {
       transform: scale(2);

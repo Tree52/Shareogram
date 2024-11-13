@@ -54,6 +54,7 @@
       }
 
       input[type="color"] {
+        border: 0;
         height: 2rem;
         min-width: 3rem;
       }

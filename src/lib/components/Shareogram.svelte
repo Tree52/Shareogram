@@ -1,6 +1,7 @@
 <script lang="ts">
   import {
     isChangeHashAllowed,
+    roundedCorners,
     colorsIndexer,
     tilesSolution,
     clickedTile,
@@ -158,6 +159,7 @@
           <td
             style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
+            style:border-radius={roundedCorners.v === true ? "20%" : "0"}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             onmousedown={(e) => { handleMouseDown(e, i, j); }}
             onmouseenter={() => { handleMouseEnter(i, j); }}

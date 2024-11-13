@@ -153,3 +153,4 @@ export const tileWidth: Ref<number> = ref<number>(50);
 export const win: Ref<boolean> = ref<boolean>(false);
 export const sidebarOn: Ref<boolean> = ref<boolean>(false);
 export const isXSelected: Ref<boolean> = ref<boolean>(false);
+export const roundedCorners: Ref<boolean> = ref<boolean>(true);
