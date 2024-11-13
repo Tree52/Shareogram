@@ -15,6 +15,7 @@
   } from "$lib/refs.svelte";
   import { lettersToNum } from "$lib/shared.svelte";
   import { isActive } from "$lib/shared.svelte";
+  import { fade } from "svelte/transition";
 
   let isLeftHeld = $state(false);
   let isRightHeld = $state(false);
@@ -166,7 +167,11 @@
             style:height={tileWidth.v + "px"}
             style:color={colors.v[1]}
             style:text-align="center"
-          >{isXed(tiles.v[i][j]) ? "X" : ""}</td>
+          >
+            {#if isXed(tiles.v[i][j])}
+              <span transition:fade={{ duration: 300 }}>X</span>
+            {/if}
+          </td>
         {/each}
       </tr>
     {/each}
