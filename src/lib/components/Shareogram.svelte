@@ -13,6 +13,7 @@
     colors,
     isGame,
     tiles,
+    win,
   } from "$lib/refs.svelte";
   import { lettersToNum } from "$lib/shared.svelte";
   import { isActive } from "$lib/shared.svelte";
@@ -117,6 +118,25 @@
       isLeftHeld ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
     }
   };
+
+  let justWon = $state(false);
+  let tempBorderOn = $state(borderOn.v);
+  let tempRoundedCorners = $state(roundedCorners.v);
+
+  $effect(() => {
+    if (win.v && !justWon) {
+      justWon = true;
+      tempBorderOn = borderOn.v;
+      tempRoundedCorners = roundedCorners.v;
+      borderOn.v = 0;
+      roundedCorners.v = false;
+    }
+    else if (!win.v && justWon) {
+      justWon = false;
+      borderOn.v = tempBorderOn;
+      roundedCorners.v = tempRoundedCorners;
+    }
+  });
 </script>
 
 <table>
@@ -170,7 +190,7 @@
             style:color={colors.v[1]}
             style:text-align="center"
           >
-            {#if isXed(tiles.v[i][j])}
+            {#if isXed(tiles.v[i][j]) && !win.v}
               <span transition:fade={{ duration: 300 }}>X</span>
             {/if}
           </td>
