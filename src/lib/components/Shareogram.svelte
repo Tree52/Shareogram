@@ -181,10 +181,10 @@
             style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:border-radius={roundedCorners.v === true ? "20%" : "0"}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
+            style:transition="background-color .5s, border-radius .5s"
             onmousedown={(e) => { handleMouseDown(e, i, j); }}
             onmouseenter={() => { handleMouseEnter(i, j); }}
             style:font-size={tileWidth.v / 1.5 + "px"}
-            style:transition="background-color .5s"
             style:min-width={tileWidth.v + "px"}
             style:height={tileWidth.v + "px"}
             style:color={colors.v[1]}

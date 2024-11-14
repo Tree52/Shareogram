@@ -96,6 +96,7 @@
 
 <svelte:window oncontextmenu={e => e.preventDefault()} {onload} />
 
+<!-- Todo: Fix build not working. Broke on 37729d7 feat: animated background -->
 <ul style:background-color={bgColor.v} class="background">
   <li></li>
   <li></li>
