@@ -128,9 +128,9 @@
 <style>
   .github {
     position: absolute;
-    left: -16px;
-    top: -16px;
-    scale: 50%;
+    left: -24px;
+    top: -24px;
+    scale: 40%;
   }
   
   main {
