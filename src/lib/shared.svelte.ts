@@ -49,3 +49,5 @@ export const hexToRGB = (hex: string): [number, number, number] => {
   const bigint = parseInt(hex.replace("#", ""), 16);
   return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
 };
+
+export const getRandomNumber = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);

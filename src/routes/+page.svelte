@@ -1,10 +1,10 @@
 <script lang="ts">
   import { isChangeHashAllowed, tilesSolution, editorHeight, tilesHistory, editorWidth, type Tile, sidebarOn, bgColor, colors, isGame, tiles } from "$lib/refs.svelte";
+  import { getRandomNumber, lettersToNum } from "$lib/shared.svelte";
   import Options from "$lib/components/options/Options.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
-  import { lettersToNum } from "$lib/shared.svelte";
   import { dragscroll } from "$lib/dragscroll";
   import "$lib/../app.css";
 
@@ -96,43 +96,13 @@
 
 <svelte:window oncontextmenu={e => e.preventDefault()} {onload} />
 
-<!-- Todo: Fix build not working. Broke on 37729d7 feat: animated background -->
 <ul style:background-color={bgColor.v} class="background">
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
+  {#each { length: 35 } as _}
+    <li style:animation-delay={getRandomNumber(0, 60) + "s"}
+        style:width={getRandomNumber(5, 200) + "px"}
+        style:left={getRandomNumber(0, 100) + "%"}
+    ></li>
+  {/each}
 </ul>
 
 <Header />
@@ -147,9 +117,7 @@
 
 <Options />
 
-<style lang="scss">
-  @use "sass:math";
-
+<style>
   main {
     align-items: safe center;
     display: flex;
@@ -185,18 +153,9 @@
       display: block;
       background: rgba(255, 255, 255, 0.2);
       animation: myAnimation 60s linear infinite;
-
-      @for $i from 0 through 34 {
-        &:nth-child(#{$i}) {
-          $width: math.random(200);
-          left: #{math.random(100)} + "%";
-          width: #{$width} + "px";
-          aspect-ratio: 1/1;
-          bottom: -#{$width} + "px";
-          animation-delay: #{math.random(100)} + "s";
-          border-radius: 10%;
-        }
-      }
+      aspect-ratio: 1/1;
+      bottom: -200px;
+      border-radius: 10%;
     }
   }
 </style>

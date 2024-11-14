@@ -1,8 +1,6 @@
 <script lang="ts">
   import { type TilePosition, tilesSolution, tiles, win } from "$lib/refs.svelte";
-  import { saveTiles } from "$lib/shared.svelte";
-
-  const getRandomNumber = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+  import { getRandomNumber, saveTiles } from "$lib/shared.svelte";
 
   const { isDifferent, allSame } = $derived.by(() => {
     const isDifferent: TilePosition[] = [];
