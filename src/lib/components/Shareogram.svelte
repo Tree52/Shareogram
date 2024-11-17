@@ -2,6 +2,7 @@
   import {
     isChangeHashAllowed,
     roundedCorners,
+    isMoveSelected,
     colorsIndexer,
     tilesSolution,
     clickedTile,
@@ -39,7 +40,14 @@
   const deactivate = (tile: Tile) => { tile.colorIndex = 0; };
   const negateXed = (tile: Tile) => { tile.Xed = !tile.Xed; };
 
-  const handleMouseDown = (e: MouseEvent, i: number, j: number) => {
+  const handlePointerDown = (e: PointerEvent, i: number, j: number) => {
+    if (isMoveSelected.v) return;
+
+    if (e.target instanceof HTMLElement) e.target.releasePointerCapture(e.pointerId); // Touch functionality.
+
+    if (e.button === 0) isLeftHeld = true;
+    else if (e.button === 2) isRightHeld = true;
+
     clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, column: j, row: i };
     isChangeHashAllowed.v = false;
     numTilesEntered = 0;
@@ -61,19 +69,14 @@
     }
   };
 
-  const onmousedown = (e: MouseEvent) => {
-    if (e.button === 0) isLeftHeld = true;
-    else if (e.button === 2) isRightHeld = true;
-  };
-
-  const onmouseup = (e: MouseEvent) => {
+  const onpointerup = (e: PointerEvent) => {
     if (e.button === 0) isLeftHeld = false;
     else if (e.button === 2) isRightHeld = false;
     isChangeHashAllowed.v = true;
   };
 
-  const handleMouseEnter = (i: number, j: number) => {
-    if ((!isLeftHeld && !isRightHeld) || (isLeftHeld && isRightHeld) || clickedTile.v.row === -1) return;
+  const handlePointerEnter = (i: number, j: number) => {
+    if ((!isLeftHeld && !isRightHeld) || (isLeftHeld && isRightHeld) || clickedTile.v.row === -1 || isMoveSelected.v) return;
 
     numTilesEntered++;
 
@@ -182,8 +185,8 @@
             style:border-radius={roundedCorners.v === true ? "20%" : "0"}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             style:transition="background-color .5s, border-radius .5s"
-            onmousedown={(e) => { handleMouseDown(e, i, j); }}
-            onmouseenter={() => { handleMouseEnter(i, j); }}
+            onpointerdown={(e) => { handlePointerDown(e, i, j); }}
+            onpointerenter={() => { handlePointerEnter(i, j); }}
             style:font-size={tileWidth.v / 1.5 + "px"}
             style:min-width={tileWidth.v + "px"}
             style:height={tileWidth.v + "px"}
@@ -200,7 +203,7 @@
   </tbody>
 </table>
 
-<svelte:window {onmousedown} {onmouseup} />
+<svelte:window {onpointerup} />
 
 <style>
   th {

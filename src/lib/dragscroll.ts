@@ -1,3 +1,5 @@
+import { isMoveSelected } from "./refs.svelte";
+
 export const dragscroll = (node: HTMLElement) => {
   let isScrolling = false;
   let startX: number;
@@ -6,19 +8,19 @@ export const dragscroll = (node: HTMLElement) => {
   let scrollTop: number;
 
   const handleMouseDown = (e: MouseEvent) => {
-    if (e.button !== 1) return; // Middle mouse button only
+    if (e.button === 1 || (e.button === 0 && isMoveSelected.v)) {
+      e.preventDefault();
+      isScrolling = true;
+      startX = e.pageX - node.offsetLeft;
+      startY = e.pageY - node.offsetTop;
+      scrollLeft = node.scrollLeft;
+      scrollTop = node.scrollTop;
 
-    e.preventDefault();
-    isScrolling = true;
-    startX = e.pageX - node.offsetLeft;
-    startY = e.pageY - node.offsetTop;
-    scrollLeft = node.scrollLeft;
-    scrollTop = node.scrollTop;
+      node.style.cursor = "grabbing";
 
-    node.style.cursor = "grabbing";
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
   };
 
   const handleMouseMove = (e: MouseEvent) => {

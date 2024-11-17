@@ -11,6 +11,7 @@ https://tree52.github.io/Shareogram/
 - Scroll: Zoom in/out
 - 1-9: Select color
 - x: Select X
+- m: Select Move
 - y: Redo
 - z: Undo
 - o: Open/close options

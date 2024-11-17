@@ -2,7 +2,7 @@
   import { tilesHistoryIndexer, tilesHistory, clickedTile, tiles } from "$lib/refs.svelte";
   import { checkTileColors, saveTiles } from "$lib/shared.svelte";
 
-  const onmouseup = () => {
+  const onpointerup = () => {
     if (clickedTile.v.row !== -1) saveTiles();
     clickedTile.reset();
   };
@@ -32,7 +32,7 @@
   };
 </script>
 
-<svelte:window {onkeydown} {onmouseup} />
+<svelte:window {onkeydown} {onpointerup} />
 
 <div>
   <button onclick={undo}>Undo</button>

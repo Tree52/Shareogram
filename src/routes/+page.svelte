@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isChangeHashAllowed, tilesSolution, editorHeight, tilesHistory, editorWidth, type Tile, sidebarOn, bgColor, colors, isGame, tiles } from "$lib/refs.svelte";
+  import { isChangeHashAllowed, isMoveSelected, tilesSolution, editorHeight, tilesHistory, editorWidth, type Tile, sidebarOn, bgColor, colors, isGame, tiles } from "$lib/refs.svelte";
   import { getRandomNumber, lettersToNum } from "$lib/shared.svelte";
   import Options from "$lib/components/options/Options.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
@@ -117,7 +117,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<main onclick={ () => { sidebarOn.v = false; } } use:dragscroll>
+<main style:touch-action={isMoveSelected.v ? "auto" : "none"} onclick={ () => { sidebarOn.v = false; } } use:dragscroll>
   <Shareogram />
 </main>
 
@@ -132,7 +132,7 @@
     top: -24px;
     scale: 40%;
   }
-  
+
   main {
     align-items: safe center;
     display: flex;

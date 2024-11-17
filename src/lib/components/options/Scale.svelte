@@ -1,6 +1,6 @@
 <script lang="ts">
   import { type PinchCustomEvent, pinch } from "svelte-gestures";
-  import { tileWidth } from "$lib/refs.svelte";
+  import { isMoveSelected, tileWidth } from "$lib/refs.svelte";
 
   const MAX_TILE_WIDTH = 100;
   const MIN_TILE_WIDTH = 10;
@@ -14,6 +14,7 @@
   };
 
   const onpinch = (e: PinchCustomEvent) => {
+    if (!isMoveSelected.v) return;
     const _scale = scale;
     scale = e.detail.scale;
     const isZoomOut = scale < _scale;

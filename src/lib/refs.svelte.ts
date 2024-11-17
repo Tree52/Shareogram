@@ -154,3 +154,4 @@ export const win: Ref<boolean> = ref<boolean>(false);
 export const sidebarOn: Ref<boolean> = ref<boolean>(false);
 export const isXSelected: Ref<boolean> = ref<boolean>(false);
 export const roundedCorners: Ref<boolean> = ref<boolean>(true);
+export const isMoveSelected: Ref<boolean> = ref<boolean>(false);
