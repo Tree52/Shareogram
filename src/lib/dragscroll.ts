@@ -1,4 +1,4 @@
-import { isMoveSelected } from "./refs.svelte";
+import { isMoveSelected } from "$lib/refs.svelte";
 
 export const dragscroll = (node: HTMLElement) => {
   let isScrolling = false;
