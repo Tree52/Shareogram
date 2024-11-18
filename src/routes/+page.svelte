@@ -6,7 +6,6 @@
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
   import { dragscroll } from "$lib/dragscroll";
-  import "$lib/../app.css";
 
   const splitString = (input: string) => {
     const splitString = input.match(/(\d+|[a-zX]+)/g);
