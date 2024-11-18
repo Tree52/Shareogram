@@ -49,9 +49,11 @@
   };
 
   const onload = () => {
-    if (window.location.hash) {
+    const hash = window.location.hash;
+
+    if (hash) {
       try {
-        const scrapedHash = window.location.hash.slice(1).split("-");
+        const scrapedHash = hash.slice(1).split("-");
 
         isGame.v = Boolean(Number(scrapedHash[0]));
         editorWidth.v = Number(scrapedHash[1]);
