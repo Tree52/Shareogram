@@ -74,6 +74,12 @@
     }
   };
 
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = "";
+    return "";
+  };
+
   $effect(() => {
     if (isChangeHashAllowed.v) {
       const hash = [Number(isGame.v), editorWidth.v, editorHeight.v, bgColor.v.slice(1)];
@@ -93,7 +99,7 @@
   <title>Shareogram</title>
 </svelte:head>
 
-<svelte:window oncontextmenu={e => e.preventDefault()} {onload} />
+<svelte:window oncontextmenu={e => e.preventDefault()} {onload} onbeforeunload={(e) => { handleBeforeUnload(e); }} />
 
 <div class="github">
   <a href="https://github.com/Tree52/Shareogram" aria-label="Link to GitHub repository">
