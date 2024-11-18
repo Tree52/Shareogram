@@ -11,19 +11,19 @@
     isXSelected.v = false;
     isMoveSelected.v = false;
     colorsIndexer.v = colorIndex;
-  }
-  
+  };
+
   const handleClickX = () => {
     isXSelected.v = true;
     isMoveSelected.v = false;
     colorsIndexer.v = -1;
-  }
+  };
 
   const handleClickMove = () => {
     isXSelected.v = false;
     isMoveSelected.v = true;
     colorsIndexer.v = -1;
-  }
+  };
 </script>
 
 <div>
@@ -31,7 +31,7 @@
     <button
       style:border={`solid 2px ${i === colorsIndexer.v ? (i === 0 ? colors.v[1] : colors.v[0]) : colors.v[i]}`}
       style:color={i === 0 ? colors.v[1] : colors.v[0]}
-      onclick={() => { handleClickColor(i) }}
+      onclick={() => { handleClickColor(i); }}
       style:background-color={colors.v[i]}
     >{i + 1}</button>
   {/each}
