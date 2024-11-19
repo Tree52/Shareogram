@@ -48,24 +48,28 @@
     if (e.button === 0) isLeftHeld = true;
     else if (e.button === 2) isRightHeld = true;
 
+    clickTile(i, j);
+  };
+
+  const clickTile = (i: number, j: number) => {
     clickedTile.v = { colorIndex: tiles.v[i][j].colorIndex, Xed: tiles.v[i][j].Xed, column: j, row: i };
     isChangeHashAllowed.v = false;
     numTilesEntered = 0;
 
     if (isGame.v) {
-      if (e.button === 0) {
+      if (isLeftHeld) {
         if (isXSelected.v && !isActive(tiles.v[i][j])) negateXed(tiles.v[i][j]);
         else if (!isXSelected.v && !isXed(tiles.v[i][j])) {
           isSelectedColor(tiles.v[i][j]) ? deactivate(tiles.v[i][j]) : changeColor(tiles.v[i][j], colorsIndexer.v);
         }
       }
-      else if (e.button === 2) {
+      else if (isRightHeld) {
         isActive(tiles.v[i][j]) ? deactivate(tiles.v[i][j]) : negateXed(tiles.v[i][j]);
       }
     }
     else {
-      if (e.button === 0) changeColor(tiles.v[i][j], colorsIndexer.v);
-      else if (e.button === 2) deactivate(tiles.v[i][j]);
+      if (isLeftHeld) changeColor(tiles.v[i][j], colorsIndexer.v);
+      else if (isRightHeld) deactivate(tiles.v[i][j]);
     }
   };
 
@@ -140,6 +144,35 @@
       roundedCorners.v = tempRoundedCorners;
     }
   });
+
+  let currentRow = 0;
+  let currentCol = 0;
+
+  const handleFocus = (row: number, col: number) => {
+    currentRow = row;
+    currentCol = col;
+  };
+
+  const onkeydown = (e: KeyboardEvent) => {
+    if (e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "ArrowLeft" && e.key !== "ArrowRight" && e.key !== " ") return;
+
+    e.preventDefault();
+
+    let newRow = currentRow;
+    let newCol = currentCol;
+
+    if (e.key === "ArrowUp" && currentRow > 0) newRow--;
+    else if (e.key === "ArrowDown" && currentRow < tiles.numRows - 1) newRow++;
+    else if (e.key === "ArrowLeft" && currentCol > 0) newCol--;
+    else if (e.key === "ArrowRight" && currentCol < tiles.numColumns - 1) newCol++;
+    else if (e.key === " ") isLeftHeld = true;
+
+    document.querySelector<HTMLTableCellElement>(`[data-row="${newRow}"][data-col="${newCol}"]`)?.focus();
+
+    if (isLeftHeld) clickTile(newRow, newCol);
+  };
+
+  const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
 </script>
 
 <table>
@@ -188,10 +221,15 @@
             onpointerdown={(e) => { handlePointerDown(e, i, j); }}
             onpointerenter={() => { handlePointerEnter(i, j); }}
             style:font-size={tileWidth.v / 1.5 + "px"}
+            onfocus={() => { handleFocus(i, j); }}
             style:min-width={tileWidth.v + "px"}
             style:height={tileWidth.v + "px"}
             style:color={colors.v[1]}
             style:text-align="center"
+            data-row={i}
+            data-col={j}
+            {onkeydown}
+            tabindex=0
           >
             {#if isXed(tiles.v[i][j]) && !win.v}
               <span transition:fade={{ duration: 300 }}>X</span>
@@ -203,7 +241,7 @@
   </tbody>
 </table>
 
-<svelte:window {onpointerup} />
+<svelte:window {onpointerup} {onkeyup} />
 
 <style>
   th {
