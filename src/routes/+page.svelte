@@ -142,9 +142,9 @@
 <style>
   .github {
     position: absolute;
-    left: -24px;
-    top: -24px;
-    scale: 40%;
+    left: -30px;
+    top: -30px;
+    scale: 30%;
   }
 
   main {
