@@ -104,7 +104,7 @@
 
     // fill={colors.v[0]} stopped working for some reason, thus needing this.
     const svgPath = document.querySelector("#dynamic-svg path");
-    svgPath!.setAttribute("fill", colors.v[0]);
+    svgPath?.setAttribute("fill", colors.v[0]);
   });
 </script>
 
