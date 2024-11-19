@@ -214,5 +214,6 @@
   table {
     border-collapse: collapse;
     font-size: 1.5rem;
+    margin: 8rem;
   }
 </style>

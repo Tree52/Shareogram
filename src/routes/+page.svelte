@@ -154,7 +154,13 @@
     justify-content: safe center;
     margin: 10px;
     overflow: auto;
-    padding: 20px;
+
+    /* Hide scrollbars */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
   }
 
   @keyframes myAnimation {
