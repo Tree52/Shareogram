@@ -7,6 +7,8 @@
   import Header from "$lib/components/Header.svelte";
   import { dragscroll } from "$lib/dragscroll";
 
+  let loadDone = $state(false);
+
   const splitString = (input: string) => {
     const splitString = input.match(/(\d+|[a-zX]+)/g);
     const numbers: number[] = [];
@@ -48,6 +50,12 @@
     return tiles;
   };
 
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = "";
+    return "";
+  };
+
   const onload = () => {
     const hash = window.location.hash;
 
@@ -74,13 +82,12 @@
 
       isChangeHashAllowed.v = true;
     }
+
+    loadDone = true;
   };
 
-  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    e.returnValue = "";
-    return "";
-  };
+  // onload doesn't seem to fire sometimes, thus needing this.
+  $effect(() => { while (!loadDone) onload(); });
 
   $effect(() => {
     if (isChangeHashAllowed.v) {
