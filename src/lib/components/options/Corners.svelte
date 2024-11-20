@@ -3,9 +3,7 @@
 </script>
 
 <div>
-  <label class="switch">
-    <input bind:checked={roundedCorners.v} type="checkbox">
-  </label>
+  <input bind:checked={roundedCorners.v} type="checkbox">
 </div>
 
 <style>
@@ -13,6 +11,7 @@
     border-bottom: 2px solid black;
     display: flex;
     justify-content: center;
+    padding: 20px;
   }
 
   /* From Uiverse.io by nikk7007 */

@@ -6,6 +6,7 @@
   import Corners from "$lib/components/options/Corners.svelte";
   import Border from "$lib/components/options/Border.svelte";
   import Reveal from "$lib/components/options/Reveal.svelte";
+  import Sticky from "$lib/components/options/Sticky.svelte";
   import Scale from "$lib/components/options/Scale.svelte";
   import { sidebarOn, isGame } from "$lib/refs.svelte";
 
@@ -26,6 +27,7 @@
   <Corners />
   <Scale />
   {#if isGame.v}
+    <Sticky />
     <Reveal />
   {/if}
 </div>
@@ -43,5 +45,6 @@
     border-top-left-radius: 40px;
     border-bottom-left-radius: 40px;
     overflow: hidden;
+    z-index: 10;
   }
 </style>

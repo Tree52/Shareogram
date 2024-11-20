@@ -1,6 +1,8 @@
 <script lang="ts">
   import {
+    isColumnHintsSticky,
     isChangeHashAllowed,
+    isRowHintsSticky,
     roundedCorners,
     isMoveSelected,
     colorsIndexer,
@@ -177,13 +179,16 @@
 
 <table>
   {#if isGame.v}
-    <thead>
+    <thead style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
       <tr>
-        <th></th>
+        <th style:visibility="hidden"></th>
         {#each { length: tiles.numColumns } as _, i}
           <th>
             {#each tilesSolution.columnHints[i] as columnHint}
-              <div style:color={colors.v[lettersToNum(columnHint.color)]} style:font-size={tileWidth.v / 1.5 + "px"}>
+              <div
+                style:color={colors.v[lettersToNum(columnHint.color)]}
+                style:font-size={isColumnHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
+              >
                 {columnHint.count}
               </div>
             {/each}
@@ -197,18 +202,20 @@
     {#each { length: tiles.numRows } as _, i}
       <tr>
         {#if isGame.v}
-          <td style:justify-content="right" style:display="flex">
-            {#each tilesSolution.rowHints[i] as rowHint}
-              <div
-                style:color={colors.v[lettersToNum(rowHint.color)]}
-                style:font-size={tileWidth.v / 1.5 + "px"}
-                style:min-width={tileWidth.v + "px"}
-                style:height={tileWidth.v + "px"}
-                style:justify-content="center"
-                style:align-items="center"
-                style:display="flex"
-              >{rowHint.count}</div>
-            {/each}
+          <td style:position={isRowHintsSticky.v ? "sticky" : ""} style:background-color={isRowHintsSticky.v ? colors.v[0] : ""}>
+            <div style:justify-content="right" style:display="flex">
+              {#each tilesSolution.rowHints[i] as rowHint}
+                <div
+                  style:color={colors.v[lettersToNum(rowHint.color)]}
+                  style:font-size={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
+                  style:min-width={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
+                  style:height={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
+                  style:justify-content="center"
+                  style:align-items="center"
+                  style:display="flex"
+                >{rowHint.count}</div>
+              {/each}
+            </div>
           </td>
         {/if}
         {#each { length: tiles.numColumns } as _, j}
@@ -244,14 +251,19 @@
 <svelte:window {onpointerup} {onkeyup} />
 
 <style>
-  th {
-    font-weight: normal;
-    vertical-align: bottom;
-  }
-
   table {
     border-collapse: collapse;
-    font-size: 1.5rem;
     margin: 8rem;
+
+    thead {
+      vertical-align: bottom;
+      top: 0;
+      z-index: 2;
+    }
+
+    tbody td:first-child {
+      left: 0;
+      z-index: 1;
+    }
   }
 </style>
