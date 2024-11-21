@@ -86,7 +86,7 @@
 
 <input accept="image/png" id="file-upload" type="file" bind:files />
 {#if files}
-  <input bind:value={tolerance} type="range" max="442" min="10" />
+  <input class="mx-2" bind:value={tolerance} type="range" max="442" min="10" />
 {/if}
 
 <style>
@@ -94,5 +94,6 @@
     border: 0;
     padding: 10px;
     width: 100%;
+    cursor: pointer;
   }
 </style>

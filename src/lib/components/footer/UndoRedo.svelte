@@ -34,17 +34,7 @@
 
 <svelte:window {onkeydown} {onpointerup} />
 
-<div>
-  <button onclick={undo}>Undo</button>
-  <button onclick={redo}>Redo</button>
+<div class="flex">
+  <button class="flex-1" onclick={undo}>Undo</button>
+  <button class="flex-1" onclick={redo}>Redo</button>
 </div>
-
-<style>
-  div {
-    display: flex;
-
-    button {
-      flex: 1;
-    }
-  }
-</style>

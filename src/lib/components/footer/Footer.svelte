@@ -4,7 +4,7 @@
   import { sidebarOn } from "$lib/refs.svelte";
 </script>
 
-<footer>
+<footer class="flex justify-center">
   <div style:border-top-right-radius=8px style:border-top-left-radius=8px style:overflow="hidden" style:display="flex">
     <button onclick={() => { sidebarOn.v = !sidebarOn.v; }}>Options</button>
     <div>
@@ -13,10 +13,3 @@
     </div>
   </div>
 </footer>
-
-<style>
-  footer {
-    display: flex;
-    justify-content: center;
-  }
-</style>

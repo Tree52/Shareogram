@@ -2,18 +2,11 @@
   import { roundedCorners } from "$lib/refs.svelte";
 </script>
 
-<div>
+<div class="border-b-black border-b-2 flex justify-center pb-5">
   <input bind:checked={roundedCorners.v} type="checkbox">
 </div>
 
 <style>
-  div {
-    border-bottom: 2px solid black;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-  }
-
   /* From Uiverse.io by nikk7007 */
   input[type=checkbox] {
     appearance: none;

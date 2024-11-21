@@ -16,7 +16,10 @@
 <svelte:window {onkeydown} />
 
 <!-- Note: doing an if and using transition:fly breaks dragscroll for some reason. -->
-<div style:right={ sidebarOn.v ? "0" : "-200px" }>
+<div
+  style:right={ sidebarOn.v ? "0" : "-300px" }
+  class="bg-white bottom-0 flex-col fixed flex top-0 w-40 max-w-[75%] rounded-l-3xl overflow-hidden z-10"
+>
   {#if !isGame.v}
     <ImportPNG />
     <ExportPNG />
@@ -34,17 +37,6 @@
 
 <style>
   div {
-    background-color: white;
-    bottom: 0;
-    flex-direction: column;
-    position: fixed;
-    display: flex;
-    top: 0;
-    width: 200px;
     transition: right .5s;
-    border-top-left-radius: 40px;
-    border-bottom-left-radius: 40px;
-    overflow: hidden;
-    z-index: 10;
   }
 </style>

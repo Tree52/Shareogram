@@ -2,7 +2,7 @@
   import { editorHeight, editorWidth, borderOn } from "$lib/refs.svelte";
 </script>
 
-<div>
+<div class="flex justify-between p-5 accent-black">
   <input bind:group={borderOn.v} name="border" type="radio" value={0} />
   <input bind:group={borderOn.v} name="border" type="radio" value={1} />
   {#if editorWidth.v > 5 || editorHeight.v > 5}
@@ -12,11 +12,6 @@
 
 <style>
   div {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    accent-color: black;
-
     input[type="radio"] {
       transform: scale(2);
     }

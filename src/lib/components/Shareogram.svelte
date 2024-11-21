@@ -177,9 +177,9 @@
   const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
 </script>
 
-<table>
+<table class="border-collapse m-32">
   {#if isGame.v}
-    <thead style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
+    <thead class="align-bottom top-0 z-20" style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
       <tr>
         <th style:visibility="hidden"></th>
         {#each { length: tiles.numColumns } as _, i}
@@ -202,7 +202,7 @@
     {#each { length: tiles.numRows } as _, i}
       <tr>
         {#if isGame.v}
-          <td style:position={isRowHintsSticky.v ? "sticky" : ""} style:background-color={isRowHintsSticky.v ? colors.v[0] : ""}>
+          <td class="left-0 z-10" style:position={isRowHintsSticky.v ? "sticky" : ""} style:background-color={isRowHintsSticky.v ? colors.v[0] : ""}>
             <div style:justify-content="right" style:display="flex">
               {#each tilesSolution.rowHints[i] as rowHint}
                 <div
@@ -233,6 +233,7 @@
             style:height={tileWidth.v + "px"}
             style:color={colors.v[1]}
             style:text-align="center"
+            class="box-content"
             data-row={i}
             data-col={j}
             {onkeydown}
@@ -249,21 +250,3 @@
 </table>
 
 <svelte:window {onpointerup} {onkeyup} />
-
-<style>
-  table {
-    border-collapse: collapse;
-    margin: 8rem;
-
-    thead {
-      vertical-align: bottom;
-      top: 0;
-      z-index: 2;
-    }
-
-    tbody td:first-child {
-      left: 0;
-      z-index: 1;
-    }
-  }
-</style>

@@ -2,19 +2,12 @@
   import { isColumnHintsSticky, isRowHintsSticky } from "$lib/refs.svelte";
 </script>
 
-<div>
+<div class="border-t-black border-t-2 flex p-5 justify-between">
   <input bind:checked={isRowHintsSticky.v} type="checkbox">
   <input bind:checked={isColumnHintsSticky.v} type="checkbox">
 </div>
 
 <style>
-  div {
-    border-top: 2px solid black;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-  }
-
   /* From Uiverse.io by nikk7007 */
   input[type=checkbox] {
     appearance: none;
