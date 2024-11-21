@@ -2,7 +2,7 @@
   import { roundedCorners } from "$lib/refs.svelte";
 </script>
 
-<div class="border-b-black border-b-2 flex justify-center pb-5">
+<div class="flex justify-center border-b-2 border-b-black pb-5">
   <input bind:checked={roundedCorners.v} type="checkbox">
 </div>
 

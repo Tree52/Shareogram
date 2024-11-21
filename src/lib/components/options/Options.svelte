@@ -18,7 +18,7 @@
 <!-- Note: doing an if and using transition:fly breaks dragscroll for some reason. -->
 <div
   style:right={ sidebarOn.v ? "0" : "-300px" }
-  class="bg-white bottom-0 flex-col fixed flex top-0 w-40 max-w-[75%] rounded-l-3xl overflow-hidden z-50"
+  class="fixed bottom-0 top-0 z-50 flex w-40 max-w-[75%] flex-col overflow-hidden rounded-l-3xl bg-white"
 >
   {#if !isGame.v}
     <ImportPNG />

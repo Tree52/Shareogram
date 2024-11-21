@@ -2,7 +2,7 @@
   import { isColumnHintsSticky, isRowHintsSticky } from "$lib/refs.svelte";
 </script>
 
-<div class="border-t-black border-t-2 flex p-5 justify-between">
+<div class="flex justify-between border-t-2 border-t-black p-5">
   <input bind:checked={isRowHintsSticky.v} type="checkbox">
   <input bind:checked={isColumnHintsSticky.v} type="checkbox">
 </div>

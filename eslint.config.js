@@ -1,10 +1,10 @@
-import js from "@eslint/js";
-import stylistic from "@stylistic/eslint-plugin";
 import perfectionist from "eslint-plugin-perfectionist";
 import tailwind from "eslint-plugin-readable-tailwind";
+import stylistic from "@stylistic/eslint-plugin";
 import svelte from "eslint-plugin-svelte";
-import globals from "globals";
 import ts from "typescript-eslint";
+import globals from "globals";
+import js from "@eslint/js";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -19,34 +19,34 @@ export default [
   ...svelte.configs["flat/recommended"],
 
   {
-    files: ["**/*.svelte"],
     languageOptions:
     {
       globals: { ...globals.browser, ...globals.node },
       parserOptions: { parser: ts.parser },
     },
+    files: ["**/*.svelte"],
   },
   { ignores: ["build/", ".svelte-kit/"] },
   {
     rules: {
       ...tailwind.configs.error.rules,
+      "no-restricted-syntax": ["error",
+        {
+          selector: "FunctionExpression[generator=false]:not(:has(ThisExpression)):not(Property[kind='get'] > .value):not(Property[kind='set'] > .value)",
+          message: "FunctionExpression: Arrow functions preferred",
+        },
+        {
+          selector: "FunctionDeclaration[generator=false]:not(:has(ThisExpression)):not(MethodDefinition[kind='get'] > .value):not(MethodDefinition[kind='set'] > .value)",
+          message: "FunctionDeclaration: Arrow functions preferred",
+        },
+      ],
+      "readable-tailwind/multiline": ["error", { preferSingleLine: true, printWidth: 999 }],
+      "@typescript-eslint/no-unused-expressions": ["error", { allowTernary: true }],
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "@stylistic/max-statements-per-line": ["error", { max: 3 }],
       "@stylistic/member-delimiter-style": ["error", {}], // {} overrides recommended-flat config with default.
       "@stylistic/quotes": ["error", "double"],
       "@stylistic/semi": ["error", "always"],
-      "@typescript-eslint/no-unused-expressions": ["error", { allowTernary: true }],
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-      "no-restricted-syntax": ["error",
-        {
-          message: "FunctionExpression: Arrow functions preferred",
-          selector: "FunctionExpression[generator=false]:not(:has(ThisExpression)):not(Property[kind='get'] > .value):not(Property[kind='set'] > .value)",
-        },
-        {
-          message: "FunctionDeclaration: Arrow functions preferred",
-          selector: "FunctionDeclaration[generator=false]:not(:has(ThisExpression)):not(MethodDefinition[kind='get'] > .value):not(MethodDefinition[kind='set'] > .value)",
-        },
-      ],
-      "readable-tailwind/multiline": ["error", { preferSingleLine: true, printWidth: 999 }],
     },
   },
 ];

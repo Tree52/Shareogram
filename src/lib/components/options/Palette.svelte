@@ -30,7 +30,7 @@
       onclick={() => { isChangeHashAllowed.v = false; }}
       bind:value={bgColor.v}
       type="color"
-      class="flex-1 border-0 h-8 min-w-12"
+      class="h-8 min-w-12 flex-1 border-0"
     />
     {#each colors.v as _, i}
       <input
@@ -38,7 +38,7 @@
         onclick={() => { isChangeHashAllowed.v = false; }}
         bind:value={colors.v[i]}
         type="color"
-        class="flex-1 border-0 h-8 min-w-12"
+        class="h-8 min-w-12 flex-1 border-0"
       />
     {/each}
   </div>

@@ -33,20 +33,20 @@
       style:color={i === 0 ? colors.v[1] : colors.v[0]}
       onclick={() => { handleClickColor(i); }}
       style:background-color={colors.v[i]}
-      class="aspect-square flex-1 h-8 p-0 flex items-center justify-center"
+      class="flex aspect-square h-8 flex-1 items-center justify-center p-0"
     >{i + 1}</button>
   {/each}
   {#if isGame.v}
     <button
       style:border={`solid 2px ${isXSelected.v ? colors.v[1] : "ButtonFace"}`}
       onclick={handleClickX}
-      class="aspect-square flex-1 h-8 p-0 flex items-center justify-center"
+      class="flex aspect-square h-8 flex-1 items-center justify-center p-0"
     >X</button>
   {/if}
   <button
     style:border={`solid 2px ${isMoveSelected.v ? colors.v[1] : "ButtonFace"}`}
     onclick={handleClickMove}
-    class="aspect-square flex-1 h-8 p-0 flex items-center justify-center"
+    class="flex aspect-square h-8 flex-1 items-center justify-center p-0"
     aria-label="Move"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21v-9m0 9l3-3m-3 3l-3-3m3-6V3m0 9H3m9 0h9m-9-9L9 6m3-3l3 3M3 12l3 3m-3-3l3-3m15 3l-3-3m3 3l-3 3"/></svg>

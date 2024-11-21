@@ -177,9 +177,9 @@
   const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
 </script>
 
-<table class="border-collapse m-32">
+<table class="m-32 border-collapse">
   {#if isGame.v}
-    <thead class="align-bottom top-0 z-20" style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
+    <thead class="top-0 z-20 align-bottom" style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
       <tr>
         <th style:visibility="hidden"></th>
         {#each { length: tiles.numColumns } as _, i}

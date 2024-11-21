@@ -117,7 +117,7 @@
 <ul style:background-color={bgColor.v} class="absolute inset-0 -z-10 m-0 overflow-hidden p-0">
   {#each { length: 35 } as _}
     <li
-      class="absolute block bg-white/20 aspect-square -bottom-[200px] rounded-[10%]"
+      class="absolute -bottom-[200px] block aspect-square rounded-[10%] bg-white/20"
       style:animation-delay={getRandomNumber(0, 60) + "s"}
       style:width={getRandomNumber(5, 200) + "px"}
       style:left={getRandomNumber(0, 100) + "%"}
@@ -132,7 +132,7 @@
 <main
   style:touch-action={isMoveSelected.v ? "auto" : "none"}
   onclick={ () => { sidebarOn.v = false; } }
-  class="flex flex-1 m-3 overflow-auto"
+  class="m-3 flex flex-1 overflow-auto"
   use:dragscroll
 >
   <Shareogram />
