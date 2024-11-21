@@ -181,13 +181,14 @@
   {#if isGame.v}
     <thead class="top-0 z-20 align-bottom" style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
       <tr>
-        <th style:visibility="hidden"></th>
+        <th class="invisible"></th>
         {#each { length: tiles.numColumns } as _, i}
           <th>
             {#each tilesSolution.columnHints[i] as columnHint}
               <div
-                style:color={colors.v[lettersToNum(columnHint.color)]}
                 style:font-size={isColumnHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
+                style:color={colors.v[lettersToNum(columnHint.color)]}
+                class="font-normal"
               >
                 {columnHint.count}
               </div>
