@@ -175,6 +175,116 @@
   };
 
   const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
+
+  // http://localhost:5173/#1-10-5-476fb8-f8fafc-020617-47d9ee-50a-1b1c3b1c3b2a1c1b1a1b1a1c2b1a6b1c4a1c1a1b1a1b1c1b1c1a1b1c2b1c3b1c1a
+  // http://localhost:5173/#1-10-1-476fb8-f8fafc-020617-47d9ee-10a-1a1c1b1a1b1a1c2b1a
+  const rowHintsMap: number[][] = $derived.by(() => {
+    let map: number[][] = [[]];
+
+    for (let rowIndex = 0; rowIndex < tilesSolution.rowHints.length; rowIndex++) {
+      map[rowIndex] = [];
+      const hints = tilesSolution.rowHints[rowIndex];
+      for (let hintIndex = 0; hintIndex < hints.length; hintIndex++) {
+        const hint = hints[hintIndex];
+
+        let offsetHead = 0;
+        let offsetTail = 0;
+        for (let i = 0; i < hints.length; i++) {
+          if (i !== 0 && (hints[i - 1].color === hints[i].color)) {
+            if (i <= hintIndex) offsetHead++;
+            else if (i > hintIndex) offsetTail++;
+          }
+
+          if (i < hintIndex) offsetHead += hints[i].count;
+          else if (i > hintIndex) offsetTail += hints[i].count;
+        }
+
+        const encodes = tiles.rowEncodes[rowIndex];
+
+        let startIndex = 0;
+        let endIndex = encodes.length - 1;
+        let count = 0;
+        for (let i = 0; i < encodes.length; i++) {
+          if (count >= offsetHead) break;
+          count += encodes[i].count;
+          startIndex++;
+        }
+
+        count = 0;
+        for (let i = endIndex; i >= 0; i--) {
+          if (count >= offsetTail) break;
+          count += encodes[i].count;
+          endIndex--;
+        }
+
+        for (let i = startIndex; i <= endIndex; i++) {
+          if (JSON.stringify(hint) === JSON.stringify(encodes[i])) {
+            map[rowIndex][hintIndex] = i;
+
+            if (map[rowIndex].slice(0, -1).includes(i)) continue;
+            else break;
+          }
+        }
+      }
+    }
+
+    return map;
+  });
+
+  const columnHintsMap: number[][] = $derived.by(() => {
+    let map: number[][] = [[]];
+
+    for (let columnIndex = 0; columnIndex < tilesSolution.columnHints.length; columnIndex++) {
+      map[columnIndex] = [];
+      const hints = tilesSolution.columnHints[columnIndex];
+      for (let hintIndex = 0; hintIndex < hints.length; hintIndex++) {
+        const hint = hints[hintIndex];
+
+        let offsetHead = 0;
+        let offsetTail = 0;
+        for (let i = 0; i < hints.length; i++) {
+          if (i !== 0 && (hints[i - 1].color === hints[i].color)) {
+            if (i <= hintIndex) offsetHead++;
+            else if (i > hintIndex) offsetTail++;
+          }
+
+          if (i < hintIndex) offsetHead += hints[i].count;
+          else if (i > hintIndex) offsetTail += hints[i].count;
+        }
+
+        const encodes = tiles.columnEncodes[columnIndex];
+
+        let startIndex = 0;
+        let endIndex = encodes.length - 1;
+        let count = 0;
+        for (let i = 0; i < encodes.length; i++) {
+          if (count >= offsetHead) break;
+          count += encodes[i].count;
+          startIndex++;
+        }
+
+        count = 0;
+        for (let i = endIndex; i >= 0; i--) {
+          if (count >= offsetTail) break;
+          count += encodes[i].count;
+          endIndex--;
+        }
+
+        for (let i = startIndex; i <= endIndex; i++) {
+          if (JSON.stringify(hint) === JSON.stringify(encodes[i])) {
+            map[columnIndex][hintIndex] = i;
+
+            if (map[columnIndex].slice(0, -1).includes(i)) continue;
+            else break;
+          }
+        }
+      }
+    }
+
+    return map;
+  });
+
+  const isAmbiguous = (arr: number[], value: number) => arr.filter(item => item === value).length > 1;
 </script>
 
 <table class="m-32 border-collapse">
@@ -184,8 +294,9 @@
         <th class="invisible"></th>
         {#each { length: tiles.numColumns } as _, i}
           <th>
-            {#each tilesSolution.columnHints[i] as columnHint}
+            {#each tilesSolution.columnHints[i] as columnHint, j}
               <div
+                style:opacity={columnHintsMap[i][j] >= 0 && !isAmbiguous(columnHintsMap[i], columnHintsMap[i][j]) ? 0.2 : 1}
                 style:font-size={isColumnHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
                 style:color={colors.v[lettersToNum(columnHint.color)]}
                 class="font-normal"
@@ -205,12 +316,13 @@
         {#if isGame.v}
           <td class="left-0 z-10" style:position={isRowHintsSticky.v ? "sticky" : ""} style:background-color={isRowHintsSticky.v ? colors.v[0] : ""}>
             <div style:justify-content="right" style:display="flex">
-              {#each tilesSolution.rowHints[i] as rowHint}
+              {#each tilesSolution.rowHints[i] as rowHint, j}
                 <div
-                  style:color={colors.v[lettersToNum(rowHint.color)]}
+                  style:opacity={rowHintsMap[i][j] >= 0 && !isAmbiguous(rowHintsMap[i], rowHintsMap[i][j]) ? 0.2 : 1}
                   style:font-size={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
                   style:min-width={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
                   style:height={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
+                  style:color={colors.v[lettersToNum(rowHint.color)]}
                   style:justify-content="center"
                   style:align-items="center"
                   style:display="flex"

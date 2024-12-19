@@ -1,4 +1,4 @@
-import { initializeTiles, isActive } from "$lib/shared.svelte";
+import { initializeTiles } from "$lib/shared.svelte";
 
 export type Tile = {
   colorIndex: number;
@@ -18,7 +18,9 @@ type Ref<T> = {
 };
 
 type RefTiles = {
+  columnEncodes: Encode[][];
   colorIndices: number[][];
+  rowEncodes: Encode[][];
   columnHints: Hint[][];
   numColumns: number;
   rowHints: Hint[][];
@@ -26,10 +28,12 @@ type RefTiles = {
   numRows: number;
 } & Ref<Tile[][]>;
 
-type Hint = {
+type Encode = {
   color: string;
   count: number;
 };
+
+type Hint = Encode;
 
 const numToLetters = (num: number): string => {
   let letters = "";
@@ -57,72 +61,89 @@ const refTiles = (): RefTiles => {
   const numColumns: number = $derived(baseRef.v[0].length);
   const colorIndices: number[][] = $derived.by((): number[][] => baseRef.v.map(innerArray => innerArray.map(item => item["colorIndex"])));
 
-  const rowHints: Hint[][] = $derived.by(() => {
-    const rowHints: Hint[][] = [[]];
-    const numRows: number = baseRef.v.length;
-    const numColumns: number = baseRef.v[0].length;
+  const rowEncodes: Encode[][] = $derived.by(() => {
+    const rowEncodes: Encode[][] = [[]];
+    const numRows = baseRef.v.length;
+    const numColumns = baseRef.v[0].length;
 
-    for (let row: number = 0; row < numRows; row++) {
-      rowHints[row] = [{ color: "", count: 0 }];
-      for (let column: number = 0; column < numColumns; column++) {
-        if (isActive(baseRef.v[row][column])) {
-          const previousColorIndex: number | null = column === 0 ? null : baseRef.v[row][column - 1].colorIndex;
-          const currentColorIndex: number = baseRef.v[row][column].colorIndex;
-          if (previousColorIndex !== currentColorIndex) rowHints[row].push({ color: numToLetters(currentColorIndex), count: 1 });
-          else rowHints[row][rowHints[row].length - 1].count++;
-        }
-      }
-      if (rowHints[row].length > 1 && rowHints[row][0].count === 0) rowHints[row].shift();
-    }
-
-    return rowHints;
-  });
-
-  const columnHints: Hint[][] = $derived.by(() => {
-    const columnHints: Hint[][] = [[]];
-
-    for (let column: number = 0; column < numColumns; column++) {
-      columnHints[column] = [{ color: "", count: 0 }];
-      for (let row: number = 0; row < numRows; row++) {
-        if (isActive(baseRef.v[row][column])) {
-          const previousColorIndex: number | null = row === 0 ? null : baseRef.v[row - 1][column].colorIndex;
-          const currentColorIndex: number = baseRef.v[row][column].colorIndex;
-          if (previousColorIndex !== currentColorIndex) columnHints[column].push({ color: numToLetters(currentColorIndex), count: 1 });
-          else columnHints[column][columnHints[column].length - 1].count++;
-        }
-      }
-      if (columnHints[column].length > 1 && columnHints[column][0].count === 0) columnHints[column].shift();
-    }
-
-    return columnHints;
-  });
-
-  const encoded: string = $derived.by((): string => {
-    let encoded: string = "";
-    let count: number = 1;
-
-    for (let i: number = 0; i < numRows; i++) {
-      for (let j: number = 0; j < numColumns; j++) {
-        if (i === 0 && j === 0) continue;
+    for (let row = 0; row < numRows; row++) {
+      rowEncodes[row] = [];
+      const firstTile = baseRef.v[row][0];
+      const encode = { color: firstTile.Xed ? "X" : numToLetters(firstTile.colorIndex), count: 1 };
+      for (let column = 1; column < numColumns; column++) {
+        const previousTile = baseRef.v[row][column - 1];
+        const currentTile = baseRef.v[row][column];
+        if (previousTile.colorIndex === currentTile.colorIndex && previousTile.Xed === currentTile.Xed) encode.count++;
         else {
-          const prevTile: Tile = j === 0 ? baseRef.v[i - 1][numColumns - 1] : baseRef.v[i][j - 1];
-          if (prevTile.colorIndex === baseRef.v[i][j].colorIndex && prevTile.Xed === baseRef.v[i][j].Xed) count++;
-          else {
-            encoded += count + (prevTile.Xed ? "X" : numToLetters(prevTile.colorIndex));
-            count = 1;
-          }
+          rowEncodes[row].push({ ...encode });
+          encode.color = currentTile.Xed ? "X" : numToLetters(currentTile.colorIndex);
+          encode.count = 1;
+        }
+      }
+
+      rowEncodes[row].push({ ...encode });
+    }
+
+    return rowEncodes;
+  });
+
+  const rowHints: Hint[][] = $derived(rowEncodes.map(subArray => subArray.filter(obj => obj.color !== "a")));
+
+  const columnEncodes: Encode[][] = $derived.by(() => {
+    const columnEncodes: Encode[][] = [[]];
+    const numRows = baseRef.v.length;
+    const numColumns = baseRef.v[0].length;
+
+    for (let column = 0; column < numColumns; column++) {
+      columnEncodes[column] = [];
+      const firstTile = baseRef.v[0][column];
+      const encode = { color: firstTile.Xed ? "X" : numToLetters(firstTile.colorIndex), count: 1 };
+      for (let row = 1; row < numRows; row++) {
+        const previousTile = baseRef.v[row - 1][column];
+        const currentTile = baseRef.v[row][column];
+        if (previousTile.colorIndex === currentTile.colorIndex && previousTile.Xed === currentTile.Xed) encode.count++;
+        else {
+          columnEncodes[column].push({ ...encode });
+          encode.color = currentTile.Xed ? "X" : numToLetters(currentTile.colorIndex);
+          encode.count = 1;
+        }
+      }
+
+      columnEncodes[column].push({ ...encode });
+    }
+
+    return columnEncodes;
+  });
+
+  const columnHints: Hint[][] = $derived(columnEncodes.map(subArray => subArray.filter(obj => obj.color !== "a")));
+
+  const encoded = $derived.by(() => {
+    let encoded = "";
+    let currentColor = "";
+    let totalCount = 0;
+
+    for (let i = 0; i < rowEncodes.length; i++) {
+      for (let j = 0; j < rowEncodes[i].length; j++) {
+        const currentEncode = rowEncodes[i][j];
+
+        if (currentEncode.color === currentColor) totalCount += currentEncode.count;
+        else {
+          if (currentColor !== "") encoded += totalCount + currentColor;
+          currentColor = currentEncode.color;
+          totalCount = currentEncode.count;
         }
       }
     }
 
-    const lastTile: Tile = baseRef.v[numRows - 1][numColumns - 1];
-    encoded += count + (lastTile.Xed ? "X" : numToLetters(lastTile.colorIndex));
+    encoded += totalCount + currentColor;
     return encoded;
   });
 
   return {
+    get columnEncodes(): Encode[][] { return columnEncodes; },
     get colorIndices(): number[][] { return colorIndices; },
     get columnHints(): Hint[][] { return columnHints; },
+    get rowEncodes(): Encode[][] { return rowEncodes; },
     get numColumns(): number { return numColumns; },
     get rowHints(): Hint[][] { return rowHints; },
     set v(value: Tile[][]) { baseRef.v = value; },
