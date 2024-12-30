@@ -9,7 +9,9 @@
     tilesSolution,
     clickedTile,
     isXSelected,
+    type Encode,
     type Tile,
+    type Hint,
     tileWidth,
     borderOn,
     bgColor,
@@ -176,115 +178,160 @@
 
   const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
 
+  const getEncodesRange = (hintIndex: number, hints: Hint[], encodes: Encode[]) => {
+    let offsetHead = 0;
+    let offsetTail = 0;
+    for (let i = 0; i < hints.length; i++) {
+      if (i !== 0 && (hints[i - 1].color === hints[i].color)) {
+        if (i <= hintIndex) offsetHead++;
+        else if (i > hintIndex) offsetTail++;
+      }
+
+      if (i < hintIndex) offsetHead += hints[i].count;
+      else if (i > hintIndex) offsetTail += hints[i].count;
+    }
+
+    let encodesStartIndex = 0;
+    let encodesEndIndex = encodes.length - 1;
+    let count = 0;
+    for (let i = encodesStartIndex; i < encodes.length; i++) {
+      if (count >= offsetHead) break;
+      count += encodes[i].count;
+      encodesStartIndex++;
+    }
+
+    count = 0;
+    for (let i = encodesEndIndex; i >= 0; i--) {
+      if (count >= offsetTail) break;
+      count += encodes[i].count;
+      encodesEndIndex--;
+    }
+
+    return { encodesStartIndex, encodesEndIndex };
+  };
+
+  const getMapIntersect = (hints: Hint[], encodes: Encode[]) => {
+    const mapForward: (undefined | number)[] = new Array(hints.length).fill(undefined);
+    const mapBackward: (undefined | number)[] = new Array(hints.length).fill(undefined);
+    const mapIntersect: (undefined | number)[] = new Array(hints.length).fill(undefined);
+
+    // Forward pass
+    for (let hintIndex = 0; hintIndex < hints.length; hintIndex++) {
+      const { encodesStartIndex, encodesEndIndex } = getEncodesRange(hintIndex, hints, encodes);
+      const hint = hints[hintIndex];
+
+      for (let i = encodesStartIndex; i <= encodesEndIndex; i++) {
+        if (hint.color === encodes[i].color && hint.count >= encodes[i].count) {
+          if (mapForward.slice(0, hintIndex).includes(i)) continue;
+
+          mapForward[hintIndex] = i;
+
+          for (let j = 0; j < hintIndex; j++) {
+            if (mapForward[j]! > i) mapForward[j] = undefined;
+          }
+
+          break;
+        }
+      }
+    }
+
+    // Backward pass
+    for (let hintIndex = hints.length - 1; hintIndex >= 0; hintIndex--) {
+      const { encodesStartIndex, encodesEndIndex } = getEncodesRange(hintIndex, hints, encodes);
+      const hint = hints[hintIndex];
+
+      for (let i = encodesEndIndex; i >= encodesStartIndex; i--) {
+        if (hint.color === encodes[i].color && hint.count >= encodes[i].count) {
+          if (mapBackward.slice(hintIndex + 1).includes(i)) continue;
+
+          mapBackward[hintIndex] = i;
+
+          for (let j = hints.length - 1; j > hintIndex; j--) {
+            if (mapBackward[j]! < i) mapBackward[j] = undefined;
+          }
+
+          break;
+        }
+      }
+    }
+
+    for (let i = 0; i < hints.length; i++) {
+      if (mapForward[i] === mapBackward[i]) mapIntersect[i] = mapForward[i];
+    }
+
+    return mapIntersect;
+  };
+
+  const chartMapLine = (hints: Hint[], encodes: Encode[]) => {
+    const mapIntersect: (undefined | number)[] = getMapIntersect(hints, encodes);
+
+    // Double check ranges of hints with undefined between.
+    let ranges: number[][] = [];
+    let prevEncode = mapIntersect[0] !== undefined ? mapIntersect[0] : 0;
+    for (let i = 1; i < mapIntersect.length; i++) {
+      if (mapIntersect[i] !== undefined) {
+        if (mapIntersect[i - 1] === undefined) ranges.push([prevEncode, mapIntersect[i]!]);
+        prevEncode = mapIntersect[i]!;
+      }
+    }
+    if (mapIntersect[mapIntersect.length - 1] === undefined && prevEncode !== encodes.length - 1) ranges.push([prevEncode, encodes.length - 1]);
+
+    for (let i = 0; i < ranges.length; i++) {
+      const [encodesStart, encodesEnd] = ranges[i];
+      const hintsStart = encodesStart === 0 ? 0 : mapIntersect.indexOf(encodesStart);
+      const hintsEnd = encodesEnd === encodes.length - 1 ? hints.length - 1 : mapIntersect.indexOf(encodesEnd);
+      const subHints = hints.slice(hintsStart, hintsEnd + 1);
+      const subEncodes = encodes.slice(encodesStart, encodesEnd + 1);
+
+      const hintsCount = subHints.reduce((sum, hint) => sum + hint.count, 0);
+      const encodesCount = subEncodes.reduce((sum, encode) => sum + encode.count, 0);
+      if (encodesCount < hintsCount) continue;
+
+      const subMap = getMapIntersect(subHints, subEncodes);
+      for (let j = 0; j < subMap.length; j++) {
+        if (subMap[j] !== undefined) subMap[j]! = subMap[j]! + encodesStart;
+      }
+      mapIntersect.splice(hintsStart, hintsEnd - hintsStart + 1, ...subMap);
+    }
+
+    return mapIntersect;
+  };
+
   // http://localhost:5173/#1-10-5-476fb8-f8fafc-020617-47d9ee-50a-1b1c3b1c3b2a1c1b1a1b1a1c2b1a6b1c4a1c1a1b1a1b1c1b1c1a1b1c2b1c3b1c1a
-  // http://localhost:5173/#1-10-1-476fb8-f8fafc-020617-47d9ee-10a-1a1c1b1a1b1a1c2b1a
-  const rowHintsMap: number[][] = $derived.by(() => {
-    let map: number[][] = [[]];
+  const rowHintsMap: (undefined | number)[][] = $derived.by(() => {
+    let map: (undefined | number)[][] = [[]];
 
     for (let rowIndex = 0; rowIndex < tilesSolution.rowHints.length; rowIndex++) {
-      map[rowIndex] = [];
       const hints = tilesSolution.rowHints[rowIndex];
-      for (let hintIndex = 0; hintIndex < hints.length; hintIndex++) {
-        const hint = hints[hintIndex];
-
-        let offsetHead = 0;
-        let offsetTail = 0;
-        for (let i = 0; i < hints.length; i++) {
-          if (i !== 0 && (hints[i - 1].color === hints[i].color)) {
-            if (i <= hintIndex) offsetHead++;
-            else if (i > hintIndex) offsetTail++;
-          }
-
-          if (i < hintIndex) offsetHead += hints[i].count;
-          else if (i > hintIndex) offsetTail += hints[i].count;
-        }
-
-        const encodes = tiles.rowEncodes[rowIndex];
-
-        let startIndex = 0;
-        let endIndex = encodes.length - 1;
-        let count = 0;
-        for (let i = 0; i < encodes.length; i++) {
-          if (count >= offsetHead) break;
-          count += encodes[i].count;
-          startIndex++;
-        }
-
-        count = 0;
-        for (let i = endIndex; i >= 0; i--) {
-          if (count >= offsetTail) break;
-          count += encodes[i].count;
-          endIndex--;
-        }
-
-        for (let i = startIndex; i <= endIndex; i++) {
-          if (JSON.stringify(hint) === JSON.stringify(encodes[i])) {
-            map[rowIndex][hintIndex] = i;
-
-            if (map[rowIndex].slice(0, -1).includes(i)) continue;
-            else break;
-          }
-        }
-      }
+      const encodes = tiles.rowEncodes[rowIndex];
+      map[rowIndex] = chartMapLine(hints, encodes);
+      // Debug columnHints:
+      // map[rowIndex] = [];
     }
 
     return map;
   });
 
-  const columnHintsMap: number[][] = $derived.by(() => {
-    let map: number[][] = [[]];
+  const columnHintsMap: (undefined | number)[][] = $derived.by(() => {
+    let map: (undefined | number)[][] = [[]];
 
     for (let columnIndex = 0; columnIndex < tilesSolution.columnHints.length; columnIndex++) {
-      map[columnIndex] = [];
       const hints = tilesSolution.columnHints[columnIndex];
-      for (let hintIndex = 0; hintIndex < hints.length; hintIndex++) {
-        const hint = hints[hintIndex];
-
-        let offsetHead = 0;
-        let offsetTail = 0;
-        for (let i = 0; i < hints.length; i++) {
-          if (i !== 0 && (hints[i - 1].color === hints[i].color)) {
-            if (i <= hintIndex) offsetHead++;
-            else if (i > hintIndex) offsetTail++;
-          }
-
-          if (i < hintIndex) offsetHead += hints[i].count;
-          else if (i > hintIndex) offsetTail += hints[i].count;
-        }
-
-        const encodes = tiles.columnEncodes[columnIndex];
-
-        let startIndex = 0;
-        let endIndex = encodes.length - 1;
-        let count = 0;
-        for (let i = 0; i < encodes.length; i++) {
-          if (count >= offsetHead) break;
-          count += encodes[i].count;
-          startIndex++;
-        }
-
-        count = 0;
-        for (let i = endIndex; i >= 0; i--) {
-          if (count >= offsetTail) break;
-          count += encodes[i].count;
-          endIndex--;
-        }
-
-        for (let i = startIndex; i <= endIndex; i++) {
-          if (JSON.stringify(hint) === JSON.stringify(encodes[i])) {
-            map[columnIndex][hintIndex] = i;
-
-            if (map[columnIndex].slice(0, -1).includes(i)) continue;
-            else break;
-          }
-        }
-      }
+      const encodes = tiles.columnEncodes[columnIndex];
+      map[columnIndex] = chartMapLine(hints, encodes);
+      // Debug rowHints:
+      // map[columnIndex] = [];
     }
 
     return map;
   });
 
-  const isAmbiguous = (arr: number[], value: number) => arr.filter(item => item === value).length > 1;
+  const isHintSatisfied = (i: number, j: number, hint: Hint, isRowHint: boolean) => {
+    const map = isRowHint ? rowHintsMap : columnHintsMap;
+    const encodes = isRowHint ? tiles.rowEncodes[i] : tiles.columnEncodes[i];
+
+    return map[i][j] !== undefined && JSON.stringify(hint) === JSON.stringify(encodes[map[i][j]]);
+  };
 </script>
 
 <table class="m-32 border-collapse">
@@ -296,8 +343,8 @@
           <th>
             {#each tilesSolution.columnHints[i] as columnHint, j}
               <div
-                style:opacity={columnHintsMap[i][j] >= 0 && !isAmbiguous(columnHintsMap[i], columnHintsMap[i][j]) ? 0.2 : 1}
                 style:font-size={isColumnHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
+                style:opacity={isHintSatisfied(i, j, columnHint, false) ? 0.2 : 1}
                 style:color={colors.v[lettersToNum(columnHint.color)]}
                 class="font-normal"
               >
@@ -318,10 +365,10 @@
             <div style:justify-content="right" style:display="flex">
               {#each tilesSolution.rowHints[i] as rowHint, j}
                 <div
-                  style:opacity={rowHintsMap[i][j] >= 0 && !isAmbiguous(rowHintsMap[i], rowHintsMap[i][j]) ? 0.2 : 1}
                   style:font-size={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
                   style:min-width={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
                   style:height={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
+                  style:opacity={isHintSatisfied(i, j, rowHint, true) ? 0.2 : 1}
                   style:color={colors.v[lettersToNum(rowHint.color)]}
                   style:justify-content="center"
                   style:align-items="center"

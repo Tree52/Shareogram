@@ -28,12 +28,12 @@ type RefTiles = {
   numRows: number;
 } & Ref<Tile[][]>;
 
-type Encode = {
+export type Encode = {
   color: string;
   count: number;
 };
 
-type Hint = Encode;
+export type Hint = Encode;
 
 const numToLetters = (num: number): string => {
   let letters = "";
