@@ -269,12 +269,12 @@
     let ranges: number[][] = [];
     let prevEncode = mapIntersect[0] !== undefined ? mapIntersect[0] : 0;
     for (let i = 1; i < mapIntersect.length; i++) {
-      if (mapIntersect[i] !== undefined) {
+      if (mapIntersect[i] !== undefined && !(prevEncode === 0 && mapIntersect[i] === encodes.length - 1)) {
         if (mapIntersect[i - 1] === undefined) ranges.push([prevEncode, mapIntersect[i]!]);
         prevEncode = mapIntersect[i]!;
       }
     }
-    if (mapIntersect[mapIntersect.length - 1] === undefined && prevEncode !== encodes.length - 1) ranges.push([prevEncode, encodes.length - 1]);
+    if (mapIntersect[mapIntersect.length - 1] === undefined && prevEncode !== encodes.length - 1 && prevEncode !== 0) ranges.push([prevEncode, encodes.length - 1]);
 
     for (let i = 0; i < ranges.length; i++) {
       const [encodesStart, encodesEnd] = ranges[i];
