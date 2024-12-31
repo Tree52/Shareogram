@@ -180,15 +180,15 @@
 
   const getEncodesRange = (hintIndex: number, hints: Hint[], encodes: Encode[]) => {
     let offsetHead = 0;
-    let offsetTail = 0;
-    for (let i = 0; i < hints.length; i++) {
-      if (i !== 0 && (hints[i - 1].color === hints[i].color)) {
-        if (i <= hintIndex) offsetHead++;
-        else if (i > hintIndex) offsetTail++;
-      }
-
+    for (let i = 0; i <= hintIndex; i++) {
+      if (i !== 0 && (hints[i - 1].color === hints[i].color)) offsetHead++;
       if (i < hintIndex) offsetHead += hints[i].count;
-      else if (i > hintIndex) offsetTail += hints[i].count;
+    }
+
+    let offsetTail = 0;
+    for (let i = hints.length - 1; i >= hintIndex; i--) {
+      if (i !== hints.length - 1 && (hints[i].color === hints[i + 1].color)) offsetTail++;
+      if (i > hintIndex) offsetTail += hints[i].count;
     }
 
     let encodesStartIndex = 0;
