@@ -194,16 +194,14 @@
     let encodesStartIndex = 0;
     let encodesEndIndex = encodes.length - 1;
     let count = 0;
-    for (let i = encodesStartIndex; i < encodes.length; i++) {
-      if (count >= offsetHead) break;
-      count += encodes[i].count;
+    while (count < offsetHead) {
+      count += encodes[encodesStartIndex].count;
       encodesStartIndex++;
     }
-
+    
     count = 0;
-    for (let i = encodesEndIndex; i >= 0; i--) {
-      if (count >= offsetTail) break;
-      count += encodes[i].count;
+    while (count < offsetTail) {
+      count += encodes[encodesEndIndex].count;
       encodesEndIndex--;
     }
 
