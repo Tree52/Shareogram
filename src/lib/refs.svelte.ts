@@ -87,7 +87,7 @@ const refTiles = (): RefTiles => {
     return rowEncodes;
   });
 
-  const rowHints: Hint[][] = $derived(rowEncodes.map(subArray => subArray.filter(obj => obj.color !== "a")));
+  const rowHints: Hint[][] = $derived(rowEncodes.map(subArray => subArray.filter(obj => obj.color !== "a" && obj.color !== "X")));
 
   const columnEncodes: Encode[][] = $derived.by(() => {
     const columnEncodes: Encode[][] = [[]];
@@ -115,7 +115,7 @@ const refTiles = (): RefTiles => {
     return columnEncodes;
   });
 
-  const columnHints: Hint[][] = $derived(columnEncodes.map(subArray => subArray.filter(obj => obj.color !== "a")));
+  const columnHints: Hint[][] = $derived(columnEncodes.map(subArray => subArray.filter(obj => obj.color !== "a" && obj.color !== "X")));
 
   const encoded = $derived.by(() => {
     let encoded = "";
