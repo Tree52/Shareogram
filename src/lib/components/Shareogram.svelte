@@ -178,7 +178,7 @@
 
   const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
 
-  const getEncodesRange = (hintIndex: number, hints: Hint[], encodes: Encode[]) => {
+  const getOffsets = (hintIndex: number, hints: Hint[]) => {    
     let offsetHead = 0;
     for (let i = 0; i <= hintIndex; i++) {
       if (i !== 0 && (hints[i - 1].color === hints[i].color)) offsetHead++;
@@ -191,15 +191,21 @@
       if (i > hintIndex) offsetTail += hints[i].count;
     }
 
-    let encodesStartIndex = 0;
-    let encodesEndIndex = encodes.length - 1;
+    return { offsetHead, offsetTail };
+  }
+  
+  const getEncodesRange = (hintIndex: number, hints: Hint[], encodes: Encode[]) => {
+    const { offsetHead, offsetTail } = getOffsets(hintIndex, hints);
+
     let count = 0;
+    let encodesStartIndex = 0;
     while (count < offsetHead) {
       count += encodes[encodesStartIndex].count;
       encodesStartIndex++;
     }
     
     count = 0;
+    let encodesEndIndex = encodes.length - 1;
     while (count < offsetTail) {
       count += encodes[encodesEndIndex].count;
       encodesEndIndex--;
@@ -281,9 +287,9 @@
       const subHints = hints.slice(hintsStart, hintsEnd + 1);
       const subEncodes = encodes.slice(encodesStart, encodesEnd + 1);
 
-      const hintsCount = subHints.reduce((sum, hint) => sum + hint.count, 0);
-      const encodesCount = subEncodes.reduce((sum, encode) => sum + encode.count, 0);
-      if (encodesCount < hintsCount) continue;
+      const subEncodesCount = subEncodes.reduce((sum, encode) => sum + encode.count, 0);
+      const { offsetTail } = getOffsets(0, subHints);
+      if (offsetTail + subHints[0].count > subEncodesCount) continue;
 
       const subMap = getMapIntersect(subHints, subEncodes);
       for (let j = 0; j < subMap.length; j++) {
