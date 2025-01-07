@@ -303,8 +303,8 @@
     return mapIntersect;
   };
 
-  // http://localhost:5173/#1-10-5-476fb8-f8fafc-020617-47d9ee-50a-1b1c3b1c3b2a1c1b1a1b1a1c2b1a6b1c4a1c1a1b1a1b1c1b1c1a1b1c2b1c3b1c1a
-  // http://localhost:5173/#1-10-1-476fb8-f8fafc-020617-47d9ee-1a2X2a2b3a-5a2b1a2b
+  // TEST: http://localhost:5173/#1-10-5-476fb8-f8fafc-020617-47d9ee-50a-1b1c3b1c3b2a1c1b1a1b1a1c2b1a6b1c4a1c1a1b1a1b1c1b1c1a1b1c2b1c3b1c1a
+  // TODO: http://localhost:5173/#1-10-1-476fb8-f8fafc-020617-47d9ee-1a2X2a2b3a-5a2b1a2b
   const rowHintsMap: (undefined | number)[][] = $derived.by(() => {
     let map: (undefined | number)[][] = [[]];
 
@@ -345,7 +345,11 @@
   {#if isGame.v}
     <thead class="top-0 z-20 align-bottom" style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
       <tr>
-        <th class="invisible"></th>
+        <th
+          style:visibility={isRowHintsSticky.v && isColumnHintsSticky.v ? "" : "hidden"}
+          style:background-color={colors.v[0]}
+          class="sticky left-0 z-30"
+        ></th>
         {#each { length: tiles.numColumns } as _, i}
           <th>
             {#each tilesSolution.columnHints[i] as columnHint, j}
