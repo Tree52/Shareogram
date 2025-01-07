@@ -200,14 +200,16 @@
     let count = 0;
     let encodesStartIndex = 0;
     while (count < offsetHead) {
-      count += encodes[encodesStartIndex].count;
+      if (encodes[encodesStartIndex].color !== "X") count += encodes[encodesStartIndex].count;
+      else if (encodesStartIndex > 0) count++;
       encodesStartIndex++;
     }
-    
+
     count = 0;
     let encodesEndIndex = encodes.length - 1;
     while (count < offsetTail) {
-      count += encodes[encodesEndIndex].count;
+      if (encodes[encodesEndIndex].color !== "X") count += encodes[encodesEndIndex].count;
+      else if (encodesEndIndex < encodes.length - 1) count++;
       encodesEndIndex--;
     }
 
@@ -302,6 +304,7 @@
   };
 
   // http://localhost:5173/#1-10-5-476fb8-f8fafc-020617-47d9ee-50a-1b1c3b1c3b2a1c1b1a1b1a1c2b1a6b1c4a1c1a1b1a1b1c1b1c1a1b1c2b1c3b1c1a
+  // http://localhost:5173/#1-10-1-476fb8-f8fafc-020617-47d9ee-1a2X2a2b3a-5a2b1a2b
   const rowHintsMap: (undefined | number)[][] = $derived.by(() => {
     let map: (undefined | number)[][] = [[]];
 
