@@ -199,7 +199,7 @@
 
     let count = 0;
     let encodesStartIndex = 0;
-    while (count < offsetHead) {
+    while (count < offsetHead && encodesStartIndex <= encodes.length - 1) {
       if (encodes[encodesStartIndex].color !== "X") count += encodes[encodesStartIndex].count;
       else if (encodesStartIndex > 0) count++;
       encodesStartIndex++;
@@ -207,7 +207,7 @@
 
     count = 0;
     let encodesEndIndex = encodes.length - 1;
-    while (count < offsetTail) {
+    while (count < offsetTail && encodesEndIndex >= 0) {
       if (encodes[encodesEndIndex].color !== "X") count += encodes[encodesEndIndex].count;
       else if (encodesEndIndex < encodes.length - 1) count++;
       encodesEndIndex--;
