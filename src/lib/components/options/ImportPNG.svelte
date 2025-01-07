@@ -51,7 +51,8 @@
               const r = imageData[index];
               const g = imageData[index + 1];
               const b = imageData[index + 2];
-              const hexColor = rgbToHex(r, g, b);
+              const a = imageData[index + 3];
+              const hexColor = a < 1 ? "#ffffff" : rgbToHex(r, g, b);
 
               const colorIndex = addColorToMap(hexColor, colorMap, tolerance);
               row.push(colorIndex);
