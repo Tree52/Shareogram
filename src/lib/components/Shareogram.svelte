@@ -178,7 +178,7 @@
 
   const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
 
-  const getOffsets = (hintIndex: number, hints: Hint[]) => {    
+  const getOffsets = (hintIndex: number, hints: Hint[]) => {
     let offsetHead = 0;
     for (let i = 0; i <= hintIndex; i++) {
       if (i !== 0 && (hints[i - 1].color === hints[i].color)) offsetHead++;
@@ -192,8 +192,8 @@
     }
 
     return { offsetHead, offsetTail };
-  }
-  
+  };
+
   const getEncodesRange = (hintIndex: number, hints: Hint[], encodes: Encode[]) => {
     const { offsetHead, offsetTail } = getOffsets(hintIndex, hints);
 
