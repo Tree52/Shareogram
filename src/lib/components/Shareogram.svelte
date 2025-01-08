@@ -9,9 +9,9 @@
     clickedTile,
     isXSelected,
     type Encode,
+    tableScale,
     type Tile,
     type Hint,
-    tileWidth,
     borderOn,
     bgColor,
     colors,
@@ -336,7 +336,7 @@
   };
 </script>
 
-<table class="m-32 border-collapse">
+<table class="m-32 border-collapse" style:zoom={tableScale.v}>
   {#if isGame.v}
     <thead class="top-0 z-20 align-bottom" style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
       <tr>
@@ -349,9 +349,9 @@
           <th>
             {#each tilesSolution.columnHints[i] as columnHint, j}
               <div
-                style:font-size={isColumnHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
                 style:opacity={isHintSatisfied(i, j, columnHint, false) ? 0.2 : 1}
                 style:color={colors.v[lettersToNum(columnHint.color)]}
+                style:font-size={isColumnHintsSticky.v ? ".5rem" : ""}
                 class="font-normal"
               >
                 {columnHint.count}
@@ -371,11 +371,10 @@
             <div style:justify-content="right" style:display="flex">
               {#each tilesSolution.rowHints[i] as rowHint, j}
                 <div
-                  style:font-size={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v / 1.5 + "px"}
-                  style:min-width={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
-                  style:height={isRowHintsSticky.v ? tileWidth.v / 3 + "px" : tileWidth.v + "px"}
                   style:opacity={isHintSatisfied(i, j, rowHint, true) ? 0.2 : 1}
+                  style:width={isRowHintsSticky.v ? ".75rem" : "1.5rem"}
                   style:color={colors.v[lettersToNum(rowHint.color)]}
+                  style:font-size={isRowHintsSticky.v ? ".5rem" : ""}
                   style:justify-content="center"
                   style:align-items="center"
                   style:display="flex"
@@ -392,13 +391,10 @@
             style:transition="background-color .5s, border-radius .5s"
             onpointerdown={(e) => { handlePointerDown(e, i, j); }}
             onpointerenter={() => { handlePointerEnter(i, j); }}
-            style:font-size={tileWidth.v / 1.5 + "px"}
             onfocus={() => { handleFocus(i, j); }}
-            style:min-width={tileWidth.v + "px"}
-            style:height={tileWidth.v + "px"}
+            class="box-content h-6 min-w-6"
             style:color={colors.v[1]}
             style:text-align="center"
-            class="box-content"
             data-row={i}
             data-col={j}
             {onkeydown}

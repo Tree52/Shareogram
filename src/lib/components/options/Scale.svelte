@@ -1,16 +1,16 @@
 <script lang="ts">
   import { type PinchCustomEvent, pinch } from "svelte-gestures";
-  import { isMoveSelected, tileWidth } from "$lib/refs.svelte";
+  import { isMoveSelected, tableScale } from "$lib/refs.svelte";
 
-  const MAX_TILE_WIDTH = 100;
-  const MIN_TILE_WIDTH = 10;
+  const MAX_TILE_WIDTH = 3;
+  const MIN_TILE_WIDTH = 0.5;
 
   let scale = $state(1);
 
   const onwheel = (e: WheelEvent) => {
     e.preventDefault();
-    if (e.deltaY < 0 && tileWidth.v < MAX_TILE_WIDTH) tileWidth.v += 5;
-    else if (e.deltaY > 0 && tileWidth.v > MIN_TILE_WIDTH) tileWidth.v -= 5;
+    if (e.deltaY > 0 && tableScale.v < MAX_TILE_WIDTH) tableScale.v += 0.05;
+    else if (e.deltaY < 0 && tableScale.v > MIN_TILE_WIDTH) tableScale.v -= 0.05;
   };
 
   const onpinch = (e: PinchCustomEvent) => {
@@ -18,12 +18,12 @@
     const _scale = scale;
     scale = e.detail.scale;
     const isZoomOut = scale < _scale;
-    if (isZoomOut && tileWidth.v > MIN_TILE_WIDTH) tileWidth.v--;
-    else if (!isZoomOut && tileWidth.v < MAX_TILE_WIDTH) tileWidth.v++;
+    if (isZoomOut && tableScale.v > MIN_TILE_WIDTH) tableScale.v -= 0.025;
+    else if (!isZoomOut && tableScale.v < MAX_TILE_WIDTH) tableScale.v += 0.025;
   };
 </script>
 
-<input bind:value={tileWidth.v} max={MAX_TILE_WIDTH} min={MIN_TILE_WIDTH} type="range" />
+<input bind:value={tableScale.v} step=".025" max={MAX_TILE_WIDTH} min={MIN_TILE_WIDTH} type="range" />
 
 <!-- Can't just do {onwheel} because e.preventDefault shows a warning:
 Ignoring ‘preventDefault()’ call on event of type ‘wheel’ from a listener registered as ‘passive’. -->
