@@ -173,7 +173,7 @@
 
     document.querySelector<HTMLTableCellElement>(`[data-row="${newRow}"][data-col="${newCol}"]`)?.focus();
 
-    if (isLeftHeld) clickTile(newRow, newCol);
+    if (isLeftHeld && !isMoveSelected.v) clickTile(newRow, newCol);
   };
 
   const onkeyup = (e: KeyboardEvent) => { if (e.key === " ") isLeftHeld = false; };
@@ -393,7 +393,7 @@
           <td
             style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
-            style:border-radius={roundedCorners.v === true ? "20%" : "0"}
+            style:border-radius={roundedCorners.v ? "20%" : "0"}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             style:transition="background-color .5s, border-radius .5s"
             onpointerdown={(e) => { handlePointerDown(e, i, j); }}
