@@ -284,7 +284,11 @@
       const subHints = hints.slice(hintsStart, hintsEnd + 1);
       const subEncodes = encodes.slice(encodesStart, encodesEnd + 1);
 
-      const subEncodesCount = subEncodes.reduce((sum, encode) => sum + encode.count, 0);
+      let subEncodesCount = 0;
+      for (let j = 0; j < subEncodes.length; j++) {
+        if (encodes[j].color !== "X") subEncodesCount += encodes[j].count;
+        else if (j > 0 && j < subEncodes.length - 1) subEncodesCount++;
+      }
       const { offsetTail } = getOffsets(0, subHints);
       if (offsetTail + subHints[0].count > subEncodesCount) continue;
 
@@ -300,6 +304,7 @@
 
   // TEST: http://localhost:5173/#1-10-5-476fb8-f8fafc-020617-47d9ee-50a-1b1c3b1c3b2a1c1b1a1b1a1c2b1a6b1c4a1c1a1b1a1b1c1b1c1a1b1c2b1c3b1c1a
   // TODO: http://localhost:5173/#1-10-1-476fb8-f8fafc-020617-47d9ee-1a2X2a2b3a-5a2b1a2b
+  // TODO: http://localhost:5173/#1-11-1-476fb8-f8fafc-020617-0ee55d-8f19be-2X3a1X1b1X3a-2b1a1b1a1b5a
   const rowHintsMap: (undefined | number)[][] = $derived.by(() => {
     let map: (undefined | number)[][] = [[]];
 
