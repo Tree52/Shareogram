@@ -9,8 +9,8 @@
 
   const onwheel = (e: WheelEvent) => {
     e.preventDefault();
-    if (e.deltaY > 0 && tableScale.v < MAX_SCALE) tableScale.v += 0.05;
-    else if (e.deltaY < 0 && tableScale.v > MIN_SCALE) tableScale.v -= 0.05;
+    if (e.deltaY < 0 && tableScale.v < MAX_SCALE) tableScale.v += 0.05;
+    else if (e.deltaY > 0 && tableScale.v > MIN_SCALE) tableScale.v -= 0.05;
   };
 
   const onpinch = (e: PinchCustomEvent) => {
