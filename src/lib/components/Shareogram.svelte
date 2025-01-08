@@ -3,7 +3,6 @@
     isColumnHintsSticky,
     isChangeHashAllowed,
     isRowHintsSticky,
-    roundedCorners,
     isMoveSelected,
     colorsIndexer,
     tilesSolution,
@@ -132,20 +131,16 @@
 
   let justWon = $state(false);
   let tempBorderOn = $state(borderOn.v);
-  let tempRoundedCorners = $state(roundedCorners.v);
 
   $effect(() => {
     if (win.v && !justWon) {
       justWon = true;
       tempBorderOn = borderOn.v;
-      tempRoundedCorners = roundedCorners.v;
       borderOn.v = 0;
-      roundedCorners.v = false;
     }
     else if (!win.v && justWon) {
       justWon = false;
       borderOn.v = tempBorderOn;
-      roundedCorners.v = tempRoundedCorners;
     }
   });
 
@@ -393,7 +388,6 @@
           <td
             style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
-            style:border-radius={roundedCorners.v ? "20%" : "0"}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             style:transition="background-color .5s, border-radius .5s"
             onpointerdown={(e) => { handlePointerDown(e, i, j); }}
