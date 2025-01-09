@@ -12,7 +12,6 @@
     tableScale,
     type Tile,
     type Hint,
-    borderOn,
     bgColor,
     colors,
     isGame,
@@ -128,21 +127,6 @@
       isLeftHeld ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
     }
   };
-
-  let justWon = $state(false);
-  let tempBorderOn = $state(borderOn.v);
-
-  $effect(() => {
-    if (win.v && !justWon) {
-      justWon = true;
-      tempBorderOn = borderOn.v;
-      borderOn.v = 0;
-    }
-    else if (!win.v && justWon) {
-      justWon = false;
-      borderOn.v = tempBorderOn;
-    }
-  });
 
   let currentRow = 0;
   let currentCol = 0;
@@ -390,8 +374,8 @@
         {/if}
         {#each { length: tiles.numColumns } as _, j}
           <td
-            style:border-left={borderOn.v === 0 ? "0" : `solid ${j % 5 === 0 && j !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
-            style:border-top={borderOn.v === 0 ? "0" : `solid ${i % 5 === 0 && i !== 0 && borderOn.v === 2 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
+            style:border-left={win.v || !isGame.v ? "0" : `solid ${j % 5 === 0 && j !== 0 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
+            style:border-top={win.v || !isGame.v ? "0" : `solid ${i % 5 === 0 && i !== 0 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
             style:transition="background-color .5s, border-radius .5s"
             onpointerdown={(e) => { handlePointerDown(e, i, j); }}

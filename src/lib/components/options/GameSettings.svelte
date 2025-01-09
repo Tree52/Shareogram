@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { editorHeight, editorWidth, isGame } from "$lib/refs.svelte";
+  import { editorHeight, editorWidth, isGame, win } from "$lib/refs.svelte";
   import { newEditor } from "$lib/shared.svelte";
 
   const sanitizeNumberInput = (n: number) => Math.max(0, Number(String(n).replace(/[^0-9]/g, "")));
 </script>
 
 {#if isGame.v}
-  <button onclick={() => { isGame.v = false; newEditor(); }}>New Editor</button>
+  <button onclick={() => { win.v = false; isGame.v = false; newEditor(); }}>New Editor</button>
 {:else}
   <div class="flex">
     <input

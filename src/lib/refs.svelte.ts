@@ -168,7 +168,6 @@ export const tilesHistoryIndexer: Ref<number> = ref<number>(0);
 
 export const isGame: Ref<boolean> = ref<boolean>(false);
 export const clickedTile: Ref<ClickedTile> = ref<ClickedTile>({ colorIndex: -1, column: -1, Xed: false, row: -1 });
-export const borderOn: Ref<number> = ref<number>(1);
 export const isChangeHashAllowed: Ref<boolean> = ref<boolean>(false);
 export const tableScale: Ref<number> = ref<number>(1);
 export const win: Ref<boolean> = ref<boolean>(false);

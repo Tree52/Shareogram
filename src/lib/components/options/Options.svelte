@@ -3,7 +3,6 @@
   import ExportPNG from "$lib/components/options/ExportPNG.svelte";
   import ImportPNG from "$lib/components/options/ImportPNG.svelte";
   import Palette from "$lib/components/options/Palette.svelte";
-  import Border from "$lib/components/options/Border.svelte";
   import Reveal from "$lib/components/options/Reveal.svelte";
   import Sticky from "$lib/components/options/Sticky.svelte";
   import Scale from "$lib/components/options/Scale.svelte";
@@ -25,7 +24,6 @@
   {/if}
   <GameSettings />
   <Palette />
-  <Border />
   <Scale />
   {#if isGame.v}
     <Sticky />
