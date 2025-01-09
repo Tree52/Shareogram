@@ -6,7 +6,10 @@
 
 <footer class="flex justify-center">
   <div class="flex overflow-hidden rounded-t-lg">
-    <button onclick={() => { sidebarOn.v = !sidebarOn.v; }}>Options</button>
+    <button
+      style:filter={sidebarOn.v ? "brightness(60%)" : ""}
+      onclick={() => { sidebarOn.v = !sidebarOn.v; }}
+    >Options</button>
     <div>
       <Picker />
       <UndoRedo />

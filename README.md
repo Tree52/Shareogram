@@ -10,9 +10,10 @@ A Nonogram/Picross/Paint-by-Numbers-like editor/player website with shareable UR
 - 1-9: Select color
 - x: Select X
 - m: Select Move
+- d: Toggle 2d
 - y: Redo
 - z: Undo
-- o: Open/close options
+- o: Toggle options
 
 # Viewing Dev Build (possibly broken)
 
