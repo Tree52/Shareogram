@@ -357,16 +357,14 @@
       <tr>
         {#if isGame.v}
           <td class="left-0 z-10" style:position={isRowHintsSticky.v ? "sticky" : ""} style:background-color={isRowHintsSticky.v ? colors.v[0] : ""}>
-            <div style:justify-content="right" style:display="flex">
+            <div class="flex justify-end">
               {#each tilesSolution.rowHints[i] as rowHint, j}
                 <div
                   style:opacity={isHintSatisfied(i, j, rowHint, true) ? 0.2 : 1}
                   style:width={isRowHintsSticky.v ? ".75rem" : "1.5rem"}
                   style:color={colors.v[lettersToNum(rowHint.color)]}
                   style:font-size={isRowHintsSticky.v ? ".5rem" : ""}
-                  style:justify-content="center"
-                  style:align-items="center"
-                  style:display="flex"
+                  class="flex items-center justify-center"
                 >{rowHint.count}</div>
               {/each}
             </div>
@@ -376,14 +374,12 @@
           <td
             style:border-left={win.v || !isGame.v ? "0" : `solid ${j % 5 === 0 && j !== 0 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
             style:border-top={win.v || !isGame.v ? "0" : `solid ${i % 5 === 0 && i !== 0 ? `4px ${colors.v[1]}` : `2px ${bgColor.v}`}`}
+            class="box-content h-6 min-w-6 text-center transition-colors duration-500"
             style:background-color={colors.v[tiles.v[i][j].colorIndex]}
-            style:transition="background-color .5s, border-radius .5s"
             onpointerdown={(e) => { handlePointerDown(e, i, j); }}
             onpointerenter={() => { handlePointerEnter(i, j); }}
             onfocus={() => { handleFocus(i, j); }}
-            class="box-content h-6 min-w-6"
             style:color={colors.v[1]}
-            style:text-align="center"
             data-row={i}
             data-col={j}
             {onkeydown}

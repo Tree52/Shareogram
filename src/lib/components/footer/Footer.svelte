@@ -5,7 +5,7 @@
 </script>
 
 <footer class="flex justify-center">
-  <div style:border-top-right-radius=8px style:border-top-left-radius=8px style:overflow="hidden" style:display="flex">
+  <div class="flex overflow-hidden rounded-t-lg">
     <button onclick={() => { sidebarOn.v = !sidebarOn.v; }}>Options</button>
     <div>
       <Picker />
