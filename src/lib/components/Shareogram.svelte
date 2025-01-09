@@ -390,8 +390,23 @@
             {/if}
           </td>
         {/each}
+        {#if tiles.numRows > 10 && isGame.v}
+          <td class="px-1 text-center">
+            {i % 5 === 4 ? i + 1 : ""}
+          </td>
+        {/if}
       </tr>
     {/each}
+    {#if tiles.numColumns > 10 && isGame.v}
+      <tr>
+        <td></td>
+        {#each { length: tiles.numColumns } as _, j}
+          <td class="text-center">
+            {j % 5 === 4 ? j + 1 : ""}
+          </td>
+        {/each}
+      </tr>
+    {/if}
   </tbody>
 </table>
 
