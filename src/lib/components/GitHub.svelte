@@ -1,3 +1,13 @@
+<script lang="ts">
+  import { colors } from "$lib/refs.svelte";
+  
+  // fill={colors.v[0]} stopped working for some reason, thus needing this.
+  $effect(() => {
+    const svgPath = document.querySelector("#dynamic-svg path");
+    svgPath?.setAttribute("fill", colors.v[0]);
+  });
+</script>
+
 <div class="absolute -left-4 -top-4 scale-[40%]" id="dynamic-svg">
   <a href="https://github.com/JeffHove/Shareogram" aria-label="Link to GitHub repository">
     <svg height="96" width="98" xmlns="http://www.w3.org/2000/svg">

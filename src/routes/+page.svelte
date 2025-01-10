@@ -100,13 +100,7 @@
     }
   });
 
-  $effect(() => {
-    document.body.style.color = colors.v[0];
-
-    // fill={colors.v[0]} stopped working for some reason, thus needing this.
-    const svgPath = document.querySelector("#dynamic-svg path");
-    svgPath?.setAttribute("fill", colors.v[0]);
-  });
+  $effect(() => { document.body.style.color = colors.v[0]; });
 </script>
 
 <svelte:window oncontextmenu={e => e.preventDefault()} {onload} onbeforeunload={(e) => { handleBeforeUnload(e); }} />
