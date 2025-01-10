@@ -1,10 +1,11 @@
 <script lang="ts">
   import { isChangeHashAllowed, isMoveSelected, tilesSolution, editorHeight, tilesHistory, editorWidth, type Tile, sidebarOn, bgColor, colors, isGame, tiles } from "$lib/refs.svelte";
-  import { getRandomNumber, lettersToNum } from "$lib/shared.svelte";
   import Options from "$lib/components/options/Options.svelte";
   import Shareogram from "$lib/components/Shareogram.svelte";
+  import Background from "$lib/components/Background.svelte";
   import Footer from "$lib/components/footer/Footer.svelte";
   import Header from "$lib/components/Header.svelte";
+  import { lettersToNum } from "$lib/shared.svelte";
   import { dragscroll } from "$lib/dragscroll";
 
   let loadDone = $state(false);
@@ -114,16 +115,7 @@
 
 <svelte:window oncontextmenu={e => e.preventDefault()} {onload} onbeforeunload={(e) => { handleBeforeUnload(e); }} />
 
-<ul style:background-color={bgColor.v} class="absolute inset-0 -z-10 m-0 overflow-hidden p-0">
-  {#each { length: 35 } as _}
-    <li
-      class="absolute -bottom-[200px] block aspect-square rounded-[10%] bg-white/20"
-      style:animation-delay={getRandomNumber(0, 60) + "s"}
-      style:width={getRandomNumber(5, 200) + "px"}
-      style:left={getRandomNumber(0, 100) + "%"}
-    ></li>
-  {/each}
-</ul>
+<Background />
 
 <Header />
 
@@ -153,21 +145,5 @@
     &::-webkit-scrollbar {
       display: none; /* Chrome, Safari and Opera */
     }
-  }
-
-  @keyframes myAnimation {
-    0% {
-      transform: translateY(0) rotate(0deg);
-      opacity: 1;
-    }
-
-    100% {
-      transform: translateY(-1000px) rotate(720deg);
-      opacity: 0;
-    }
-  }
-
-  ul li {
-    animation: myAnimation 60s linear infinite;
   }
 </style>
