@@ -186,13 +186,13 @@ const handlePointerEnter = (i: number, j: number) => {
   const getOffsets = (hintIndex: number, hints: Hint[]) => {
     let offsetHead = 0;
     for (let i = 0; i <= hintIndex; i++) {
-      if (i !== 0 && (hints[i - 1].color === hints[i].color)) offsetHead++;
+      if (i !== 0 && (hints[i - 1].letters === hints[i].letters)) offsetHead++;
       if (i < hintIndex) offsetHead += hints[i].count;
     }
 
     let offsetTail = 0;
     for (let i = hints.length - 1; i >= hintIndex; i--) {
-      if (i !== hints.length - 1 && (hints[i].color === hints[i + 1].color)) offsetTail++;
+      if (i !== hints.length - 1 && (hints[i].letters === hints[i + 1].letters)) offsetTail++;
       if (i > hintIndex) offsetTail += hints[i].count;
     }
 
@@ -205,7 +205,7 @@ const handlePointerEnter = (i: number, j: number) => {
     let count = 0;
     let encodesStartIndex = 0;
     while (count < offsetHead && encodesStartIndex <= encodes.length - 1) {
-      if (encodes[encodesStartIndex].color !== "X") count += encodes[encodesStartIndex].count;
+      if (encodes[encodesStartIndex].letters !== "X") count += encodes[encodesStartIndex].count;
       else if (encodesStartIndex > 0) count++;
       encodesStartIndex++;
     }
@@ -213,7 +213,7 @@ const handlePointerEnter = (i: number, j: number) => {
     count = 0;
     let encodesEndIndex = encodes.length - 1;
     while (count < offsetTail && encodesEndIndex >= 0) {
-      if (encodes[encodesEndIndex].color !== "X") count += encodes[encodesEndIndex].count;
+      if (encodes[encodesEndIndex].letters !== "X") count += encodes[encodesEndIndex].count;
       else if (encodesEndIndex < encodes.length - 1) count++;
       encodesEndIndex--;
     }
@@ -232,7 +232,7 @@ const handlePointerEnter = (i: number, j: number) => {
       const hint = hints[hintIndex];
 
       for (let i = encodesStartIndex; i <= encodesEndIndex; i++) {
-        if (hint.color === encodes[i].color && hint.count >= encodes[i].count) {
+        if (hint.letters === encodes[i].letters && hint.count >= encodes[i].count) {
           if (mapForward.slice(0, hintIndex).includes(i)) continue;
 
           mapForward[hintIndex] = i;
@@ -252,7 +252,7 @@ const handlePointerEnter = (i: number, j: number) => {
       const hint = hints[hintIndex];
 
       for (let i = encodesEndIndex; i >= encodesStartIndex; i--) {
-        if (hint.color === encodes[i].color && hint.count >= encodes[i].count) {
+        if (hint.letters === encodes[i].letters && hint.count >= encodes[i].count) {
           if (mapBackward.slice(hintIndex + 1).includes(i)) continue;
 
           mapBackward[hintIndex] = i;
@@ -296,7 +296,7 @@ const handlePointerEnter = (i: number, j: number) => {
 
       let subEncodesCount = 0;
       for (let j = 0; j < subEncodes.length; j++) {
-        if (encodes[j].color !== "X") subEncodesCount += encodes[j].count;
+        if (encodes[j].letters !== "X") subEncodesCount += encodes[j].count;
         else if (j > 0 && j < subEncodes.length - 1) subEncodesCount++;
       }
       const { offsetTail } = getOffsets(0, subHints);
@@ -365,7 +365,7 @@ const handlePointerEnter = (i: number, j: number) => {
             {#each tilesSolution.columnHints[i] as columnHint, j}
               <div
                 style:opacity={isHintSatisfied(i, j, columnHint, false) ? 0.2 : 1}
-                style:color={colors.v[lettersToNum(columnHint.color)]}
+                style:color={colors.v[lettersToNum(columnHint.letters)]}
                 style:font-size={isColumnHintsSticky.v ? ".5rem" : ""}
                 class="font-normal"
               >
@@ -388,7 +388,7 @@ const handlePointerEnter = (i: number, j: number) => {
                 <div
                   style:opacity={isHintSatisfied(i, j, rowHint, true) ? 0.2 : 1}
                   style:width={isRowHintsSticky.v ? ".75rem" : "1.5rem"}
-                  style:color={colors.v[lettersToNum(rowHint.color)]}
+                  style:color={colors.v[lettersToNum(rowHint.letters)]}
                   style:font-size={isRowHintsSticky.v ? ".5rem" : ""}
                   class="flex items-center justify-center"
                 >{rowHint.count}</div>

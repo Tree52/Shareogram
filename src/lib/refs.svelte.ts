@@ -29,7 +29,7 @@ type RefTiles = {
 } & Ref<Tile[][]>;
 
 export type Encode = {
-  color: string;
+  letters: string;
   count: number;
 };
 
@@ -69,14 +69,14 @@ const refTiles = (): RefTiles => {
     for (let row = 0; row < numRows; row++) {
       rowEncodes[row] = [];
       const firstTile = baseRef.v[row][0];
-      const encode = { color: firstTile.Xed ? "X" : numToLetters(firstTile.colorIndex), count: 1 };
+      const encode = { letters: firstTile.Xed ? "X" : numToLetters(firstTile.colorIndex), count: 1 };
       for (let column = 1; column < numColumns; column++) {
         const previousTile = baseRef.v[row][column - 1];
         const currentTile = baseRef.v[row][column];
         if (previousTile.colorIndex === currentTile.colorIndex && previousTile.Xed === currentTile.Xed) encode.count++;
         else {
           rowEncodes[row].push({ ...encode });
-          encode.color = currentTile.Xed ? "X" : numToLetters(currentTile.colorIndex);
+          encode.letters = currentTile.Xed ? "X" : numToLetters(currentTile.colorIndex);
           encode.count = 1;
         }
       }
@@ -87,7 +87,7 @@ const refTiles = (): RefTiles => {
     return rowEncodes;
   });
 
-  const rowHints: Hint[][] = $derived(rowEncodes.map(subArray => subArray.filter(obj => obj.color !== "a" && obj.color !== "X")));
+  const rowHints: Hint[][] = $derived(rowEncodes.map(subArray => subArray.filter(obj => obj.letters !== "a" && obj.letters !== "X")));
 
   const columnEncodes: Encode[][] = $derived.by(() => {
     const columnEncodes: Encode[][] = [[]];
@@ -97,14 +97,14 @@ const refTiles = (): RefTiles => {
     for (let column = 0; column < numColumns; column++) {
       columnEncodes[column] = [];
       const firstTile = baseRef.v[0][column];
-      const encode = { color: firstTile.Xed ? "X" : numToLetters(firstTile.colorIndex), count: 1 };
+      const encode = { letters: firstTile.Xed ? "X" : numToLetters(firstTile.colorIndex), count: 1 };
       for (let row = 1; row < numRows; row++) {
         const previousTile = baseRef.v[row - 1][column];
         const currentTile = baseRef.v[row][column];
         if (previousTile.colorIndex === currentTile.colorIndex && previousTile.Xed === currentTile.Xed) encode.count++;
         else {
           columnEncodes[column].push({ ...encode });
-          encode.color = currentTile.Xed ? "X" : numToLetters(currentTile.colorIndex);
+          encode.letters = currentTile.Xed ? "X" : numToLetters(currentTile.colorIndex);
           encode.count = 1;
         }
       }
@@ -115,7 +115,7 @@ const refTiles = (): RefTiles => {
     return columnEncodes;
   });
 
-  const columnHints: Hint[][] = $derived(columnEncodes.map(subArray => subArray.filter(obj => obj.color !== "a" && obj.color !== "X")));
+  const columnHints: Hint[][] = $derived(columnEncodes.map(subArray => subArray.filter(obj => obj.letters !== "a" && obj.letters !== "X")));
 
   const encoded = $derived.by(() => {
     let encoded = "";
@@ -126,10 +126,10 @@ const refTiles = (): RefTiles => {
       for (let j = 0; j < rowEncodes[i].length; j++) {
         const currentEncode = rowEncodes[i][j];
 
-        if (currentEncode.color === currentColor) totalCount += currentEncode.count;
+        if (currentEncode.letters === currentColor) totalCount += currentEncode.count;
         else {
           if (currentColor !== "") encoded += totalCount + currentColor;
-          currentColor = currentEncode.color;
+          currentColor = currentEncode.letters;
           totalCount = currentEncode.count;
         }
       }
