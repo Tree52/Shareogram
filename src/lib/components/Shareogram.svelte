@@ -353,7 +353,11 @@ const handlePointerEnter = (i: number, j: number) => {
 
 <table class="m-32 border-collapse" style:zoom={tableScale.v}>
   {#if isGame.v}
-    <thead class="top-0 z-20 align-bottom" style:position={isColumnHintsSticky.v ? "sticky" : ""} style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}>
+    <thead
+      style:background-color={isColumnHintsSticky.v ? colors.v[0] : ""}
+      style:position={isColumnHintsSticky.v ? "sticky" : ""}
+      class="top-0 z-20 align-bottom"
+    >
       <tr>
         <th
           style:visibility={isRowHintsSticky.v && isColumnHintsSticky.v ? "" : "hidden"}
@@ -382,7 +386,11 @@ const handlePointerEnter = (i: number, j: number) => {
     {#each { length: tiles.numRows } as _, i}
       <tr>
         {#if isGame.v}
-          <td class="left-0 z-10" style:position={isRowHintsSticky.v ? "sticky" : ""} style:background-color={isRowHintsSticky.v ? colors.v[0] : ""}>
+          <td
+            style:background-color={isRowHintsSticky.v ? colors.v[0] : ""}
+            style:position={isRowHintsSticky.v ? "sticky" : ""}
+            class="left-0 z-10"
+          >
             <div class="flex justify-end">
               {#each tilesSolution.rowHints[i] as rowHint, j}
                 <div
