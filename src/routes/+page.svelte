@@ -109,10 +109,6 @@
   });
 </script>
 
-<svelte:head>
-  <title>Shareogram</title>
-</svelte:head>
-
 <svelte:window oncontextmenu={e => e.preventDefault()} {onload} onbeforeunload={(e) => { handleBeforeUnload(e); }} />
 
 <Background />
