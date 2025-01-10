@@ -1,6 +1,6 @@
 <script lang="ts">
   import { colors } from "$lib/refs.svelte";
-  
+
   // fill={colors.v[0]} stopped working for some reason, thus needing this.
   $effect(() => {
     const svgPath = document.querySelector("#dynamic-svg path");

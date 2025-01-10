@@ -82,77 +82,77 @@
     isChangeHashAllowed.v = true;
   };
 
-const handlePointerEnter = (i: number, j: number) => {
-  if ((!isLeftHeld && !isRightHeld) || (isLeftHeld && isRightHeld) || clickedTile.v.row === -1 || isMoveSelected.v) return;
+  const handlePointerEnter = (i: number, j: number) => {
+    if ((!isLeftHeld && !isRightHeld) || (isLeftHeld && isRightHeld) || clickedTile.v.row === -1 || isMoveSelected.v) return;
 
-  numTilesEntered++;
+    numTilesEntered++;
 
-  if (numTilesEntered === 1) direction = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
+    if (numTilesEntered === 1) direction = getAdjacentDirection(clickedTile.v.row, clickedTile.v.column, i, j);
 
-  const clickedTileCurrent = tiles.v[clickedTile.v.row][clickedTile.v.column];
-  if (isGame.v) {
-    if (is2dSelected.v) {
-      // 2D selection
-      const startRow = Math.min(clickedTile.v.row, i);
-      const endRow = Math.max(clickedTile.v.row, i);
-      const startCol = Math.min(clickedTile.v.column, j);
-      const endCol = Math.max(clickedTile.v.column, j);
+    const clickedTileCurrent = tiles.v[clickedTile.v.row][clickedTile.v.column];
+    if (isGame.v) {
+      if (is2dSelected.v) {
+        // 2D selection
+        const startRow = Math.min(clickedTile.v.row, i);
+        const endRow = Math.max(clickedTile.v.row, i);
+        const startCol = Math.min(clickedTile.v.column, j);
+        const endCol = Math.max(clickedTile.v.column, j);
 
-      for (let row = startRow; row <= endRow; row++) {
-        for (let col = startCol; col <= endCol; col++) {
-          const tile = tiles.v[row][col];
-          if (isLeftHeld) {
-            if (isXSelected.v && !isActive(tile)) tile.Xed = clickedTileCurrent.Xed;
-            else if (!isXSelected.v && !isXed(tile)) changeColor(tile, clickedTileCurrent.colorIndex);
+        for (let row = startRow; row <= endRow; row++) {
+          for (let col = startCol; col <= endCol; col++) {
+            const tile = tiles.v[row][col];
+            if (isLeftHeld) {
+              if (isXSelected.v && !isActive(tile)) tile.Xed = clickedTileCurrent.Xed;
+              else if (!isXSelected.v && !isXed(tile)) changeColor(tile, clickedTileCurrent.colorIndex);
+            }
+            else {
+              if (clickedTile.v.Xed && !isActive(tile)) tile.Xed = false;
+              else if (clickedTile.v.colorIndex === 0 && !isActive(tile)) tile.Xed = true;
+              else if (clickedTile.v.colorIndex !== 0 && !isXed(tile)) deactivate(tile);
+            }
           }
-          else {
-            if (clickedTile.v.Xed && !isActive(tile)) tile.Xed = false;
-            else if (clickedTile.v.colorIndex === 0 && !isActive(tile)) tile.Xed = true;
-            else if (clickedTile.v.colorIndex !== 0 && !isXed(tile)) deactivate(tile);
+        }
+      }
+      else {
+        // 1D selection
+        if (direction === "above" || direction === "below") {
+          const startIndex = Math.min(clickedTile.v.row, i);
+          const endIndex = Math.max(clickedTile.v.row, i);
+          for (let l = startIndex; l < endIndex + 1; l++) {
+            const columnTile = tiles.v[l][clickedTile.v.column];
+            if (isLeftHeld) {
+              if (isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
+              else if (!isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
+            }
+            else {
+              if (clickedTile.v.Xed && !isActive(columnTile)) columnTile.Xed = false;
+              else if (clickedTile.v.colorIndex === 0 && !isActive(columnTile)) columnTile.Xed = true;
+              else if (clickedTile.v.colorIndex !== 0 && !isXed(columnTile)) deactivate(columnTile);
+            }
+          }
+        }
+        else {
+          const startIndex = Math.min(clickedTile.v.column, j);
+          const endIndex = Math.max(clickedTile.v.column, j);
+          for (let m = startIndex; m < endIndex + 1; m++) {
+            const rowTile = tiles.v[clickedTile.v.row][m];
+            if (isLeftHeld) {
+              if (isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
+              else if (!isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
+            }
+            else {
+              if (clickedTile.v.Xed && !isActive(rowTile)) rowTile.Xed = false;
+              else if (clickedTile.v.colorIndex === 0 && !isActive(rowTile)) rowTile.Xed = true;
+              else if (clickedTile.v.colorIndex !== 0 && !isXed(rowTile)) deactivate(rowTile);
+            }
           }
         }
       }
     }
     else {
-      // 1D selection
-      if (direction === "above" || direction === "below") {
-        const startIndex = Math.min(clickedTile.v.row, i);
-        const endIndex = Math.max(clickedTile.v.row, i);
-        for (let l = startIndex; l < endIndex + 1; l++) {
-          const columnTile = tiles.v[l][clickedTile.v.column];
-          if (isLeftHeld) {
-            if (isXSelected.v && !isActive(columnTile)) columnTile.Xed = clickedTileCurrent.Xed;
-            else if (!isXSelected.v && !isXed(columnTile)) changeColor(columnTile, clickedTileCurrent.colorIndex);
-          }
-          else {
-            if (clickedTile.v.Xed && !isActive(columnTile)) columnTile.Xed = false;
-            else if (clickedTile.v.colorIndex === 0 && !isActive(columnTile)) columnTile.Xed = true;
-            else if (clickedTile.v.colorIndex !== 0 && !isXed(columnTile)) deactivate(columnTile);
-          }
-        }
-      }
-      else {
-        const startIndex = Math.min(clickedTile.v.column, j);
-        const endIndex = Math.max(clickedTile.v.column, j);
-        for (let m = startIndex; m < endIndex + 1; m++) {
-          const rowTile = tiles.v[clickedTile.v.row][m];
-          if (isLeftHeld) {
-            if (isXSelected.v && !isActive(rowTile)) rowTile.Xed = clickedTileCurrent.Xed;
-            else if (!isXSelected.v && !isXed(rowTile)) changeColor(rowTile, clickedTileCurrent.colorIndex);
-          }
-          else {
-            if (clickedTile.v.Xed && !isActive(rowTile)) rowTile.Xed = false;
-            else if (clickedTile.v.colorIndex === 0 && !isActive(rowTile)) rowTile.Xed = true;
-            else if (clickedTile.v.colorIndex !== 0 && !isXed(rowTile)) deactivate(rowTile);
-          }
-        }
-      }
+      isLeftHeld ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
     }
-  }
-  else {
-    isLeftHeld ? changeColor(tiles.v[i][j], colorsIndexer.v) : deactivate(tiles.v[i][j]);
-  }
-};
+  };
 
   let currentRow = 0;
   let currentCol = 0;
